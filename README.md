@@ -1,5 +1,10 @@
 # GithubPagesConnector
 
+## Notes
+Steps followed to deploy to Heroku: http://www.phoenixframework.org/docs/heroku
+
+---
+
 To start your Phoenix app:
 
   * Install dependencies with `mix deps.get`
