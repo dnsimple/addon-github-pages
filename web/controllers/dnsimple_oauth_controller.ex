@@ -1,4 +1,4 @@
-defmodule GithubPagesConnector.OauthController do
+defmodule GithubPagesConnector.DnsimpleOauthController do
   use GithubPagesConnector.Web, :controller
 
   @base_url "api.sandbox.dnsimple.com"
