@@ -1,5 +1,9 @@
 defmodule GithubPagesConnector.PageControllerTest do
-  use GithubPagesConnector.ConnCase
+  use GithubPagesConnector.ConnCase, async: true
+
+  setup do
+    :ok = Ecto.Adapters.SQL.Sandbox.checkout(GithubPagesConnector.Repo)
+  end
 
   test "GET /", %{conn: conn} do
     conn = get conn, "/"
