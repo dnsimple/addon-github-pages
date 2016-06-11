@@ -32,12 +32,12 @@ defmodule GithubPagesConnector.Mixfile do
   defp deps do
     [{:phoenix, "~> 1.1.4"},
      {:postgrex, ">= 0.0.0"},
-     {:phoenix_ecto, "~> 2.0"},
+     {:phoenix_ecto, "~> 3.0.0-rc"},
      {:phoenix_html, "~> 2.4"},
      {:phoenix_live_reload, "~> 1.0", only: :dev},
      {:gettext, "~> 0.9"},
      {:cowboy, "~> 1.0"},
-     {:dnsimple, path: "../api-elixir"}]
+     {:dnsimple, git: "git@github.com:aetrion/dnsimple-elixir.git"}]
   end
 
   # Aliases are shortcut or tasks specific to the current project.
