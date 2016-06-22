@@ -19,7 +19,7 @@ defmodule GithubPagesConnector.Mixfile do
   def application do
     [mod: {GithubPagesConnector, []},
      applications: [:phoenix, :phoenix_html, :cowboy, :logger, :gettext,
-                    :phoenix_ecto, :postgrex, :dnsimple]]
+                    :phoenix_ecto, :postgrex, :oauth2, :dnsimple]]
   end
 
   # Specifies which paths to compile per environment.
@@ -37,7 +37,8 @@ defmodule GithubPagesConnector.Mixfile do
      {:phoenix_live_reload, "~> 1.0", only: :dev},
      {:gettext, "~> 0.9"},
      {:cowboy, "~> 1.0"},
-     {:dnsimple, path: "../api-elixir"}]
+     {:dnsimple, path: "../api-elixir"},
+     {:oauth2, "~> 0.5"}]
   end
 
   # Aliases are shortcut or tasks specific to the current project.
