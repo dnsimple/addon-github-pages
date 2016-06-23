@@ -1,19 +1,19 @@
 defmodule GithubPagesConnector.DnsimpleOauthController do
   use GithubPagesConnector.Web, :controller
 
-  @base_url "api.sandbox.dnsimple.com"
+  @base_url "https://api.sandbox.dnsimple.com"
   @state "12345678"
-  @client_id "3748375270ba39d9"
-  @client_secret "kJLFFaRnLnqF2pYyancND3sWMfQWmtAY"
+  @client_id "14633962cac66aed"
+  @client_secret "vMFp5bDYJ1ngEzLg6rHD9pwrTmo7sCDD"
 
   def new(conn, _params) do
-    client    = %Dnsimple.Client{}
+    client    = %Dnsimple.Client{base_url: @base_url}
     oauth_url = Dnsimple.OauthService.authorize_url(client, @client_id, state: @state)
     redirect(conn, external: oauth_url)
   end
 
   def create(conn, params) do
-    client = %Dnsimple.Client{}
+    client     = %Dnsimple.Client{base_url: @base_url}
     attributes = %{
       client_id: @client_id,
       client_secret: @client_secret,
@@ -22,7 +22,7 @@ defmodule GithubPagesConnector.DnsimpleOauthController do
     }
     case Dnsimple.OauthService.exchange_authorization_for_token(client, attributes) do
       {:ok, response} ->
-        render conn, "welcome.html", access_token: response.data
+        redirect(conn, to: github_oauth_path(conn, :new))
       {:error, error} ->
         IO.inspect(error)
         raise "OAuth authentication failed: #{inspect(error)}"
