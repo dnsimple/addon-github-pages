@@ -6,11 +6,6 @@ defmodule GithubPagesConnector.MemoryRepoTest do
   @account_id 1
   @account %Account{dnsimple_account_id: @account_id}
 
-  setup do
-    {:ok, _pid} = MemoryRepo.start_link
-    :ok
-  end
-
   describe "get" do
     test "returns the account stored under given key" do
       MemoryRepo.put(@account_id, @account)
@@ -19,7 +14,7 @@ defmodule GithubPagesConnector.MemoryRepoTest do
     end
 
     test "returns nil if no account was stored given key" do
-      assert MemoryRepo.get(@account_id) == nil
+      assert MemoryRepo.get(:other_id) == nil
     end
   end
 
