@@ -1,9 +1,10 @@
 <div class="jumbotron">
   <h2>DNSimple Access Token</h2>
-  <p class="lead"><%= @dnsimple_token %></p>
+  <p class="lead"><%= @dnsimple_account_id %></p>
+  <p class="lead"><%= @dnsimple_access_token %></p>
 </div>
 
 <div class="jumbotron">
   <h2>GitHub Access Token</h2>
-  <p class="lead"><%= @github_token.access_token %></p>
+  <p class="lead"><%= @github_access_token %></p>
 </div>

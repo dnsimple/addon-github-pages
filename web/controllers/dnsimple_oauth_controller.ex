@@ -22,7 +22,8 @@ defmodule GithubPagesConnector.DnsimpleOauthController do
     }
     case Dnsimple.OauthService.exchange_authorization_for_token(client, attributes) do
       {:ok, response} ->
-        new_conn = put_session(conn, :dnsimple_access_token, response.data.access_token)
+        new_conn = put_session(conn, :dnsimple_account_id, response.data.account_id)
+        new_conn = put_session(new_conn, :dnsimple_access_token, response.data.access_token)
         redirect(new_conn, to: github_oauth_path(new_conn, :new))
       {:error, error} ->
         IO.inspect(error)

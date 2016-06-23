@@ -18,9 +18,14 @@ defmodule GithubPagesConnector.GithubOauthController do
   end
 
   def create(conn, params) do
+    dnsimple_account_id   = get_session(conn, :dnsimple_account_id)
     dnsimple_access_token = get_session(conn, :dnsimple_access_token)
     github_access_token   = OAuth2.Client.get_token!(@client, code: params["code"])
-    render(conn, "welcome.html", dnsimple_token: dnsimple_access_token, github_token: github_access_token)
+    render(conn, "welcome.html", [
+      dnsimple_account_id: dnsimple_account_id,
+      dnsimple_access_token: dnsimple_access_token,
+      github_access_token: github_access_token.access_token,
+    ])
   end
 
 end
