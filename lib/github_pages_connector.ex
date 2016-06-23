@@ -11,6 +11,7 @@ defmodule GithubPagesConnector do
       supervisor(GithubPagesConnector.Endpoint, []),
       # Start the Ecto repository
       supervisor(GithubPagesConnector.Repo, []),
+      worker(GithubPagesConnector.MemoryRepo, []),
       # Here you could define other workers and supervisors as children
       # worker(GithubPagesConnector.Worker, [arg1, arg2, arg3]),
     ]
