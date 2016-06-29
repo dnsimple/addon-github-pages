@@ -1,4 +1,5 @@
 defmodule GithubPagesConnector.Dnsimple do
+  alias GithubPagesConnector.Account
 
   @base_url Application.get_env(:github_pages_connector, :dnsimple_base_url)
   @client_id Application.get_env(:github_pages_connector, :dnsimple_client_id)
@@ -20,5 +21,16 @@ defmodule GithubPagesConnector.Dnsimple do
     end
   end
 
-  defp client, do: %Dnsimple.Client{base_url: @base_url}
+  def list_all_domains(%Account{dnsimple_access_token: access_token, dnsimple_account_id: account_id}) do
+    case Dnsimple.DomainsService.domains(client(access_token), account_id) do
+      {:ok, response} -> {:ok, response.data}
+      {:error, error} -> {:error, error}
+    end
+  end
+
+
+  defp client(access_token \\ nil) do
+    %Dnsimple.Client{base_url: @base_url, access_token: access_token}
+  end
+
 end

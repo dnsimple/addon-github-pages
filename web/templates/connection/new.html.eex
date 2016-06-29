@@ -1,4 +1,13 @@
 <div class="jumbotron">
+  <h2>Domains</h2>
+  <ul>
+    <%= for domain <- @domains do %>
+      <li><%= domain.name %></li>
+    <% end %>
+  </ul>
+</div>
+
+<div class="jumbotron">
   <h2>DNSimple Access Token</h2>
   <p class="lead"><%= @dnsimple_account_id %></p>
   <p class="lead"><%= @dnsimple_access_token %></p>
