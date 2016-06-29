@@ -6,8 +6,9 @@ defmodule GithubPagesConnector.DnsimpleOauthControllerTest do
     assert redirected_to(conn) =~ "https://test.dnsimple.com/auth/authorize?client_id=client_id&state=state"
   end
 
-  #test "GET /dnsimple/callback", %{conn: conn} do
-  #  conn = get conn, dnsimple_oauth_path(conn, :create)
-  #  assert redirected_to(conn) =~ github_oauth_path(conn, :new)
-  #end
+  test "GET /dnsimple/callback", %{conn: conn} do
+    conn = get conn, dnsimple_oauth_path(conn, :create)
+    assert redirected_to(conn) =~ github_oauth_path(conn, :new)
+  end
+
 end
