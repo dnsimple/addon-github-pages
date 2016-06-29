@@ -16,9 +16,10 @@ defmodule GithubPagesConnector.DnsimpleOauthController do
   def create(conn, params) do
     case @dnsimple.oauth_authorization(code: params["code"], state: @state) do
       {:ok, account_id, access_token} ->
-        new_conn = put_session(conn, :dnsimple_account_id, account_id)
-        new_conn = put_session(new_conn, :dnsimple_access_token, access_token)
-        redirect(new_conn, to: github_oauth_path(new_conn, :new))
+        conn
+        |> put_session(:dnsimple_account_id, account_id)
+        |> put_session(:dnsimple_access_token, access_token)
+        |> redirect(to: github_oauth_path(conn, :new))
       {:error, error} ->
         IO.inspect(error)
         raise "OAuth authentication failed: #{inspect(error)}"
