@@ -1,4 +1,4 @@
-defmodule GitHubPagesConnector.Dnsimple do
+defmodule GithubPagesConnector.Dnsimple do
 
   @base_url "https://api.sandbox.dnsimple.com"
   @client_id "14633962cac66aed"
