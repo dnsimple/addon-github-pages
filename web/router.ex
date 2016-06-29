@@ -22,6 +22,8 @@ defmodule GithubPagesConnector.Router do
     get "/dnsimple/callback",  DnsimpleOauthController, :create
     get "/github/authorize",   GithubOauthController,   :new
     get "/github/callback",    GithubOauthController,   :create
+
+    get "/connection/new",     ConnectionController, :new
   end
 
   # Other scopes may use custom stacks.

@@ -30,11 +30,7 @@ defmodule GithubPagesConnector.GithubOauthController do
       github_access_token: github_access_token,
     })
 
-    render(conn, "welcome.html", [
-      dnsimple_account_id: dnsimple_account_id,
-      dnsimple_access_token: dnsimple_access_token,
-      github_access_token: github_access_token,
-    ])
+    redirect(conn, to: connection_path(conn, :new))
   end
 
 end
