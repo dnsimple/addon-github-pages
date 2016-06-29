@@ -17,6 +17,10 @@ config :github_pages_connector, GithubPagesConnector.Endpoint,
 config :github_pages_connector, ecto_repos: [GithubPagesConnector.Repo]
 
 config :github_pages_connector, dnsimple: GithubPagesConnector.Dnsimple
+config :github_pages_connector, dnsimple_base_url: "https://api.sandbox.dnsimple.com"
+config :github_pages_connector, dnsimple_client_id: "14633962cac66aed"
+config :github_pages_connector, dnsimple_client_secret: "vMFp5bDYJ1ngEzLg6rHD9pwrTmo7sCDD"
+
 
 # Configures Elixir's Logger
 config :logger, :console,

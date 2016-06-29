@@ -1,8 +1,8 @@
 defmodule GithubPagesConnector.Dnsimple do
 
-  @base_url "https://api.sandbox.dnsimple.com"
-  @client_id "14633962cac66aed"
-  @client_secret "vMFp5bDYJ1ngEzLg6rHD9pwrTmo7sCDD"
+  @base_url Application.get_env(:github_pages_connector, :dnsimple_base_url)
+  @client_id Application.get_env(:github_pages_connector, :dnsimple_client_id)
+  @client_secret Application.get_env(:github_pages_connector, :dnsimple_client_secret)
 
   def oauth_authorize_url(state: state) do
     Dnsimple.OauthService.authorize_url(client, @client_id, state: state)
