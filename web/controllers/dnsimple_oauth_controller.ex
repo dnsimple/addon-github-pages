@@ -1,14 +1,15 @@
 defmodule GithubPagesConnector.DnsimpleOauthController do
   use GithubPagesConnector.Web, :controller
 
-  @base_url "https://api.sandbox.dnsimple.com"
+  @dnsimple Application.get_env :github_pages_connector, :dnsimple
   @state "12345678"
+
+  @base_url "https://api.sandbox.dnsimple.com"
   @client_id "14633962cac66aed"
   @client_secret "vMFp5bDYJ1ngEzLg6rHD9pwrTmo7sCDD"
 
   def new(conn, _params) do
-    client    = %Dnsimple.Client{base_url: @base_url}
-    oauth_url = Dnsimple.OauthService.authorize_url(client, @client_id, state: @state)
+    oauth_url = @dnsimple.oauth_authorize_url(state: @state)
     redirect(conn, external: oauth_url)
   end
 

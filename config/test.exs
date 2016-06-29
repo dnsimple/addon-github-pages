@@ -17,3 +17,5 @@ config :github_pages_connector, GithubPagesConnector.Repo,
   database: "github_pages_connector_test",
   hostname: "localhost",
   pool: Ecto.Adapters.SQL.Sandbox
+
+config :github_pages_connector, dnsimple: GithubPagesConnector.DnsimpleDummy
