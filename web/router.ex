@@ -23,7 +23,7 @@ defmodule GithubPagesConnector.Router do
     get "/github/authorize",   GithubOauthController,   :new
     get "/github/callback",    GithubOauthController,   :create
 
-    get "/connection/new",     ConnectionController, :new
+    resources "/connection", ConnectionController, only: [:new, :create]
   end
 
   # Other scopes may use custom stacks.

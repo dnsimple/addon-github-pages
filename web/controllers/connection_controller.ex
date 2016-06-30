@@ -17,4 +17,9 @@ defmodule GithubPagesConnector.ConnectionController do
       github_access_token: account.github_access_token,
     ])
   end
+
+  def create(conn, params) do
+    text(conn, "creating connection for domain `#{params["domain"]}`...")
+  end
+
 end

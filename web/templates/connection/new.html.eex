@@ -2,7 +2,7 @@
   <h2>Domains</h2>
   <ul>
     <%= for domain <- @domains do %>
-      <li><%= domain.name %></li>
+      <li><a href="<%= connection_path(@conn, :create, domain: domain.name) %>"><%= domain.name %></a></li>
     <% end %>
   </ul>
 </div>
