@@ -30,7 +30,9 @@ defmodule GithubPagesConnector.GithubOauthController do
       github_access_token: github_access_token,
     })
 
-    redirect(conn, to: connection_path(conn, :new))
+    conn
+    |> put_session(:account_id, dnsimple_account_id)
+    |> redirect(to: connection_path(conn, :new))
   end
 
 end

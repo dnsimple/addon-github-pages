@@ -21,8 +21,22 @@ defmodule GithubPagesConnector.Dnsimple do
     end
   end
 
-  def list_all_domains(%Account{dnsimple_access_token: access_token, dnsimple_account_id: account_id}) do
+  def list_all_domains(account = %Account{}) do
+    access_token = account.dnsimple_access_token
+    account_id   = account.dnsimple_account_id
+
     case Dnsimple.DomainsService.domains(client(access_token), account_id) do
+      {:ok, response} -> {:ok, response.data}
+      {:error, error} -> {:error, error}
+    end
+  end
+
+  def create_record(account = %Account{}, domain_name, record_data) do
+    access_token = account.dnsimple_access_token
+    account_id   = account.dnsimple_account_id
+    record_data  = Enum.into(%{}, record_data)
+
+    case Dnsimple.ZonesService.create_record(client(access_token), account_id, domain_name, record_data) do
       {:ok, response} -> {:ok, response.data}
       {:error, error} -> {:error, error}
     end

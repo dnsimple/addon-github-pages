@@ -1,12 +1,14 @@
 defmodule GithubPagesConnector.ConnectionController do
   use GithubPagesConnector.Web, :controller
 
+  plug GithubPagesConnector.Plug.CurrentAccount
+
   alias GithubPagesConnector.Dnsimple
   alias GithubPagesConnector.MemoryRepo
 
+
   def new(conn, _params) do
-    account_id = 63
-    account    = MemoryRepo.get(account_id)
+    account    = conn.assigns[:current_account]
 
     {:ok, domains} = Dnsimple.list_all_domains(account)
 
@@ -19,6 +21,10 @@ defmodule GithubPagesConnector.ConnectionController do
   end
 
   def create(conn, params) do
+    account    = conn.assigns[:current_account]
+
+    {:ok, record} = Dnsimple.create_record(account, params["domain"], %{name: "", type: "ALIAS", content: "jacegu.github.io"})
+
     text(conn, "creating connection for domain `#{params["domain"]}`...")
   end
 
