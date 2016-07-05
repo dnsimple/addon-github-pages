@@ -3,6 +3,7 @@ defmodule GithubPagesConnector.ConnectionController do
 
   plug GithubPagesConnector.Plug.CurrentAccount
 
+  alias GithubPagesConnector.Github
   alias GithubPagesConnector.Dnsimple
   alias GithubPagesConnector.MemoryRepo
 
@@ -10,10 +11,8 @@ defmodule GithubPagesConnector.ConnectionController do
   def new(conn, _params) do
     account = conn.assigns[:current_account]
 
-    client = Tentacat.Client.new(%{access_token: account.github_access_token})
-    repositories = Tentacat.Repositories.list_mine(client)
-
-    {:ok, domains} = Dnsimple.list_all_domains(account)
+    {:ok, repositories} = Github.list_all_repositories(account)
+    {:ok, domains}      = Dnsimple.list_all_domains(account)
 
     render(conn, "new.html", [
       repositories: repositories,
