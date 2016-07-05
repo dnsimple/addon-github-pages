@@ -8,11 +8,15 @@ defmodule GithubPagesConnector.ConnectionController do
 
 
   def new(conn, _params) do
-    account    = conn.assigns[:current_account]
+    account = conn.assigns[:current_account]
+
+    client = Tentacat.Client.new(%{access_token: account.github_access_token})
+    repositories = Tentacat.Repositories.list_mine(client)
 
     {:ok, domains} = Dnsimple.list_all_domains(account)
 
     render(conn, "new.html", [
+      repositories: repositories,
       domains: domains,
       dnsimple_account_id: account.dnsimple_account_id,
       dnsimple_access_token: account.dnsimple_access_token,

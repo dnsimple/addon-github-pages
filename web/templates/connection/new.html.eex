@@ -1,4 +1,13 @@
 <div class="jumbotron">
+  <h2>Repositories</h2>
+  <ul>
+    <%= for repository <- @repositories do %>
+      <li><%= repository["name"] %></li>
+    <% end %>
+  </ul>
+</div>
+
+<div class="jumbotron">
   <h2>Domains</h2>
   <ul>
     <%= for domain <- @domains do %>
