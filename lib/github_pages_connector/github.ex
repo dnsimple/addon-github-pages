@@ -17,9 +17,8 @@ defmodule GithubPagesConnector.Github do
   end
 
   def oauth_authorization(code: code, state: state) do
-    @oauth_client
-    |> OAuth2.Client.get_token!(code: code)
-    |> Map.get(:access_token)
+    access_token = access_token(code, state)
+    {:ok, user_login(access_token), access_token}
   end
 
   def list_all_repositories(account) do
@@ -32,9 +31,20 @@ defmodule GithubPagesConnector.Github do
   end
 
 
-  defp client, do: client(%Account{})
-  defp client(%Account{github_access_token: access_token}) do
-    Tentacat.Client.new(%{access_token: access_token})
+  defp access_token(code, state) do
+    @oauth_client
+    |> OAuth2.Client.get_token!(code: code)
+    |> Map.get(:access_token)
   end
+
+  defp user_login(access_token) do
+    client(access_token)
+    |> Tentacat.Users.me
+    |> Map.get("login")
+  end
+
+  defp client, do: client(nil)
+  defp client(%Account{github_access_token: access_token}), do: client(access_token)
+  defp client(access_token), do: Tentacat.Client.new(%{access_token: access_token})
 
 end
