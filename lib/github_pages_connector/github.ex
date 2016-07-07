@@ -17,8 +17,12 @@ defmodule GithubPagesConnector.Github do
   end
 
   def oauth_authorization(code: code, state: state) do
-    access_token = access_token(code, state)
-    {:ok, user_login(access_token), access_token}
+    try do
+      access_token = access_token(code, state)
+      {:ok, user_login(access_token), access_token}
+    rescue error -> error
+      {:error , error}
+    end
   end
 
   def list_all_repositories(account) do
