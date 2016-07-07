@@ -26,7 +26,30 @@ defmodule GithubPagesConnector.ConnectionController do
   def create(conn, params) do
     account    = conn.assigns[:current_account]
 
-    {:ok, record} = Dnsimple.create_record(account, params["domain"], %{name: "", type: "ALIAS", content: "jacegu.github.io"})
+    domain     = params["domain"]
+    repository = params["repository"]
+
+    client     = Tentacat.Client.new(%{access_token: account.github_access_token})
+    user       = Tentacat.Users.me(client)
+
+    owner      = user["login"]
+    path       = "CNAME"
+    body       = %{content: Base.encode64(domain), message: "Configure #{domain} with DNSimple"}
+
+    response = Tentacat.Contents.find(owner, repository, "README.md", client)
+    IO.inspect(response)
+
+    IO.puts ""
+    IO.inspect owner
+    IO.inspect repository
+    IO.inspect path
+    IO.inspect body
+    IO.puts ""
+
+    response = Tentacat.Contents.create(owner, repository, path, body, client)
+    IO.inspect(response)
+
+    {:ok, record} = Dnsimple.create_record(account, domain, %{name: "", type: "ALIAS", content: "jacegu.github.io"})
 
     text(conn, "creating connection for domain `#{params["domain"]}`...")
   end

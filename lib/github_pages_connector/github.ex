@@ -11,6 +11,7 @@ defmodule GithubPagesConnector.Github do
 
   def oauth_authorize_url(state: state) do
     @oauth2_client
+    |> OAuth2.Client.put_param(:scope, "repo")
     |> OAuth2.Client.authorize_url!
   end
 
