@@ -1,7 +1,8 @@
 defmodule GithubPagesConnector.Github do
   alias GithubPagesConnector.Account
 
-  @oauth2_client OAuth2.Client.new([
+  @oauth_scope "repo"
+  @oauth_client OAuth2.Client.new([
     client_id: Application.get_env(:github_pages_connector, :github_client_id),
     client_secret: Application.get_env(:github_pages_connector, :github_client_secret),
     token_url: Application.get_env(:github_pages_connector, :github_token_uri),
@@ -10,13 +11,13 @@ defmodule GithubPagesConnector.Github do
   ])
 
   def oauth_authorize_url(state: state) do
-    @oauth2_client
-    |> OAuth2.Client.put_param(:scope, "repo")
+    @oauth_client
+    |> OAuth2.Client.put_param(:scope, @oauth_scope)
     |> OAuth2.Client.authorize_url!
   end
 
   def oauth_authorization(code: code, state: state) do
-    @oauth2_client
+    @oauth_client
     |> OAuth2.Client.get_token!(code: code)
     |> Map.get(:access_token)
   end
