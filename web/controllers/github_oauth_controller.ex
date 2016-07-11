@@ -13,14 +13,15 @@ defmodule GithubPagesConnector.GithubOauthController do
 
   def create(conn, params) do
     case @github.oauth_authorization(code: params["code"], state: @state) do
-      {:ok, github_user_login, github_access_token} ->
+      {:ok, github_account_id, github_account_login, github_access_token} ->
         dnsimple_account_id   = get_session(conn, :dnsimple_account_id)
         dnsimple_access_token = get_session(conn, :dnsimple_access_token)
 
         MemoryRepo.put(dnsimple_account_id, %Account{
           dnsimple_account_id: dnsimple_account_id,
           dnsimple_access_token: dnsimple_access_token,
-          github_user_login: github_user_login,
+          github_account_id: github_account_login,
+          github_account_login: github_account_login,
           github_access_token: github_access_token,
         })
 

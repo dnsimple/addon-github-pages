@@ -19,7 +19,8 @@ defmodule GithubPagesConnector.Github do
   def oauth_authorization(code: code, state: state) do
     try do
       access_token = access_token(code, state)
-      {:ok, user_login(access_token), access_token}
+      {account_id, account_login} = account_data(access_token)
+      {:ok, account_id, account_login, access_token}
     rescue error -> error
       {:error , error}
     end
@@ -41,10 +42,10 @@ defmodule GithubPagesConnector.Github do
     |> Map.get(:access_token)
   end
 
-  defp user_login(access_token) do
-    client(access_token)
-    |> Tentacat.Users.me
-    |> Map.get("login")
+  defp account_data(access_token) do
+    data = Tentacat.Users.me(client(access_token))
+
+    {Map.get(data, "id"), Map.get(data, "login")}
   end
 
   defp client, do: client(nil)
