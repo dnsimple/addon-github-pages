@@ -4,8 +4,10 @@ defmodule GithubPagesConnector.GithubOauthController do
   alias GithubPagesConnector.Account
   alias GithubPagesConnector.MemoryRepo
 
+  @state "12345678"
+
   def new(conn, _params) do
-    redirect(conn, external: Github.oauth_authorize_url(state: "12345678"))
+    redirect(conn, external: Github.oauth_authorize_url(state: @state))
   end
 
   def create(conn, params) do
