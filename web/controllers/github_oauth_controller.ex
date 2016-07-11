@@ -1,17 +1,18 @@
 defmodule GithubPagesConnector.GithubOauthController do
   use GithubPagesConnector.Web, :controller
-  alias GithubPagesConnector.Github
   alias GithubPagesConnector.Account
   alias GithubPagesConnector.MemoryRepo
 
+  @github Application.get_env(:github_pages_connector, :github)
   @state "12345678"
 
   def new(conn, _params) do
-    redirect(conn, external: Github.oauth_authorize_url(state: @state))
+    url = @github.oauth_authorize_url(state: @state)
+    redirect(conn, external: url)
   end
 
   def create(conn, params) do
-    case Github.oauth_authorization(code: params["code"], state: @state) do
+    case @github.oauth_authorization(code: params["code"], state: @state) do
       {:ok, github_user_login, github_access_token} ->
         dnsimple_account_id   = get_session(conn, :dnsimple_account_id)
         dnsimple_access_token = get_session(conn, :dnsimple_access_token)

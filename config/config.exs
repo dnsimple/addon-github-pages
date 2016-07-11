@@ -16,7 +16,7 @@ config :github_pages_connector, GithubPagesConnector.Endpoint,
 
 config :github_pages_connector, ecto_repos: [GithubPagesConnector.Repo]
 
-
+config :github_pages_connector, github: GithubPagesConnector.Github
 config :github_pages_connector, github_client_id: "26bdee190f3d6af8f9e3"
 config :github_pages_connector, github_client_secret: "a5f8fb3be0467f30a34f0f574c2c7cd9877463a5"
 config :github_pages_connector, github_token_uri: "https://github.com/login/oauth/access_token"

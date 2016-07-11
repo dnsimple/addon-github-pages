@@ -22,3 +22,7 @@ config :github_pages_connector, dnsimple: GithubPagesConnector.DnsimpleDummy
 config :github_pages_connector, dnsimple_base_url: "https://api.t.dnsimple.com"
 config :github_pages_connector, dnsimple_client_id: "client_id"
 config :github_pages_connector, dnsimple_client_secret: "client_secret"
+
+config :github_pages_connector, github: GithubPagesConnector.GithubDummy
+config :github_pages_connector, github_client_id: "client_id"
+config :github_pages_connector, github_client_secret: "client_secret"
