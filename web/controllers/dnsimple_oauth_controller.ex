@@ -11,10 +11,11 @@ defmodule GithubPagesConnector.DnsimpleOauthController do
 
   def create(conn, params) do
     case @dnsimple.oauth_authorization(code: params["code"], state: @state) do
-      {:ok, account_id, access_token} ->
+      {:ok, dnsimple_account_id, dnsimple_account_email, dnsimple_access_token} ->
         conn
-        |> put_session(:dnsimple_account_id, account_id)
-        |> put_session(:dnsimple_access_token, access_token)
+        |> put_session(:dnsimple_account_id, dnsimple_account_id)
+        |> put_session(:dnsimple_account_email, dnsimple_account_email)
+        |> put_session(:dnsimple_access_token, dnsimple_access_token)
         |> redirect(to: github_oauth_path(conn, :new))
       {:error, error} ->
         IO.inspect(error)

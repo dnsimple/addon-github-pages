@@ -1,6 +1,7 @@
 defmodule GithubPagesConnector.Account do
   defstruct [
     :dnsimple_account_id,
+    :dnsimple_account_email,
     :dnsimple_access_token,
     :github_account_id,
     :github_account_login,

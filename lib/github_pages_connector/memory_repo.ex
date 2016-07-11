@@ -3,6 +3,10 @@ defmodule GithubPagesConnector.MemoryRepo do
     Agent.start_link(fn -> Map.new end, name: __MODULE__)
   end
 
+  def debug do
+    Agent.get(__MODULE__, &IO.inspect/1)
+  end
+
   def get(account_id) do
     Agent.get(__MODULE__, &Map.get(&1, account_id))
   end
