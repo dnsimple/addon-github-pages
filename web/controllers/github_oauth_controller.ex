@@ -1,8 +1,7 @@
 defmodule GithubPagesConnector.GithubOauthController do
   use GithubPagesConnector.Web, :controller
-  alias GithubPagesConnector.Account
-  alias GithubPagesConnector.MemoryRepo
 
+  @accounts GithubPagesConnector.Accounts
   @github Application.get_env(:github_pages_connector, :github)
   @state "12345678"
 
@@ -12,27 +11,19 @@ defmodule GithubPagesConnector.GithubOauthController do
   end
 
   def create(conn, params) do
+    current_account_id = conn.assigns[:current_account].dnsimple_account_id
+
     case @github.oauth_authorization(code: params["code"], state: @state) do
       {:ok, github_account_id, github_account_login, github_access_token} ->
-        dnsimple_account_id    = get_session(conn, :dnsimple_account_id)
-        dnsimple_account_email = get_session(conn, :dnsimple_account_email)
-        dnsimple_access_token  = get_session(conn, :dnsimple_access_token)
-
-        MemoryRepo.put(dnsimple_account_id, %Account{
-          dnsimple_account_id: dnsimple_account_id,
-          dnsimple_account_email: dnsimple_account_email,
-          dnsimple_access_token: dnsimple_access_token,
+        @accounts.connect_github(current_account_id, [
           github_account_id: github_account_id,
           github_account_login: github_account_login,
           github_access_token: github_access_token,
-        })
+        ])
 
-        conn
-        |> put_session(:account_id, dnsimple_account_id)
-        |> redirect(to: connection_path(conn, :new))
+        redirect(conn, to: connection_path(conn, :new))
       {:error, error} ->
-        IO.inspect(error)
-        raise "OAuth authentication failed: #{inspect(error)}"
+        raise "GitHub OAuth authentication failed: #{inspect(error)}"
     end
   end
 
