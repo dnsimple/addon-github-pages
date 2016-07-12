@@ -13,7 +13,7 @@ defmodule GithubPagesConnector.GithubOauthControllerTest do
     end
 
     test "starts the GitHub OAuth dance if an account was signed in", %{conn: conn} do
-      @repo.put("dnsimple_account_id", @account)
+      @repo.put(@account)
 
       conn = conn
       |> assign(:current_account_id, @account.dnsimple_account_id)
@@ -31,7 +31,7 @@ defmodule GithubPagesConnector.GithubOauthControllerTest do
     end
 
     test "adds the GitHub data to the account if an account was signed in", %{conn: conn} do
-      @repo.put("dnsimple_account_id", @account)
+      @repo.put(@account)
 
       conn
       |> assign(:current_account_id, @account.dnsimple_account_id)
@@ -44,7 +44,7 @@ defmodule GithubPagesConnector.GithubOauthControllerTest do
     end
 
     test "redirects to new connection creation if an account was signed in", %{conn: conn} do
-      @repo.put("dnsimple_account_id", @account)
+      @repo.put(@account)
 
       conn = conn
       |> assign(:current_account_id, @account.dnsimple_account_id)

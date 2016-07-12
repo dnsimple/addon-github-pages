@@ -8,7 +8,7 @@ defmodule GithubPagesConnector.MemoryRepoTest do
 
   describe "get" do
     test "returns the account stored under given key" do
-      MemoryRepo.put(@account_id, @account)
+      MemoryRepo.put(@account)
 
       assert MemoryRepo.get(@account_id) == @account
     end
@@ -19,17 +19,20 @@ defmodule GithubPagesConnector.MemoryRepoTest do
   end
 
   describe "put" do
-    test "stores the account under given key" do
-      MemoryRepo.put(@account_id, @account)
+    test "stores the account under the account's dnsimple account id" do
+      MemoryRepo.put(@account)
 
       assert MemoryRepo.get(@account_id) == @account
     end
 
-    test "overwrites the account if another account was stored under given key" do
-      MemoryRepo.put(@account_id, @account)
-      MemoryRepo.put(@account_id, %Account{dnsimple_account_id: "1234"})
+    test "overwrites the account if another account with the same dnsimple account id exists" do
+      MemoryRepo.put(@account)
 
-      assert MemoryRepo.get(@account_id) == %Account{dnsimple_account_id: "1234"}
+      account = %Account{dnsimple_account_id: @account_id, dnsimple_account_email: "dnsimple_account_email"}
+      MemoryRepo.put(account)
+
+      refute MemoryRepo.get(@account_id) == @account
+      assert MemoryRepo.get(@account_id) == account
     end
   end
 
