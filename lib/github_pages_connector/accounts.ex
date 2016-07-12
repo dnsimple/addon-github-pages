@@ -3,15 +3,12 @@ defmodule GithubPagesConnector.Accounts do
 
   @repo GithubPagesConnector.MemoryRepo
 
-  def signup_account(dnsimple_account_id: dnsimple_account_id,
-                     dnsimple_account_email: dnsimple_account_email,
-                     dnsimple_access_token: dnsimple_access_token) do
-
-    @repo.put(dnsimple_account_id, %Account{
-      dnsimple_account_id: dnsimple_account_id,
-      dnsimple_account_email: dnsimple_account_email,
-      dnsimple_access_token: dnsimple_access_token
-    })
+  def signup_account(account_data = [dnsimple_account_id: dnsimple_account_id,
+                                     dnsimple_account_email: dnsimple_account_email,
+                                     dnsimple_access_token: dnsimple_access_token]) do
+    account = struct(Account, account_data)
+    @repo.put(dnsimple_account_id, account)
+    account
   end
 
 end

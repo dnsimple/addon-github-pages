@@ -38,6 +38,12 @@ defmodule GithubPagesConnector.DnsimpleOauthControllerTest do
       assert account.dnsimple_access_token == "dnsimple_access_token"
     end
 
+    test "puts the account id in the session", %{conn: conn} do
+      conn = get(conn, dnsimple_oauth_path(conn, :create))
+
+      refute get_session(conn, :account_id) == nil
+    end
+
     test "starts the GitHub OAuth dance", %{conn: conn} do
       conn = get(conn, dnsimple_oauth_path(conn, :create))
 
