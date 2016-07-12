@@ -5,7 +5,7 @@ defmodule GithubPagesConnector.DnsimpleDummy do
   end
 
   def oauth_authorization(code: _code, state: _state) do
-    {:ok, "account_id", "account_email", "access_token"}
+    {:ok, "dnsimple_account_id", "dnsimple_account_email", "dnsimple_access_token"}
   end
 
 end

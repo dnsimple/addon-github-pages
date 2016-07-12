@@ -1,21 +1,26 @@
 defmodule GithubPagesConnector.DnsimpleOauthControllerTest do
   use GithubPagesConnector.ConnCase
 
+  @repo GithubPagesConnector.MemoryRepo
+
   describe ".new" do
     test "starts the DNSimple OAuth dance", %{conn: conn} do
-      conn = get conn, dnsimple_oauth_path(conn, :new)
+      conn = get(conn, dnsimple_oauth_path(conn, :new))
 
       assert redirected_to(conn) =~ "https://test.dnsimple.com/auth/authorize?client_id=client_id&state=state"
     end
   end
 
   describe ".create" do
-    test "puts the DNSimple account id and access token in the session", %{conn: conn} do
-      conn = get(conn, dnsimple_oauth_path(conn, :create))
+    test "signs up the account", %{conn: conn} do
+      get(conn, dnsimple_oauth_path(conn, :create))
 
-      assert get_session(conn, :dnsimple_account_id) == "account_id"
-      assert get_session(conn, :dnsimple_account_email) == "account_email"
-      assert get_session(conn, :dnsimple_access_token) == "access_token"
+      account = @repo.get("dnsimple_account_id")
+
+      refute account == nil
+      assert account.dnsimple_account_id == "dnsimple_account_id"
+      assert account.dnsimple_account_email == "dnsimple_account_email"
+      assert account.dnsimple_access_token == "dnsimple_access_token"
     end
 
     test "starts the GitHub OAuth dance", %{conn: conn} do
