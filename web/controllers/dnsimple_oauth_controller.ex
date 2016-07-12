@@ -20,7 +20,7 @@ defmodule GithubPagesConnector.DnsimpleOauthController do
         ])
 
         conn
-        |> put_session(:account_id, account.dnsimple_account_id)
+        |> put_session(:current_account_id, account.dnsimple_account_id)
         |> redirect(to: github_oauth_path(conn, :new))
       {:error, error} ->
         raise "DNSimple OAuth authentication failed: #{inspect(error)}"

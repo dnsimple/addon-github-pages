@@ -13,21 +13,21 @@ defmodule GithubPagesConnector.Plug.CurrentAccount do
         |> Phoenix.Controller.redirect(to: GithubPagesConnector.Router.Helpers.dnsimple_oauth_path(conn, :new))
         |> halt
       account ->
-        assign(conn, :current_account, account)
+        assign(conn, :current_account_id, account.dnsimple_account_id)
     end
   end
 
   def current_account(conn) do
-    case conn.assigns[:current_account] do
-      nil     -> fetch_account(conn)
-      account -> account
+    case conn.assigns[:current_account_id] do
+      nil        -> fetch_account(conn)
+      account_id -> @repo.get(account_id)
     end
   end
 
-  def disconnect(conn), do: delete_session(conn, :account_id)
+  def disconnect(conn), do: delete_session(conn, :current_account_id)
 
   defp fetch_account(conn) do
-    case get_session(conn, :account_id) do
+    case get_session(conn, :current_account_id) do
       nil        -> nil
       account_id -> @repo.get(account_id)
     end
