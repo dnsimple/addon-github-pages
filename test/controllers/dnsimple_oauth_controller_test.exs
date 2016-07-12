@@ -1,5 +1,6 @@
 defmodule GithubPagesConnector.DnsimpleOauthControllerTest do
   use GithubPagesConnector.ConnCase
+  alias GithubPagesConnector.Account
 
   @repo GithubPagesConnector.MemoryRepo
 
@@ -24,7 +25,7 @@ defmodule GithubPagesConnector.DnsimpleOauthControllerTest do
     end
 
     test "updates the account data when the account had already signed up", %{conn: conn} do
-      @repo.put("dnsimple_account_id", %GithubPagesConnector.Account{
+      @repo.put("dnsimple_account_id", %Account{
         dnsimple_account_id: "dnsimple_account_id",
         dnsimple_account_email: "old_dnsimple_account_email",
         dnsimple_access_token: "old_dnsimple_access_token",
