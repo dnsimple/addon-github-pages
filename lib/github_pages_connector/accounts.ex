@@ -1,7 +1,7 @@
 defmodule GithubPagesConnector.Accounts do
   alias GithubPagesConnector.Account
 
-  @repo GithubPagesConnector.AccountMemoryRepo
+  @repo GithubPagesConnector.AccountEctoRepo
 
   def get_account(dnsimple_account_id) do
     @repo.get(dnsimple_account_id)
