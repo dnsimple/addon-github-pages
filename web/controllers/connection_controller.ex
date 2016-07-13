@@ -5,7 +5,6 @@ defmodule GithubPagesConnector.ConnectionController do
 
   alias GithubPagesConnector.Github
   alias GithubPagesConnector.Dnsimple
-  alias GithubPagesConnector.MemoryRepo
 
 
   def new(conn, _params) do
@@ -14,13 +13,7 @@ defmodule GithubPagesConnector.ConnectionController do
     {:ok, repositories} = Github.list_all_repositories(account)
     {:ok, domains}      = Dnsimple.list_all_domains(account)
 
-    render(conn, "new.html", [
-      repositories: repositories,
-      domains: domains,
-      dnsimple_account_id: account.dnsimple_account_id,
-      dnsimple_access_token: account.dnsimple_access_token,
-      github_access_token: account.github_access_token,
-    ])
+    render(conn, "new.html", repositories: repositories, domains: domains)
   end
 
   def create(conn, params) do
