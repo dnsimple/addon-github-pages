@@ -3,6 +3,10 @@ defmodule GithubPagesConnector.Accounts do
 
   @repo GithubPagesConnector.MemoryRepo
 
+  def get_account(dnsimple_account_id) do
+    @repo.get(dnsimple_account_id)
+  end
+
   def signup_account(dnsimple_data = [dnsimple_account_id: _dnsimple_account_id,
                                       dnsimple_account_email: _dnsimple_account_email,
                                       dnsimple_access_token: _dnsimple_access_token]) do

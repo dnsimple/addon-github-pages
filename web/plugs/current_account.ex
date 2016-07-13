@@ -2,7 +2,7 @@ defmodule GithubPagesConnector.Plug.CurrentAccount do
   import Plug.Conn
   require Logger
 
-  @repo GithubPagesConnector.MemoryRepo
+  @accounts GithubPagesConnector.Accounts
 
   def init(opts), do: opts
 
@@ -20,7 +20,7 @@ defmodule GithubPagesConnector.Plug.CurrentAccount do
   def current_account(conn) do
     case conn.assigns[:current_account_id] do
       nil        -> fetch_account(conn)
-      account_id -> @repo.get(account_id)
+      account_id -> @accounts.get_account(account_id)
     end
   end
 
@@ -29,7 +29,7 @@ defmodule GithubPagesConnector.Plug.CurrentAccount do
   defp fetch_account(conn) do
     case get_session(conn, :current_account_id) do
       nil        -> nil
-      account_id -> @repo.get(account_id)
+      account_id -> @accounts.get_account(account_id)
     end
   end
 end
