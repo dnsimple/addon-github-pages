@@ -59,20 +59,17 @@ defmodule GithubPagesConnector.AccountEctoRepoTest do
       assert account.github_access_token == @account.github_access_token
     end
 
-    @tag :skip
     test "overwrites the account if it was already stored" do
-      stored_account  = @repo.put(%GithubPagesConnector.Account{})
-      updated_account = Map.put(@account, :id, stored_account.id)
+      @repo.put(@account)
 
-      @repo.put(updated_account)
+      @account
+      |> Map.put(:dnsimple_account_email, "updated_dnsimple_account_email")
+      |> Map.put(:dnsimple_access_token, "updated_dnsimple_access_token")
+      |> @repo.put
 
-      account = @repo.get(stored_account.id)
-      assert account.dnsimple_account_id == @account.dnsimple_account_id
-      assert account.dnsimple_account_email == @account.dnsimple_account_email
-      assert account.dnsimple_access_token == @account.dnsimple_access_token
-      assert account.github_account_id == @account.github_account_id
-      assert account.github_account_login == @account.github_account_login
-      assert account.github_access_token == @account.github_access_token
+      account = @repo.get(@account.dnsimple_account_id)
+      assert account.dnsimple_account_email == "updated_dnsimple_account_email"
+      assert account.dnsimple_access_token == "updated_dnsimple_access_token"
     end
   end
 

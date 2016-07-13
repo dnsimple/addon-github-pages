@@ -1,16 +1,6 @@
 defmodule GithubPagesConnector.AccountEctoRepo do
   alias GithubPagesConnector.Repo
   alias GithubPagesConnector.Account
-  alias Ecto.Changeset
-
-  @attributes [
-    :dnsimple_account_id,
-    :dnsimple_account_email,
-    :dnsimple_access_token,
-    :github_account_id,
-    :github_account_login,
-    :github_access_token,
-  ]
 
   def get(dnsimple_account_id) do
     Repo.get_by(Account, dnsimple_account_id: to_string(dnsimple_account_id))
@@ -18,25 +8,19 @@ defmodule GithubPagesConnector.AccountEctoRepo do
 
   def put(account) do
     case get(account.dnsimple_account_id) do
-      nil     -> insert(account)
-      account -> update(account)
+      nil         -> insert(account)
+      old_account -> update(old_account, account)
     end
   end
 
 
   defp insert(account) do
-    params = Map.take(account, @attributes)
-
-    account
-    |> Changeset.cast(params, @attributes)
+    Account.changeset(account, account)
     |> Repo.insert!
   end
 
-  defp update(account) do
-    params = Map.take(account, @attributes)
-
-    account
-    |> Changeset.cast(params, @attributes)
+  defp update(account, updated_account) do
+    Account.changeset(account, updated_account)
     |> Repo.update!
   end
 
