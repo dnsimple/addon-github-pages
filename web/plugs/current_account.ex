@@ -13,7 +13,7 @@ defmodule GithubPagesConnector.Plug.CurrentAccount do
         |> Phoenix.Controller.redirect(to: GithubPagesConnector.Router.Helpers.dnsimple_oauth_path(conn, :new))
         |> halt
       account ->
-        assign(conn, :current_account_id, account.dnsimple_account_id)
+        assign(conn, :current_account, account)
     end
   end
 
