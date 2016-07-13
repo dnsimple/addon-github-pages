@@ -1,11 +1,11 @@
 <div class="jumbotron">
-  <%= form_for @conn, connection_path(@conn, :create), [as: :connection], fn f -> %>
+  <%= form_for @conn, connection_path(@conn, :create), [as: :connection], fn _f -> %>
 
     <div class="form-group">
       <label for="repository">Repository</label>
       <select name="repository">
-        <%= for repository <- @repositories do %>
-          <option><%= repository["name"] %></option>
+        <%= for repository <- repository_names(@repositories) do %>
+          <option><%= repository %></option>
         <% end %>
       </select>
     </div>
@@ -14,8 +14,8 @@
     <div class="form-group">
       <label for="domain">Domain</label>
       <select name="domain">
-        <%= for domain <- @domains do %>
-          <option><%= domain.name %></option>
+        <%= for domain <- domain_names(@domains) do %>
+          <option><%= domain %></option>
         <% end %>
       </select>
     </div>
