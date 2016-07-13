@@ -2,7 +2,7 @@ defmodule GithubPagesConnector.GithubOauthControllerTest do
   use GithubPagesConnector.ConnCase
   alias GithubPagesConnector.Account
 
-  @repo GithubPagesConnector.MemoryRepo
+  @repo GithubPagesConnector.AccountMemoryRepo
   @account %Account{dnsimple_account_id: "dnsimple_account_id"}
 
   describe ".new" do

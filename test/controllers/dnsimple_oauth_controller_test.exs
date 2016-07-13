@@ -2,7 +2,7 @@ defmodule GithubPagesConnector.DnsimpleOauthControllerTest do
   use GithubPagesConnector.ConnCase
   alias GithubPagesConnector.Account
 
-  @repo GithubPagesConnector.MemoryRepo
+  @repo GithubPagesConnector.AccountMemoryRepo
 
   describe ".new" do
     test "starts the DNSimple OAuth dance", %{conn: conn} do
