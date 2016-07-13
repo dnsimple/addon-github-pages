@@ -7,21 +7,17 @@ defmodule GithubPagesConnector.Accounts do
     @repo.get(dnsimple_account_id)
   end
 
-  def signup_account(dnsimple_data = [dnsimple_account_id: _dnsimple_account_id,
-                                      dnsimple_account_email: _dnsimple_account_email,
-                                      dnsimple_access_token: _dnsimple_access_token]) do
-    account = struct(Account, dnsimple_data)
-    @repo.put(account)
-    account
+  def signup_account(dnsimple_account_data) do
+    struct(Account, dnsimple_account_data)
+    |> @repo.put
   end
 
-  def connect_github(account_id, github_data = [github_account_id: _github_account_id,
-                                                github_account_login: _github_account_login,
-                                                github_access_token: _github_access_token]) do
-    data    = Enum.into(github_data, %{})
-    account = @repo.get(account_id) |> Map.merge(data)
-    @repo.put(account)
-    account
+  def connect_github(dnsimple_account_id, github_account_data) do
+    github_account_data = Enum.into(github_account_data, %{})
+
+    get_account(dnsimple_account_id)
+    |> Map.merge(github_account_data)
+    |> @repo.put
   end
 
 end

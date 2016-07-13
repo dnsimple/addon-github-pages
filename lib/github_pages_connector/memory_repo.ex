@@ -13,5 +13,6 @@ defmodule GithubPagesConnector.MemoryRepo do
 
   def put(account) do
     Agent.update(__MODULE__, &Map.put(&1, account.dnsimple_account_id, account))
+    account
   end
 end
