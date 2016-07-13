@@ -14,8 +14,7 @@ defmodule GithubPagesConnector.Plug.CurrentAccountTest do
   setup do
     :ok = Ecto.Adapters.SQL.Sandbox.checkout(GithubPagesConnector.Repo)
 
-    account = %GithubPagesConnector.Account{dnsimple_account_id: 1}
-    GithubPagesConnector.AccountMemoryRepo.put(account)
+    account = GithubPagesConnector.Accounts.signup_account(dnsimple_account_id: "dnsimple_account_id")
     session_data = %{current_account_id: account.dnsimple_account_id}
 
     conn = conn(:get, "/")
