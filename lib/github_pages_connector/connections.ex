@@ -12,4 +12,9 @@ defmodule GithubPagesConnector.Connections do
     |> @repo.put
   end
 
+  def remove_connection(connection_id) do
+    @repo.get(connection_id)
+    |> @repo.remove
+  end
+
 end

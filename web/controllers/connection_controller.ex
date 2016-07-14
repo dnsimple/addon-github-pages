@@ -64,4 +64,13 @@ defmodule GithubPagesConnector.ConnectionController do
     #
   end
 
+  def delete(conn, params) do
+    connection = @connections.remove_connection(params["id"])
+    message    = "Connection for #{connection.dnsimple_domain} to #{connection.github_repository} removed"
+
+    conn
+    |> put_flash(:info, message)
+    |> redirect(to: connection_path(conn, :index))
+  end
+
 end

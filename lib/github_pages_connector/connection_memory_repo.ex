@@ -11,14 +11,14 @@ defmodule GithubPagesConnector.ConnectionMemoryRepo do
     Agent.update(__MODULE__, fn(_) -> %{} end)
   end
 
-  def get(connection_id) do
-    Agent.get(__MODULE__, &Map.get(&1, connection_id))
-  end
-
   def list_connections(dnsimple_account_id) do
     Agent.get(__MODULE__, &(&1))
     |> Map.values
     |> Enum.filter(fn(connection) -> connection.dnsimple_account_id == dnsimple_account_id end)
+  end
+
+  def get(connection_id) do
+    Agent.get(__MODULE__, &Map.get(&1, connection_id))
   end
 
   def put(connection) do
@@ -27,5 +27,11 @@ defmodule GithubPagesConnector.ConnectionMemoryRepo do
     connection
   end
 
-  defp random_id, do: :rand.uniform(10000)
+  def remove(nil), do: nil
+  def remove(connection) do
+    Agent.update(__MODULE__, &Map.delete(&1, connection.id))
+    connection
+  end
+
+  defp random_id, do: :rand.uniform(10000) |> to_string
 end

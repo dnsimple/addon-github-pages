@@ -47,6 +47,22 @@ defmodule GithubPagesConnector.ConnectionMemoryRepoTest do
     end
   end
 
+  describe ".remove" do
+    test "removes the connection" do
+      connection = @repo.put(@connection)
+
+      @repo.remove(connection)
+
+      connection = @repo.get(connection.id)
+      assert connection == nil
+    end
+
+    test "does nothing when the connecion is not stored" do
+      @repo.remove(nil)
+      @repo.remove(@connection)
+    end
+  end
+
   describe ".list_connections" do
     @connection1 @repo.put(%Connection{dnsimple_account_id: "1"})
     @connection2 @repo.put(%Connection{dnsimple_account_id: "2"})
