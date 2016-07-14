@@ -8,7 +8,7 @@ defmodule GithubPagesConnector.ConnectionMemoryRepo do
   end
 
   def reset do
-    Agent.update(__MODULE__, fn -> %{} end)
+    Agent.update(__MODULE__, fn(_) -> %{} end)
   end
 
   def get(connection_id) do
