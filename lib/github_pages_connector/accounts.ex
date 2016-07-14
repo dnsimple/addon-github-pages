@@ -12,6 +12,9 @@ defmodule GithubPagesConnector.Accounts do
     |> @repo.put
   end
 
+  def connect_github(account = %Account{}, github_account_data) do
+    connect_github(account.dnsimple_account_id, github_account_data)
+  end
   def connect_github(dnsimple_account_id, github_account_data) do
     github_account_data = Enum.into(github_account_data, %{})
 

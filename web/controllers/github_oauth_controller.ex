@@ -14,7 +14,7 @@ defmodule GithubPagesConnector.GithubOauthController do
   def create(conn, params) do
     case @github.oauth_authorization(code: params["code"], state: @state) do
       {:ok, github_account_id, github_account_login, github_access_token} ->
-        @accounts.connect_github(conn.assigns[:current_account_id], [
+        @accounts.connect_github(conn.assigns[:current_account], [
           github_account_id: github_account_id,
           github_account_login: github_account_login,
           github_access_token: github_access_token,
