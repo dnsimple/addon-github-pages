@@ -6,6 +6,7 @@ defmodule GithubPagesConnector.ConnectionController do
   plug GithubPagesConnector.Plug.CurrentAccount
 
   def index(conn, _params) do
+    redirect(conn, to: connection_path(conn, :new))
   end
 
   def new(conn, _params) do
