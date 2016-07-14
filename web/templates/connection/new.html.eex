@@ -1,4 +1,5 @@
 <div class="jumbotron">
+  <h2>New connection</h2>
   <%= form_for @conn, connection_path(@conn, :create), [as: :connection], fn _f -> %>
 
     <div class="form-group">

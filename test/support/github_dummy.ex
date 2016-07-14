@@ -8,4 +8,8 @@ defmodule GithubPagesConnector.GithubDummy do
      {:ok, "github_account_id", "github_account_login", "github_access_token"}
   end
 
+  def list_all_repositories(_account) do
+    {:ok , [%{"name" => "repo1"}, %{"name" => "repo2"}, %{"name" => "repo3"}]}
+  end
+
 end
