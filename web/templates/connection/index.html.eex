@@ -1,3 +1,10 @@
 <div class="jumbotron">
   <h2>Existing connections</h2>
+  <ul>
+    <%= for connection <- @connections do %>
+      <li><%= connection.dnsimple_domain %> to <%= connection.github_repository %></li>
+    <% end %>
+  </ul>
+
+  
 </div>
