@@ -8,8 +8,7 @@ defmodule GithubPagesConnector.GithubOauthController do
   @state "12345678"
 
   def new(conn, _params) do
-    url = @github.oauth_authorize_url(state: @state)
-    redirect(conn, external: url)
+    redirect(conn, external: @github.oauth_authorize_url(state: @state))
   end
 
   def create(conn, params) do
@@ -20,7 +19,7 @@ defmodule GithubPagesConnector.GithubOauthController do
           github_account_login: github_account_login,
           github_access_token: github_access_token,
         ])
-        redirect(conn, to: connection_path(conn, :new))
+        redirect(conn, to: connection_path(conn, :index))
       {:error, error} ->
         raise "GitHub OAuth authentication failed: #{inspect(error)}"
     end

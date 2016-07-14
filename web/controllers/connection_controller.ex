@@ -1,11 +1,12 @@
 defmodule GithubPagesConnector.ConnectionController do
   use GithubPagesConnector.Web, :controller
-
-  plug GithubPagesConnector.Plug.CurrentAccount
-
   alias GithubPagesConnector.Github
   alias GithubPagesConnector.Dnsimple
 
+  plug GithubPagesConnector.Plug.CurrentAccount
+
+  def index(conn, _params) do
+  end
 
   def new(conn, _params) do
     account = conn.assigns[:current_account]

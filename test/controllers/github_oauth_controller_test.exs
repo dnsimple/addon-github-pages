@@ -41,14 +41,14 @@ defmodule GithubPagesConnector.GithubOauthControllerTest do
       assert account.github_access_token == "github_access_token"
     end
 
-    test "redirects to new connection creation if an account was signed in", %{conn: conn} do
+    test "redirects to connection index if an account was signed in", %{conn: conn} do
       @accounts.signup_account(dnsimple_account_id: "dnsimple_account_id")
 
       conn = conn
       |> assign(:current_account_id, "dnsimple_account_id")
       |> get(github_oauth_path(conn, :create))
 
-      assert redirected_to(conn) =~ connection_path(conn, :new)
+      assert redirected_to(conn) =~ connection_path(conn, :index)
     end
   end
 
