@@ -33,7 +33,6 @@ defmodule GithubPagesConnector.ConnectionControllerTest do
       conn = get(conn, connection_path(conn, :new))
 
       response = html_response(conn, 200)
-
       assert response =~ "New connection"
       assert response =~ "repo1"
       assert response =~ "repo2"
@@ -43,4 +42,20 @@ defmodule GithubPagesConnector.ConnectionControllerTest do
     end
   end
 
+  describe ".create" do
+    test "adds a new connection", %{conn: conn, account: account} do
+      post(conn, connection_path(conn, :create), repository: "repo1", domain: "domain1.com")
+
+      [connection] = @connections.list_connections(account)
+      assert connection.dnsimple_account_id == account.dnsimple_account_id
+      assert connection.dnsimple_domain == "domain1.com"
+      assert connection.github_repository == "repo1"
+    end
+
+    test "redirects to the connection list", %{conn: conn} do
+      conn = post(conn, connection_path(conn, :create), repository: "repo1", domain: "domain1.com")
+
+      assert redirected_to(conn) == connection_path(conn, :index)
+    end
+  end
 end

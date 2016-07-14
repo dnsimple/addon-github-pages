@@ -27,33 +27,41 @@ defmodule GithubPagesConnector.ConnectionController do
 
   def create(conn, params) do
     account    = conn.assigns[:current_account]
-
     domain     = params["domain"]
     repository = params["repository"]
 
-    client     = Tentacat.Client.new(%{access_token: account.github_access_token})
-    user       = Tentacat.Users.me(client)
+    @connections.new_connection([
+      dnsimple_account_id: account.dnsimple_account_id,
+      dnsimple_domain: domain,
+      github_repository: repository,
+    ])
 
-    owner      = user["login"]
-    path       = "CNAME"
-    body       = %{content: Base.encode64(domain), message: "Configure #{domain} with DNSimple"}
+    conn
+    |> put_flash(:info, "#{domain} now points to GitHub pages #{repository}")
+    |> redirect(to: connection_path(conn, :index))
 
-    response = Tentacat.Contents.find(owner, repository, "README.md", client)
-    IO.inspect(response)
-
-    IO.puts ""
-    IO.inspect owner
-    IO.inspect repository
-    IO.inspect path
-    IO.inspect body
-    IO.puts ""
-
-    response = Tentacat.Contents.create(owner, repository, path, body, client)
-    IO.inspect(response)
-
-    {:ok, record} = Dnsimple.create_record(account, domain, %{name: "", type: "ALIAS", content: "jacegu.github.io"})
-
-    text(conn, "creating connection for domain `#{params["domain"]}`...")
+    #    client     = Tentacat.Client.new(%{access_token: account.github_access_token})
+    #    user       = Tentacat.Users.me(client)
+    #
+    #    owner      = user["login"]
+    #    path       = "CNAME"
+    #    body       = %{content: Base.encode64(domain), message: "Configure #{domain} with DNSimple"}
+    #
+    #    response = Tentacat.Contents.find(owner, repository, "README.md", client)
+    #    IO.inspect(response)
+    #
+    #    IO.puts ""
+    #    IO.inspect owner
+    #    IO.inspect repository
+    #    IO.inspect path
+    #    IO.inspect body
+    #    IO.puts ""
+    #
+    #    response = Tentacat.Contents.create(owner, repository, path, body, client)
+    #    IO.inspect(response)
+    #
+    #    {:ok, record} = Dnsimple.create_record(account, domain, %{name: "", type: "ALIAS", content: "jacegu.github.io"})
+    #
   end
 
 end
