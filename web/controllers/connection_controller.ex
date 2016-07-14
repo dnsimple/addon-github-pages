@@ -3,10 +3,17 @@ defmodule GithubPagesConnector.ConnectionController do
   alias GithubPagesConnector.Github
   alias GithubPagesConnector.Dnsimple
 
+  @connections GithubPagesConnector.Connections
+
   plug GithubPagesConnector.Plug.CurrentAccount
 
   def index(conn, _params) do
-    redirect(conn, to: connection_path(conn, :new))
+    account = conn.assigns[:current_account]
+
+    case @connections.list_connections(account) do
+      []          -> redirect(conn, to: connection_path(conn, :new))
+      connections -> render(conn, "index.html", connections: connections)
+    end
   end
 
   def new(conn, _params) do
