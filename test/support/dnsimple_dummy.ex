@@ -12,4 +12,7 @@ defmodule GithubPagesConnector.DnsimpleDummy do
     {:ok, [%Dnsimple.Domain{name: "domain1.com"}, %Dnsimple.Domain{name: "domain2.com"}]}
   end
 
+  def create_record(_account, _domain_name, record_data) do
+    {:ok, %Dnsimple.Record{id: 1, type: "ALIAS", content: record_data.content}}
+  end
 end

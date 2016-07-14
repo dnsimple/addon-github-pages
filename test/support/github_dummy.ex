@@ -12,4 +12,8 @@ defmodule GithubPagesConnector.GithubDummy do
     {:ok , [%{"name" => "repo1"}, %{"name" => "repo2"}, %{"name" => "repo3"}]}
   end
 
+  def create_file(_account, repository, path, content) do
+    {:ok, %{"repository" => repository, "path" => path, "content" => content}}
+  end
+
 end

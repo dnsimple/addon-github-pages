@@ -14,7 +14,7 @@ defmodule GithubPagesConnector.ConnectionControllerTest do
 
   describe ".index" do
     test "lists the existing connections for signed in account", %{conn: conn, account: account} do
-      @connections.new_connection(dnsimple_account_id: account.dnsimple_account_id)
+      @connections.new_connection(account, [])
 
       conn = get(conn, connection_path(conn, :index))
 
@@ -52,6 +52,13 @@ defmodule GithubPagesConnector.ConnectionControllerTest do
       assert connection.github_repository == "repo1"
     end
 
+    test "adds necessary records on DNSimple and records a reference", %{conn: conn, account: account} do
+      post(conn, connection_path(conn, :create), repository: "repo1", domain: "domain1.com")
+
+      [connection] = @connections.list_connections(account)
+      refute connection.dnsimple_record_ids == nil
+    end
+
     test "redirects to the connection list", %{conn: conn} do
       conn = post(conn, connection_path(conn, :create), repository: "repo1", domain: "domain1.com")
 
@@ -61,7 +68,7 @@ defmodule GithubPagesConnector.ConnectionControllerTest do
 
   describe ".delete" do
     test "redirects to the connection list", %{conn: conn, account: account} do
-      connection = @connections.new_connection(dnsimple_account_id: account.dnsimple_account_id)
+      connection = @connections.new_connection(account, [])
 
       conn = delete(conn, connection_path(conn, :delete, connection))
 

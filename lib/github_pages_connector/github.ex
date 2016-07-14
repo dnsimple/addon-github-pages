@@ -35,6 +35,17 @@ defmodule GithubPagesConnector.Github do
     end
   end
 
+  def create_file(account, repository, path, content) do
+    owner = account.github_account_login
+    body  = %{content: Base.encode64(content), message: "Configure domain with DNSimple"}
+
+    try do
+      {201, file} = Tentacat.Contents.create(owner, repository, path, body, client(account))
+      {:ok, file}
+    rescue error ->
+      {:error , error}
+    end
+  end
 
   defp access_token(code, _state) do
     @oauth_client
