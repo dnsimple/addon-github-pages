@@ -40,8 +40,8 @@ defmodule GithubPagesConnector.Connections do
   defp add_cname_file(connection, account) do
     file_path    = "CNAME"
     file_content = connection.dnsimple_domain
-    {:ok, _file} = @github.create_file(account, connection.github_repository, file_path, file_content)
-    connection
+    {:ok, file} = @github.create_file(account, connection.github_repository, file_path, file_content)
+    Map.put(connection, :github_file_sha, file["content"]["sha"])
   end
 
 end

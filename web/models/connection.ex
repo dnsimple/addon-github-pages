@@ -6,6 +6,7 @@ defmodule GithubPagesConnector.Connection do
     field :dnsimple_domain, :string
     field :dnsimple_record_ids, {:array, :integer}
     field :github_repository, :string
+    field :github_file_sha, :string
 
     timestamps
   end
