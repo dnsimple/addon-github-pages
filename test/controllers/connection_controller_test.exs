@@ -67,12 +67,22 @@ defmodule GithubPagesConnector.ConnectionControllerTest do
   end
 
   describe ".delete" do
-    test "redirects to the connection list", %{conn: conn, account: account} do
+    setup %{conn: conn, account: account} do
       connection = @connections.new_connection(account, [])
+      {:ok, conn: conn, account: account, connection: connection}
+    end
 
+    test "deletes the connection", %{conn: conn, account: account, connection: connection} do
+      delete(conn, connection_path(conn, :delete, connection))
+
+      assert @connections.list_connections(account) == []
+    end
+
+    test "redirects to the connection list", %{conn: conn, connection: connection} do
       conn = delete(conn, connection_path(conn, :delete, connection))
 
       assert redirected_to(conn) == connection_path(conn, :index)
     end
   end
+
 end
