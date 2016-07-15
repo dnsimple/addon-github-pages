@@ -40,6 +40,13 @@ defmodule GithubPagesConnector.Dnsimple do
     end
   end
 
+  def delete_record(account = %Account{dnsimple_account_id: account_id}, domain_name, record_id) do
+    case Dnsimple.ZonesService.delete_record(client(account), account_id, domain_name, record_id) do
+      {:ok, _response} -> :ok
+      {:error, error}  -> {:error, error}
+    end
+  end
+
 
   defp get_account_email(access_token) do
     case Dnsimple.IdentityService.whoami(client(access_token)) do

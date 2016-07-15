@@ -15,4 +15,8 @@ defmodule GithubPagesConnector.DnsimpleDummy do
   def create_record(_account, _domain_name, record_data) do
     {:ok, %Dnsimple.Record{id: 1, type: "ALIAS", content: record_data.content}}
   end
+
+  def delete_record(_account, _domain_name, _record_id) do
+    :ok
+  end
 end
