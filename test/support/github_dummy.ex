@@ -16,4 +16,8 @@ defmodule GithubPagesConnector.GithubDummy do
     {:ok, %{"repository" => repository, "path" => path, "content" => %{"sha" => "sha"}}}
   end
 
+  def delete_file(_account, _repository, _path, _sha) do
+    :ok
+  end
+
 end
