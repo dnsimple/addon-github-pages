@@ -1,7 +1,6 @@
 defmodule GithubPagesConnector.ConnectionController do
   use GithubPagesConnector.Web, :controller
 
-  @dnsimple Application.get_env(:github_pages_connector, :dnsimple)
   @connections GithubPagesConnector.Connections
 
   plug GithubPagesConnector.Plug.CurrentAccount
@@ -16,10 +15,9 @@ defmodule GithubPagesConnector.ConnectionController do
   end
 
   def new(conn, _params) do
-    account = conn.assigns[:current_account]
-
+    account      = conn.assigns[:current_account]
     repositories = @connections.list_pages_repositories(account)
-    {:ok, domains} = @dnsimple.list_all_domains(account)
+    domains      = @connections.list_domains(account)
 
     render(conn, "new.html", repositories: repositories, domains: domains)
   end

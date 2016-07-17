@@ -11,6 +11,11 @@ defmodule GithubPagesConnector.Connections do
     Enum.filter(repositories, fn(repo) -> String.ends_with?(repo["name"], "github.io") end)
   end
 
+  def list_domains(account = %Account{}) do
+    {:ok, domains} = @dnsimple.list_all_domains(account)
+    domains
+  end
+
   def list_connections(account = %Account{}), do: list_connections(account.dnsimple_account_id)
   def list_connections(dnsimple_account_id), do: @repo.list_connections(dnsimple_account_id)
 
