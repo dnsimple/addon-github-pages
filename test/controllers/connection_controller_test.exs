@@ -56,7 +56,7 @@ defmodule GithubPagesConnector.ConnectionControllerTest do
       post(conn, connection_path(conn, :create), repository: "repo1", domain: "domain1.com")
 
       [connection] = @connections.list_connections(account)
-      refute connection.dnsimple_record_ids == nil
+      refute connection.dnsimple_record_id == nil
     end
 
     test "redirects to the connection list", %{conn: conn} do

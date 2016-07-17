@@ -28,14 +28,12 @@ defmodule GithubPagesConnector.Connections do
   defp add_records(connection, account) do
     record_data   = %{name: "", type: "ALIAS", content: connection.github_repository}
     {:ok, record} = @dnsimple.create_record(account, connection.dnsimple_domain, record_data)
-    Map.put(connection, :dnsimple_record_ids, [record.id])
+    Map.put(connection, :dnsimple_record_id, record.id)
   end
 
   defp remove_records(connection, account) do
-    Enum.each(connection.dnsimple_record_ids, fn(record_id) ->
-      :ok = @dnsimple.delete_record(account, connection.dnsimple_domain, record_id)
-    end)
-    Map.put(connection, :dnsimple_record_ids, [])
+    :ok = @dnsimple.delete_record(account, connection.dnsimple_domain, connection.dnsimple_record_id)
+    Map.put(connection, :dnsimple_record_id, nil)
   end
 
   defp add_cname_file(connection, account) do

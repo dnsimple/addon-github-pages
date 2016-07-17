@@ -4,7 +4,7 @@ defmodule GithubPagesConnector.Connection do
   schema "connections" do
     field :dnsimple_account_id, :string
     field :dnsimple_domain, :string
-    field :dnsimple_record_ids, {:array, :integer}
+    field :dnsimple_record_id, :integer
     field :github_repository, :string
     field :github_file_sha, :string
 
