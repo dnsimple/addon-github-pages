@@ -38,7 +38,7 @@ defmodule GithubPagesConnector.ConnectionControllerTest do
       assert response =~ "domain2.com"
       assert response =~ "user.github.io"
       assert response =~ "org.github.io"
-      assert response =~ "project"
+      refute response =~ "project"
     end
   end
 

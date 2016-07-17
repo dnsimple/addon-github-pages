@@ -6,6 +6,11 @@ defmodule GithubPagesConnector.Connections do
   @github Application.get_env(:github_pages_connector, :github)
   @dnsimple Application.get_env(:github_pages_connector, :dnsimple)
 
+  def list_pages_repositories(account = %Account{}) do
+    {:ok, repositories} = @github.list_all_repositories(account)
+    Enum.filter(repositories, fn(repo) -> String.ends_with?(repo["name"], "github.io") end)
+  end
+
   def list_connections(account = %Account{}), do: list_connections(account.dnsimple_account_id)
   def list_connections(dnsimple_account_id), do: @repo.list_connections(dnsimple_account_id)
 
