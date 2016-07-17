@@ -34,11 +34,11 @@ defmodule GithubPagesConnector.ConnectionControllerTest do
 
       response = html_response(conn, 200)
       assert response =~ "New connection"
-      assert response =~ "repo1"
-      assert response =~ "repo2"
-      assert response =~ "repo3"
       assert response =~ "domain1.com"
       assert response =~ "domain2.com"
+      assert response =~ "user.github.io"
+      assert response =~ "org.github.io"
+      assert response =~ "project"
     end
   end
 

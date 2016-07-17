@@ -9,7 +9,7 @@ defmodule GithubPagesConnector.GithubDummy do
   end
 
   def list_all_repositories(_account) do
-    {:ok , [%{"name" => "repo1"}, %{"name" => "repo2"}, %{"name" => "repo3"}]}
+    {:ok , [%{"name" => "user.github.io"}, %{"name" => "org.github.io"}, %{"name" => "project"}]}
   end
 
   def create_file(_account, repository, path, _content) do
