@@ -1,5 +1,5 @@
 defmodule GithubPagesConnector.DnsimpleTest do
-  use ExUnit.Case
+  use ExUnit.Case, async: true
 
   alias GithubPagesConnector.Dnsimple
 

@@ -1,5 +1,5 @@
 defmodule GithubPagesConnector.AccountMemoryRepoTest do
-  use ExUnit.Case
+  use ExUnit.Case, async: true
   alias GithubPagesConnector.Account
   alias GithubPagesConnector.AccountMemoryRepo
 

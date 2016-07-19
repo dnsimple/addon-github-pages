@@ -1,5 +1,5 @@
 defmodule GithubPagesConnector.GithubTest do
-  use ExUnit.Case
+  use ExUnit.Case, async: true
 
   alias GithubPagesConnector.Github
 
