@@ -62,6 +62,13 @@ defmodule GithubPagesConnector.ConnectionEctoRepoTest do
       connection = @repo.get(connection.id)
       assert connection == nil
     end
+
+    test "returns the removed connection" do
+      connection = @repo.put(@connection)
+
+      connection = @repo.remove(connection)
+      assert connection.__struct__ == GithubPagesConnector.Connection
+    end
   end
 
   describe ".list_connections" do

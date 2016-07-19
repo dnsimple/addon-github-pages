@@ -56,9 +56,11 @@ defmodule GithubPagesConnector.ConnectionMemoryRepoTest do
       assert connection == nil
     end
 
-    test "does nothing when the connecion is not stored" do
-      @repo.remove(nil)
-      @repo.remove(@connection)
+    test "returns the removed connection" do
+      connection = @repo.put(@connection)
+
+      connection = @repo.remove(connection)
+      assert connection.__struct__ == GithubPagesConnector.Connection
     end
   end
 

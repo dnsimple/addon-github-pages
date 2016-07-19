@@ -22,7 +22,7 @@ defmodule GithubPagesConnector.ConnectionEctoRepo do
   end
 
   def remove(connection) do
-    Repo.delete(connection)
+    Repo.delete!(connection)
   end
 
 
