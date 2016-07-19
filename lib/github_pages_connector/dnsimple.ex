@@ -1,9 +1,9 @@
 defmodule GithubPagesConnector.Dnsimple do
   alias GithubPagesConnector.Account
 
-  @base_url Application.get_env(:github_pages_connector, :dnsimple_base_url)
-  @client_id Application.get_env(:github_pages_connector, :dnsimple_client_id)
-  @client_secret Application.get_env(:github_pages_connector, :dnsimple_client_secret)
+  @base_url Application.fetch_env!(:github_pages_connector, :dnsimple_base_url)
+  @client_id Application.fetch_env!(:github_pages_connector, :dnsimple_client_id)
+  @client_secret Application.fetch_env!(:github_pages_connector, :dnsimple_client_secret)
 
   def oauth_authorize_url(state: state) do
     Dnsimple.OauthService.authorize_url(client, @client_id, state: state)

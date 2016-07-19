@@ -3,11 +3,11 @@ defmodule GithubPagesConnector.Github do
 
   @oauth_scope "repo"
   @oauth_client OAuth2.Client.new([
-    client_id: Application.get_env(:github_pages_connector, :github_client_id),
-    client_secret: Application.get_env(:github_pages_connector, :github_client_secret),
-    token_url: Application.get_env(:github_pages_connector, :github_token_uri),
-    redirect_uri: Application.get_env(:github_pages_connector, :github_redirect_uri),
-    authorize_url: Application.get_env(:github_pages_connector, :github_authorize_uri),
+    client_id: Application.fetch_env!(:github_pages_connector, :github_client_id),
+    client_secret: Application.fetch_env!(:github_pages_connector, :github_client_secret),
+    token_url: Application.fetch_env!(:github_pages_connector, :github_token_uri),
+    redirect_uri: Application.fetch_env!(:github_pages_connector, :github_redirect_uri),
+    authorize_url: Application.fetch_env!(:github_pages_connector, :github_authorize_uri),
   ])
 
   def oauth_authorize_url(state: _state) do
