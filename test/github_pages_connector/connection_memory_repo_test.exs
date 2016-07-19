@@ -7,7 +7,6 @@ defmodule GithubPagesConnector.ConnectionMemoryRepoTest do
   @repo ConnectionMemoryRepo
 
   describe "get" do
-    @tag :skip
     test "returns the connection stored under given key" do
       connection = @repo.put(@connection)
 
