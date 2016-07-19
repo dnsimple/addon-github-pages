@@ -20,4 +20,4 @@ config :github_pages_connector,
   github_client_secret: System.get_env("GITHUB_CLIENT_SECRET"),
   github_redirect_uri: System.get_env("GITHUB_REDIRECT_URI"),
   dnsimple_client_id: System.get_env("DNSIMPLE_CLIENT_ID"),
-  dnsimple_client_secret: System.get_env("DNSIMPLE_CLIENT_SECRET"),
+  dnsimple_client_secret: System.get_env("DNSIMPLE_CLIENT_SECRET")

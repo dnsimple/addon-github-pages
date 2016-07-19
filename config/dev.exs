@@ -48,4 +48,4 @@ config :github_pages_connector,
   github_redirect_uri: "http://localhost:4000/github/callback",
   dnsimple_base_url: "https://api.sandbox.dnsimple.com",
   dnsimple_client_id: "14633962cac66aed",
-  dnsimple_client_secret: "vMFp5bDYJ1ngEzLg6rHD9pwrTmo7sCDD",
+  dnsimple_client_secret: "vMFp5bDYJ1ngEzLg6rHD9pwrTmo7sCDD"
