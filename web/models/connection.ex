@@ -11,4 +11,20 @@ defmodule GithubPagesConnector.Connection do
     timestamps
   end
 
+  @attributes [
+    :account_id,
+    :dnsimple_domain,
+    :dnsimple_record_id,
+    :github_repository,
+    :github_file_sha,
+  ]
+
+  def changeset(connection, connection_with_changes) do
+    cast(connection, changes(connection_with_changes), @attributes)
+  end
+
+  defp changes(connection) do
+    Map.take(connection, @attributes)
+  end
+
 end
