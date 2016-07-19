@@ -2,7 +2,7 @@ defmodule GithubPagesConnector.Connection do
   use GithubPagesConnector.Web, :model
 
   schema "connections" do
-    field :dnsimple_account_id, :string
+    field :account_id, :integer
     field :dnsimple_domain, :string
     field :dnsimple_record_id, :integer
     field :github_repository, :string

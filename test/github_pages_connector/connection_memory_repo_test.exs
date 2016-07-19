@@ -38,11 +38,11 @@ defmodule GithubPagesConnector.ConnectionMemoryRepoTest do
     test "overwrites the connection if another connection with the same id exists" do
       connection = @connection
       |> @repo.put
-      |> Map.put(:dnsimple_account_id, "dnsimple_account_id")
+      |> Map.put(:dnsimple_domain, "other_domain")
       |> @repo.put
 
       connection = @repo.get(connection.id)
-      assert connection.dnsimple_account_id == "dnsimple_account_id"
+      assert connection.dnsimple_domain == "other_domain"
     end
   end
 
@@ -63,16 +63,16 @@ defmodule GithubPagesConnector.ConnectionMemoryRepoTest do
   end
 
   describe ".list_connections" do
-    @connection1 @repo.put(%Connection{dnsimple_account_id: "1"})
-    @connection2 @repo.put(%Connection{dnsimple_account_id: "2"})
-    @connection3 @repo.put(%Connection{dnsimple_account_id: "2"})
+    @connection1 @repo.put(%Connection{account_id: "1"})
+    @connection2 @repo.put(%Connection{account_id: "2"})
+    @connection3 @repo.put(%Connection{account_id: "2"})
 
-    test "returns connections with given dnsimple_account_id" do
+    test "returns connections with given account_id" do
       assert @repo.list_connections("1") == [@connection1]
       assert Enum.sort(@repo.list_connections("2")) == Enum.sort([@connection2, @connection3])
     end
 
-    test "returns an empty list if there is no connection for given dnsimple_account_id" do
+    test "returns an empty list if there is no connection for given account_id" do
       assert @repo.list_connections("0") == []
     end
   end

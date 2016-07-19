@@ -11,10 +11,10 @@ defmodule GithubPagesConnector.ConnectionMemoryRepo do
     Agent.update(__MODULE__, fn(_) -> %{} end)
   end
 
-  def list_connections(dnsimple_account_id) do
+  def list_connections(account_id) do
     Agent.get(__MODULE__, &(&1))
     |> Map.values
-    |> Enum.filter(fn(connection) -> connection.dnsimple_account_id == dnsimple_account_id end)
+    |> Enum.filter(fn(connection) -> connection.account_id == account_id end)
   end
 
   def get(connection_id) do

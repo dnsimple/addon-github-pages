@@ -16,11 +16,11 @@ defmodule GithubPagesConnector.Connections do
     domains
   end
 
-  def list_connections(account = %Account{}), do: list_connections(account.dnsimple_account_id)
-  def list_connections(dnsimple_account_id), do: @repo.list_connections(dnsimple_account_id)
+  def list_connections(account = %Account{}), do: list_connections(account.id)
+  def list_connections(account_id), do: @repo.list_connections(account_id)
 
   def new_connection(account, connection_data) do
-    connection_data = Keyword.merge(connection_data, dnsimple_account_id: account.dnsimple_account_id)
+    connection_data = Keyword.merge(connection_data, account_id: account.id)
 
     struct(Connection, connection_data)
     |> add_alias_record(account)

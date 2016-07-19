@@ -47,7 +47,7 @@ defmodule GithubPagesConnector.ConnectionControllerTest do
       post(conn, connection_path(conn, :create), repository: "repo1", domain: "domain1.com")
 
       [connection] = @connections.list_connections(account)
-      assert connection.dnsimple_account_id == account.dnsimple_account_id
+      assert connection.account_id == account.id
       assert connection.dnsimple_domain == "domain1.com"
       assert connection.github_repository == "repo1"
     end
