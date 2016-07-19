@@ -2,7 +2,7 @@ defmodule GithubPagesConnector.Connections do
   alias GithubPagesConnector.Account
   alias GithubPagesConnector.Connection
 
-  @repo GithubPagesConnector.ConnectionMemoryRepo
+  @repo GithubPagesConnector.ConnectionEctoRepo
   @github Application.get_env(:github_pages_connector, :github)
   @dnsimple Application.get_env(:github_pages_connector, :dnsimple)
 
