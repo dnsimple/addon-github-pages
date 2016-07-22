@@ -39,8 +39,8 @@ defmodule GithubPagesConnector.ConnectionController do
 
   rescue error ->
     conn
-    |> put_flash(:error, "Something went wrong: #{inspect(error)}")
-    |> redirect(to: connection_path(conn, :index))
+    |> put_flash(:error, "Something went wrong: #{error.message}")
+    |> redirect(to: connection_path(conn, :new))
   end
 
   def delete(conn, params) do
@@ -49,6 +49,11 @@ defmodule GithubPagesConnector.ConnectionController do
 
     conn
     |> put_flash(:info, message)
+    |> redirect(to: connection_path(conn, :index))
+
+  rescue error ->
+    conn
+    |> put_flash(:error, "Something went wrong: #{error.message}")
     |> redirect(to: connection_path(conn, :index))
   end
 

@@ -22,28 +22,28 @@ defmodule GithubPagesConnector.Dnsimple do
         account_email = get_account_email(access_token)
         {:ok, account_id, account_email, access_token}
       {:error, error} ->
-        {:error, error}
+        raise RuntimeError, message: error.message
     end
   end
 
   def list_all_domains(account = %Account{dnsimple_account_id: account_id}) do
     case Dnsimple.DomainsService.domains(client(account), account_id) do
       {:ok, response} -> {:ok, response.data}
-      {:error, error} -> {:error, error}
+      {:error, error} -> raise RuntimeError, message: error.message
     end
   end
 
   def create_record(account = %Account{dnsimple_account_id: account_id}, domain_name, record_data) do
     case Dnsimple.ZonesService.create_record(client(account), account_id, domain_name, record_data) do
       {:ok, response} -> {:ok, response.data}
-      {:error, error} -> {:error, error}
+      {:error, error} -> raise RuntimeError, message: error.message
     end
   end
 
   def delete_record(account = %Account{dnsimple_account_id: account_id}, domain_name, record_id) do
     case Dnsimple.ZonesService.delete_record(client(account), account_id, domain_name, record_id) do
       {:ok, _response} -> :ok
-      {:error, error}  -> {:error, error}
+      {:error, error} -> raise RuntimeError, message: error.message
     end
   end
 
@@ -51,6 +51,7 @@ defmodule GithubPagesConnector.Dnsimple do
   defp get_account_email(access_token) do
     case Dnsimple.IdentityService.whoami(client(access_token)) do
       {:ok, response} -> response.data.account["email"]
+      {:error, error} -> raise RuntimeError, message: error.message
     end
   end
 
