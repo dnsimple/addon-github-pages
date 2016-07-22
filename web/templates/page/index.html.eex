@@ -1,6 +1,6 @@
 <div class="jumbotron">
-  <h2><%= gettext "Welcome to %{name}", name: "Phoenix!" %></h2>
-  <p class="lead">A productive web framework that<br />does not compromise speed and maintainability.</p>
+  <h2><%= gettext "By %{name}", name: "DNSimple" %></h2>
+  <p class="lead">A domain services provider<br /> truly awesome that you will love.</p>
 </div>
 
 <div class="row marketing">
@@ -8,29 +8,18 @@
     <h4>Resources</h4>
     <ul>
       <li>
-        <a href="http://phoenixframework.org/docs/overview">Guides</a>
+        <a href="https://dnsimple.com">DNSimple</a>
       </li>
       <li>
-        <a href="http://hexdocs.pm/phoenix">Docs</a>
+        <a href="https://developer.dnsimple.com">DNSimple API</a>
       </li>
       <li>
-        <a href="https://github.com/phoenixframework/phoenix">Source</a>
+        <a href="https://support.dnsimple.com">DNSimple Support</a>
+      </li>
+      <li>
+        <a href="https://blog.dnsimple.com">DNSimple Blog</a>
       </li>
     </ul>
   </div>
 
-  <div class="col-lg-6">
-    <h4>Help</h4>
-    <ul>
-      <li>
-        <a href="http://groups.google.com/group/phoenix-talk">Mailing list</a>
-      </li>
-      <li>
-        <a href="http://webchat.freenode.net/?channels=elixir-lang">#elixir-lang on freenode IRC</a>
-      </li>
-      <li>
-        <a href="https://twitter.com/elixirphoenix">@elixirphoenix</a>
-      </li>
-    </ul>
-  </div>
 </div>
