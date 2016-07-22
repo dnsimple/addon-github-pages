@@ -13,7 +13,7 @@ defmodule GithubPagesConnector.DnsimpleDummy do
   end
 
   def create_record(_account, _domain_name, record_data) do
-    {:ok, %Dnsimple.Record{id: 1, type: "ALIAS", content: record_data.content}}
+    {:ok, %Dnsimple.ZoneRecord{id: 1, type: "ALIAS", content: record_data.content}}
   end
 
   def delete_record(_account, _domain_name, _record_id) do
