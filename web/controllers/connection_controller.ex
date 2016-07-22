@@ -9,8 +9,12 @@ defmodule GithubPagesConnector.ConnectionController do
     account = conn.assigns[:current_account]
 
     case @connections.list_connections(account) do
-      []          -> redirect(conn, to: connection_path(conn, :new))
-      connections -> render(conn, "index.html", connections: connections)
+      [] ->
+        redirect(conn, to: connection_path(conn, :new))
+      connections ->
+        conn
+        |> put_flash(:info, "You have no connections; go ahead and create one.")
+        |> render("index.html", connections: connections)
     end
   end
 
@@ -31,6 +35,11 @@ defmodule GithubPagesConnector.ConnectionController do
 
     conn
     |> put_flash(:info, "#{domain} now points to GitHub pages #{repository}")
+    |> redirect(to: connection_path(conn, :index))
+
+  rescue error ->
+    conn
+    |> put_flash(:error, "Something went wrong: #{inspect(error)}")
     |> redirect(to: connection_path(conn, :index))
   end
 
