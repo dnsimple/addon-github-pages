@@ -10,11 +10,11 @@ defmodule GithubPagesConnector.ConnectionController do
 
     case @connections.list_connections(account) do
       [] ->
-        redirect(conn, to: connection_path(conn, :new))
-      connections ->
         conn
         |> put_flash(:info, "You have no connections; go ahead and create one.")
-        |> render("index.html", connections: connections)
+        |> redirect(to: connection_path(conn, :new))
+      connections ->
+        render(conn, "index.html", connections: connections)
     end
   end
 
