@@ -1,6 +1,13 @@
-<div class="jumbotron">
-  <h2><%= gettext "By %{name}", name: "DNSimple" %></h2>
-  <p class="lead">A domain services provider<br /> truly awesome that you will love.</p>
+<div class="jumbotron" style="background: #e6f1f5">
+  <a href="https://octodex.github.com">
+    <img alt="Father timeout by GitHub" src="https://octodex.github.com/images/father_timeout.jpg" style="width: 50%" text="Father timeout by GitHub" />
+  </a>
+  <h2><%= gettext "A connector by %{name}", name: "DNSimple" %></h2>
+  <p class="lead">A domain services provider that you will save you tons of time</p>
+  <%= unless GithubPagesConnector.Plug.CurrentAccount.account_connected?(@conn) do %>
+    <%= link("Setup your domain", to: page_path(@conn, :login), class: "btn btn-default btn-lg btn-success", style: "margin-top: 20px") %>
+  <% end %>
+
 </div>
 
 <div class="row marketing">

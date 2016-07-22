@@ -3,6 +3,6 @@ defmodule GithubPagesConnector.PageControllerTest do
 
   test "GET /", %{conn: conn} do
     conn = get conn, "/"
-    assert html_response(conn, 200) =~ "By DNSimple"
+    assert html_response(conn, 200) =~ "DNSimple"
   end
 end
