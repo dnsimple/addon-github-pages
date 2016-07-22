@@ -24,6 +24,8 @@ defmodule GithubPagesConnector.Plug.CurrentAccount do
     end
   end
 
+  def account_connected?(conn), do: current_account(conn) != nil
+
   def disconnect(conn), do: delete_session(conn, :current_account_id)
 
   defp fetch_account(conn) do

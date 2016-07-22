@@ -14,12 +14,18 @@
   <body>
     <div class="container">
       <header class="header">
-        <nav role="navigation">
-          <ul class="nav nav-pills pull-right">
-            <li><a href="http://www.phoenixframework.org/docs">Get Started</a></li>
+        <h2 style="display: inline-block; width: 59%">GitHub Pages Connector</h2>
+
+        <nav role="navigation" style="display: inline-block; width: 40%; height: 50px">
+          <ul class="nav nav-pills pull-right" style="top: 20px">
+            <%= if GithubPagesConnector.Plug.CurrentAccount.account_connected?(@conn) do %>
+              <li><%= link("Connections", to: connection_path(@conn, :index)) %></li>
+              <li><%= link("Logout", to: page_path(@conn, :logout)) %></li>
+            <% else %>
+              <li><%= link("Login", to: page_path(@conn, :login)) %></li>
+            <% end %>
           </ul>
         </nav>
-        <span class="logo"></span>
       </header>
 
       <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
