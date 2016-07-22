@@ -14,9 +14,11 @@ defmodule GithubPagesConnector.Router do
   end
 
   scope "/", GithubPagesConnector do
-    pipe_through :browser # Use the default browser stack
+    pipe_through :browser
 
     get "/", PageController, :index
+    get "/login", PageController, :login
+    get "/logout", PageController, :logout
 
     get "/dnsimple/authorize", DnsimpleOauthController, :new
     get "/dnsimple/callback",  DnsimpleOauthController, :create
