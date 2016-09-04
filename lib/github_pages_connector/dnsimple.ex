@@ -6,11 +6,11 @@ defmodule GithubPagesConnector.Dnsimple do
   @client_secret Application.fetch_env!(:github_pages_connector, :dnsimple_client_secret)
 
   def oauth_authorize_url(state: state) do
-    Dnsimple.OauthService.authorize_url(client, @client_id, state: state)
+    Dnsimple.Oauth.authorize_url(client, @client_id, state: state)
   end
 
   def oauth_authorization(code: code, state: state) do
-    case Dnsimple.OauthService.exchange_authorization_for_token(client, %{
+    case Dnsimple.Oauth.exchange_authorization_for_token(client, %{
       code: code,
       state: state,
       client_id: @client_id,
@@ -27,21 +27,21 @@ defmodule GithubPagesConnector.Dnsimple do
   end
 
   def list_all_domains(account = %Account{dnsimple_account_id: account_id}) do
-    case Dnsimple.DomainsService.domains(client(account), account_id) do
+    case Dnsimple.Domains.domains(client(account), account_id) do
       {:ok, response} -> {:ok, response.data}
       {:error, error} -> raise RuntimeError, message: error.message
     end
   end
 
   def create_record(account = %Account{dnsimple_account_id: account_id}, domain_name, record_data) do
-    case Dnsimple.ZonesService.create_record(client(account), account_id, domain_name, record_data) do
+    case Dnsimple.Zones.create_record(client(account), account_id, domain_name, record_data) do
       {:ok, response} -> {:ok, response.data}
       {:error, error} -> raise RuntimeError, message: error.message
     end
   end
 
   def delete_record(account = %Account{dnsimple_account_id: account_id}, domain_name, record_id) do
-    case Dnsimple.ZonesService.delete_record(client(account), account_id, domain_name, record_id) do
+    case Dnsimple.Zones.delete_record(client(account), account_id, domain_name, record_id) do
       {:ok, _response} -> :ok
       {:error, error} -> raise RuntimeError, message: error.message
     end
@@ -49,7 +49,7 @@ defmodule GithubPagesConnector.Dnsimple do
 
 
   defp get_account_email(access_token) do
-    case Dnsimple.IdentityService.whoami(client(access_token)) do
+    case Dnsimple.Identity.whoami(client(access_token)) do
       {:ok, response} -> response.data.account["email"]
       {:error, error} -> raise RuntimeError, message: error.message
     end
