@@ -27,21 +27,21 @@ defmodule GithubPagesConnector.Dnsimple do
   end
 
   def list_all_domains(account = %Account{dnsimple_account_id: account_id}) do
-    case Dnsimple.Domains.domains(client(account), account_id) do
+    case Dnsimple.Domains.list_domains(client(account), account_id) do
       {:ok, response} -> {:ok, response.data}
       {:error, error} -> raise RuntimeError, message: error.message
     end
   end
 
   def create_record(account = %Account{dnsimple_account_id: account_id}, domain_name, record_data) do
-    case Dnsimple.Zones.create_record(client(account), account_id, domain_name, record_data) do
+    case Dnsimple.Zones.create_zone_record(client(account), account_id, domain_name, record_data) do
       {:ok, response} -> {:ok, response.data}
       {:error, error} -> raise RuntimeError, message: error.message
     end
   end
 
   def delete_record(account = %Account{dnsimple_account_id: account_id}, domain_name, record_id) do
-    case Dnsimple.Zones.delete_record(client(account), account_id, domain_name, record_id) do
+    case Dnsimple.Zones.delete_zone_record(client(account), account_id, domain_name, record_id) do
       {:ok, _response} -> :ok
       {:error, error} -> raise RuntimeError, message: error.message
     end
