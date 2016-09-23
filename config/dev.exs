@@ -44,7 +44,7 @@ config :github_pages_connector, GithubPagesConnector.Repo,
 
 config :github_pages_connector,
   github_client_id: "5b340a410acd78698c9f",
-  github_client_secret: "6dce2e55d023949d66521d31896fda97d630cc9a",
+  github_client_secret: "97560a3eaa365633c529a4fc2ec027d3d7175ec6",
   github_redirect_uri: "http://localhost:4000/github/callback",
   dnsimple_base_url: "https://api.sandbox.dnsimple.com",
   dnsimple_client_id: "14633962cac66aed",
