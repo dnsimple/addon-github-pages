@@ -1,7 +1,7 @@
-defmodule GithubPagesConnector.GithubTest do
+defmodule GithubPagesConnector.Gateways.GithubTest do
   use ExUnit.Case, async: true
 
-  alias GithubPagesConnector.Github
+  alias GithubPagesConnector.Gateways.Github
 
   describe ".oauth_authorize_url" do
     test "generates the OAuth dance url" do

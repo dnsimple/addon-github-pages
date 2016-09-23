@@ -1,4 +1,4 @@
-defmodule GithubPagesConnector.Github do
+defmodule GithubPagesConnector.Gateways.Github do
   alias GithubPagesConnector.Account
 
   @oauth_scope "repo"

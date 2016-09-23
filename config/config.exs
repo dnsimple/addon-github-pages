@@ -16,7 +16,7 @@ config :github_pages_connector, GithubPagesConnector.Endpoint,
 
 config :github_pages_connector, ecto_repos: [GithubPagesConnector.Repo]
 
-config :github_pages_connector, github: GithubPagesConnector.Github
+config :github_pages_connector, github: GithubPagesConnector.Gateways.Github
 config :github_pages_connector, github_token_uri: "https://github.com/login/oauth/access_token"
 config :github_pages_connector, github_authorize_uri: "https://github.com/login/oauth/authorize"
 
