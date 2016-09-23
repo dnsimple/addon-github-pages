@@ -32,11 +32,11 @@ defmodule GithubPagesConnector.ConnectionController do
     repository = params["repository"]
 
     case @connections.new_connection(account, dnsimple_domain: domain, github_repository: repository) do
-      {:ok, connection} ->
+      {:ok, _connection} ->
         conn
         |> put_flash(:info, "#{domain} now points to GitHub pages #{repository}")
         |> redirect(to: connection_path(conn, :index))
-      {:ok, error} ->
+      {:error, error} ->
         conn
         |> put_flash(:error, "Something went wrong: #{error.message}")
         |> redirect(to: connection_path(conn, :new))
@@ -49,7 +49,7 @@ defmodule GithubPagesConnector.ConnectionController do
         conn
         |> put_flash(:info, "Connection for #{connection.dnsimple_domain} to #{connection.github_repository} removed")
         |> redirect(to: connection_path(conn, :index))
-      {:ok, error} ->
+      {:error, error} ->
         conn
         |> put_flash(:error, "Something went wrong: #{error.message}")
         |> redirect(to: connection_path(conn, :index))
