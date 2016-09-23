@@ -5,8 +5,6 @@ defmodule GithubPagesConnector.ConnectionControllerTest do
   @connections GithubPagesConnector.Connections
 
   setup do
-    GithubPagesConnector.ConnectionMemoryRepo.reset
-
     account = @accounts.signup_account(dnsimple_account_id: "dnsimple_account_id")
     conn    = assign(build_conn, :current_account_id, account.dnsimple_account_id)
     {:ok, conn: conn, account: account}
