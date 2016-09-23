@@ -1,7 +1,7 @@
 defmodule GithubPagesConnector.GithubOauthControllerTest do
   use GithubPagesConnector.ConnCase
 
-  @accounts GithubPagesConnector.Accounts
+  @accounts GithubPagesConnector.Services.Accounts
 
   describe ".new" do
     test "starts the DNSimple OAuth dance if no account is signed in", %{conn: conn} do

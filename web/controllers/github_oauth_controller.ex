@@ -3,7 +3,7 @@ defmodule GithubPagesConnector.GithubOauthController do
 
   plug GithubPagesConnector.Plug.CurrentAccount
 
-  @accounts GithubPagesConnector.Accounts
+  @accounts GithubPagesConnector.Services.Accounts
   @github Application.get_env(:github_pages_connector, :github)
   @state "12345678"
 

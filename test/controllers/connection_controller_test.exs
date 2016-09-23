@@ -1,7 +1,7 @@
 defmodule GithubPagesConnector.ConnectionControllerTest do
   use GithubPagesConnector.ConnCase
 
-  @accounts GithubPagesConnector.Accounts
+  @accounts GithubPagesConnector.Services.Accounts
   @connections GithubPagesConnector.Connections
 
   setup do

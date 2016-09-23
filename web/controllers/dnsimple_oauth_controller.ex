@@ -1,7 +1,7 @@
 defmodule GithubPagesConnector.DnsimpleOauthController do
   use GithubPagesConnector.Web, :controller
 
-  @accounts GithubPagesConnector.Accounts
+  @accounts GithubPagesConnector.Services.Accounts
   @dnsimple Application.get_env :github_pages_connector, :dnsimple
   @state "12345678"
 

@@ -2,7 +2,7 @@ defmodule GithubPagesConnector.Plug.CurrentAccount do
   import Plug.Conn
   require Logger
 
-  @accounts GithubPagesConnector.Accounts
+  @accounts GithubPagesConnector.Services.Accounts
 
   def init(opts), do: opts
 

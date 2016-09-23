@@ -4,6 +4,7 @@ defmodule GithubPagesConnector.Plug.CurrentAccountTest do
 
   alias GithubPagesConnector.Plug.CurrentAccount
 
+  @accounts GithubPagesConnector.Services.Accounts
   @session Plug.Session.init(
     store: :cookie,
     key: "_key",
@@ -14,7 +15,7 @@ defmodule GithubPagesConnector.Plug.CurrentAccountTest do
   setup do
     :ok = Ecto.Adapters.SQL.Sandbox.checkout(GithubPagesConnector.Repo)
 
-    account = GithubPagesConnector.Accounts.signup_account(dnsimple_account_id: "dnsimple_account_id")
+    account = @accounts.signup_account(dnsimple_account_id: "dnsimple_account_id")
     session_data = %{current_account_id: account.dnsimple_account_id}
 
     conn = conn(:get, "/")

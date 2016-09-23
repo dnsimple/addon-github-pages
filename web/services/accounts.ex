@@ -1,4 +1,4 @@
-defmodule GithubPagesConnector.Accounts do
+defmodule GithubPagesConnector.Services.Accounts do
   alias GithubPagesConnector.Account
 
   @repo GithubPagesConnector.AccountEctoRepo
