@@ -50,7 +50,7 @@ defmodule GithubPagesConnector.Dnsimple do
 
   defp get_account_email(access_token) do
     case Dnsimple.Identity.whoami(client(access_token)) do
-      {:ok, response} -> response.data.account["email"]
+      {:ok, response} -> response.data.account.email
       {:error, error} -> raise RuntimeError, message: error.message
     end
   end
