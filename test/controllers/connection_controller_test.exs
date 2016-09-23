@@ -2,7 +2,7 @@ defmodule GithubPagesConnector.ConnectionControllerTest do
   use GithubPagesConnector.ConnCase
 
   @accounts GithubPagesConnector.Services.Accounts
-  @connections GithubPagesConnector.Connections
+  @connections GithubPagesConnector.Services.Connections
 
   setup do
     account = @accounts.signup_account(dnsimple_account_id: "dnsimple_account_id")

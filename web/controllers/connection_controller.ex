@@ -1,7 +1,7 @@
 defmodule GithubPagesConnector.ConnectionController do
   use GithubPagesConnector.Web, :controller
 
-  @connections GithubPagesConnector.Connections
+  @connections GithubPagesConnector.Services.Connections
 
   plug GithubPagesConnector.Plug.CurrentAccount
 

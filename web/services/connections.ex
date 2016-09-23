@@ -1,4 +1,4 @@
-defmodule GithubPagesConnector.Connections do
+defmodule GithubPagesConnector.Services.Connections do
   alias GithubPagesConnector.Account
   alias GithubPagesConnector.Connection
 
