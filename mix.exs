@@ -40,7 +40,7 @@ defmodule GithubPagesConnector.Mixfile do
      {:gettext, "~> 0.9"},
      {:cowboy, "~> 1.0"},
      {:dnsimple, git: "https://github.com/dnsimple/dnsimple-elixir.git"},
-     {:oauth2, "~> 0.5"},
+     {:oauth2, "== 0.6.0"},
      {:tentacat, "~> 0.5"}]
   end
 
