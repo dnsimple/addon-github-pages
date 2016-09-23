@@ -31,30 +31,29 @@ defmodule GithubPagesConnector.ConnectionController do
     domain     = params["domain"]
     repository = params["repository"]
 
-    @connections.new_connection(account, dnsimple_domain: domain, github_repository: repository)
-
-    conn
-    |> put_flash(:info, "#{domain} now points to GitHub pages #{repository}")
-    |> redirect(to: connection_path(conn, :index))
-
-  rescue error ->
-    conn
-    |> put_flash(:error, "Something went wrong: #{error.message}")
-    |> redirect(to: connection_path(conn, :new))
+    case @connections.new_connection(account, dnsimple_domain: domain, github_repository: repository) do
+      {:ok, connection} ->
+        conn
+        |> put_flash(:info, "#{domain} now points to GitHub pages #{repository}")
+        |> redirect(to: connection_path(conn, :index))
+      {:ok, error} ->
+        conn
+        |> put_flash(:error, "Something went wrong: #{error.message}")
+        |> redirect(to: connection_path(conn, :new))
+    end
   end
 
   def delete(conn, params) do
-    connection = @connections.remove_connection(conn.assigns[:current_account], params["id"])
-    message    = "Connection for #{connection.dnsimple_domain} to #{connection.github_repository} removed"
-
-    conn
-    |> put_flash(:info, message)
-    |> redirect(to: connection_path(conn, :index))
-
-  rescue error ->
-    conn
-    |> put_flash(:error, "Something went wrong: #{error.message}")
-    |> redirect(to: connection_path(conn, :index))
+    case @connections.remove_connection(conn.assigns[:current_account], params["id"]) do
+      {:ok, connection} ->
+        conn
+        |> put_flash(:info, "Connection for #{connection.dnsimple_domain} to #{connection.github_repository} removed")
+        |> redirect(to: connection_path(conn, :index))
+      {:ok, error} ->
+        conn
+        |> put_flash(:error, "Something went wrong: #{error.message}")
+        |> redirect(to: connection_path(conn, :index))
+    end
   end
 
 end

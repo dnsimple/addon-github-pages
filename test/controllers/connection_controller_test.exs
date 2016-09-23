@@ -66,7 +66,7 @@ defmodule GithubPagesConnector.ConnectionControllerTest do
 
   describe ".delete" do
     setup %{conn: conn, account: account} do
-      connection = @connections.new_connection(account, [])
+      {:ok, connection} = @connections.new_connection(account, [])
       {:ok, conn: conn, account: account, connection: connection}
     end
 
