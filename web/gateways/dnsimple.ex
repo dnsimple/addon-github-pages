@@ -1,4 +1,4 @@
-defmodule GithubPagesConnector.Dnsimple do
+defmodule GithubPagesConnector.Gateways.Dnsimple do
   alias GithubPagesConnector.Account
 
   @base_url Application.fetch_env!(:github_pages_connector, :dnsimple_base_url)

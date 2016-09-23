@@ -20,7 +20,7 @@ config :github_pages_connector, github: GithubPagesConnector.Gateways.Github
 config :github_pages_connector, github_token_uri: "https://github.com/login/oauth/access_token"
 config :github_pages_connector, github_authorize_uri: "https://github.com/login/oauth/authorize"
 
-config :github_pages_connector, dnsimple: GithubPagesConnector.Dnsimple
+config :github_pages_connector, dnsimple: GithubPagesConnector.Gateways.Dnsimple
 config :github_pages_connector, dnsimple_base_url: "https://api.dnsimple.com"
 
 
