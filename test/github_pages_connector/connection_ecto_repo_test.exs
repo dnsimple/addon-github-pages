@@ -15,7 +15,7 @@ defmodule GithubPagesConnector.ConnectionEctoRepoTest do
 
   describe "get" do
     test "returns the connection stored under given key" do
-      connection = @repo.put(@connection)
+      {:ok, connection} = @repo.put(@connection)
 
       connection = @repo.get(connection.id)
       refute connection == nil
@@ -29,13 +29,13 @@ defmodule GithubPagesConnector.ConnectionEctoRepoTest do
 
   describe "put" do
     test "assigns an id to the connection" do
-      connection = @repo.put(@connection)
+      {:ok, connection} = @repo.put(@connection)
 
       refute connection.id == nil
     end
 
     test "stores the connection under the connection's id" do
-      connection = @repo.put(@connection)
+      {:ok, connection} = @repo.put(@connection)
 
       connection = @repo.get(connection.id)
       refute connection == nil
@@ -43,10 +43,9 @@ defmodule GithubPagesConnector.ConnectionEctoRepoTest do
     end
 
     test "overwrites the connection if another connection with the same id exists" do
-      connection = @connection
-      |> @repo.put
-      |> Map.put(:dnsimple_domain, "other_domain")
-      |> @repo.put
+      {:ok, connection} = @repo.put(@connection)
+      connection        = Map.put(connection, :dnsimple_domain, "other_domain")
+      {:ok, connection} =  @repo.put(connection)
 
       connection = @repo.get(connection.id)
       assert connection.dnsimple_domain == "other_domain"
@@ -55,18 +54,18 @@ defmodule GithubPagesConnector.ConnectionEctoRepoTest do
 
   describe ".remove" do
     test "removes the connection" do
-      connection = @repo.put(@connection)
+      {:ok, connection} = @repo.put(@connection)
 
-      @repo.remove(connection)
+      {:ok, connection} = @repo.remove(connection)
 
       connection = @repo.get(connection.id)
       assert connection == nil
     end
 
     test "returns the removed connection" do
-      connection = @repo.put(@connection)
+      {:ok, connection} = @repo.put(@connection)
 
-      connection = @repo.remove(connection)
+      {:ok, connection} = @repo.remove(connection)
       assert connection.__struct__ == GithubPagesConnector.Connection
     end
   end
@@ -75,9 +74,9 @@ defmodule GithubPagesConnector.ConnectionEctoRepoTest do
     test "returns connections with given account_id" do
       account1    = GithubPagesConnector.Repo.insert!(%GithubPagesConnector.Account{})
       account2    = GithubPagesConnector.Repo.insert!(%GithubPagesConnector.Account{})
-      connection1 = @repo.put(%GithubPagesConnector.Connection{account_id: account1.id})
-      connection2 = @repo.put(%GithubPagesConnector.Connection{account_id: account2.id})
-      connection3 = @repo.put(%GithubPagesConnector.Connection{account_id: account2.id})
+      {:ok, connection1} = @repo.put(%GithubPagesConnector.Connection{account_id: account1.id})
+      {:ok, connection2} = @repo.put(%GithubPagesConnector.Connection{account_id: account2.id})
+      {:ok, connection3} = @repo.put(%GithubPagesConnector.Connection{account_id: account2.id})
 
       assert @repo.list_connections(account1.id) == [connection1]
       assert @repo.list_connections(account2.id) == [connection2, connection3]

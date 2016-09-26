@@ -22,18 +22,18 @@ defmodule GithubPagesConnector.ConnectionEctoRepo do
   end
 
   def remove(connection) do
-    Repo.delete!(connection)
+    Repo.delete(connection)
   end
 
 
   defp insert(connection) do
     Connection.changeset(connection, connection)
-    |> Repo.insert!
+    |> Repo.insert
   end
 
   defp update(connection, updated_connection) do
     Connection.changeset(connection, updated_connection)
-    |> Repo.update!
+    |> Repo.update
   end
 
 end

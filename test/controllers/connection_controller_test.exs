@@ -5,8 +5,8 @@ defmodule GithubPagesConnector.ConnectionControllerTest do
   @connections GithubPagesConnector.Services.Connections
 
   setup do
-    account = @accounts.signup_account(dnsimple_account_id: "dnsimple_account_id")
-    conn    = assign(build_conn, :current_account_id, account.dnsimple_account_id)
+    {:ok, account} = @accounts.signup_account(dnsimple_account_id: "dnsimple_account_id")
+    conn           = assign(build_conn, :current_account_id, account.dnsimple_account_id)
     {:ok, conn: conn, account: account}
   end
 
@@ -66,7 +66,7 @@ defmodule GithubPagesConnector.ConnectionControllerTest do
 
   describe ".delete" do
     setup %{conn: conn, account: account} do
-      connection = @connections.new_connection(account, [])
+      {:ok, connection} = @connections.new_connection(account, [])
       {:ok, conn: conn, account: account, connection: connection}
     end
 

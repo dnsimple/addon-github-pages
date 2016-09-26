@@ -16,12 +16,12 @@ defmodule GithubPagesConnector.AccountEctoRepo do
 
   defp insert(account) do
     Account.changeset(account, account)
-    |> Repo.insert!
+    |> Repo.insert
   end
 
   defp update(account, updated_account) do
     Account.changeset(account, updated_account)
-    |> Repo.update!
+    |> Repo.update
   end
 
 end

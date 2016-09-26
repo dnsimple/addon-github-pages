@@ -17,7 +17,7 @@ defmodule GithubPagesConnector.AccountEctoRepoTest do
 
   describe ".get" do
     test "returns the account" do
-      @repo.put(@account)
+      {:ok, _} = @repo.put(@account)
 
       account = @repo.get("dnsimple_account_id")
       assert account.dnsimple_account_id == @account.dnsimple_account_id
@@ -33,7 +33,7 @@ defmodule GithubPagesConnector.AccountEctoRepoTest do
     end
 
     test "handles numeric ids" do
-      @repo.put(%GithubPagesConnector.Account{dnsimple_account_id: 12345})
+      {:ok, _} = @repo.put(%GithubPagesConnector.Account{dnsimple_account_id: 12345})
 
       refute @repo.get(12345) == nil
     end
@@ -41,14 +41,14 @@ defmodule GithubPagesConnector.AccountEctoRepoTest do
 
   describe ".put" do
     test "assigns the account id" do
-      account = @repo.put(@account)
+      {:ok, account} = @repo.put(@account)
 
       assert @account.id == nil
       refute account.id == nil
     end
 
     test "stores the account" do
-      account = @repo.put(@account)
+      {:ok, account} = @repo.put(@account)
 
       account = @repo.get(account.dnsimple_account_id)
       assert account.dnsimple_account_id == @account.dnsimple_account_id
@@ -60,9 +60,9 @@ defmodule GithubPagesConnector.AccountEctoRepoTest do
     end
 
     test "overwrites the account if it was already stored" do
-      @repo.put(@account)
+      {:ok, _} = @repo.put(@account)
 
-      @account
+      {:ok, _} = @account
       |> Map.put(:dnsimple_account_email, "updated_dnsimple_account_email")
       |> Map.put(:dnsimple_access_token, "updated_dnsimple_access_token")
       |> @repo.put

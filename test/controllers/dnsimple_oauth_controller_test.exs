@@ -24,7 +24,7 @@ defmodule GithubPagesConnector.DnsimpleOauthControllerTest do
     end
 
     test "updates the account data when the account had already signed up", %{conn: conn} do
-      @accounts.signup_account([
+      {:ok, _} = @accounts.signup_account([
         dnsimple_account_id: "dnsimple_account_id",
         dnsimple_account_email: "old_dnsimple_account_email",
         dnsimple_access_token: "old_dnsimple_access_token",
