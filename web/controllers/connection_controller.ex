@@ -56,4 +56,13 @@ defmodule GithubPagesConnector.ConnectionController do
     end
   end
 
+
+  def preview(conn, params) do
+    account    = conn.assigns[:current_account]
+    repository = params["repository"]
+    {:ok, content} = GithubPagesConnector.Gateways.Github.get_file(account, repository, "CNAMEX")
+
+    render(conn, "preview.html", content: content)
+  end
+
 end

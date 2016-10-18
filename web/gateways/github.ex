@@ -47,6 +47,24 @@ defmodule GithubPagesConnector.Gateways.Github do
     end
   end
 
+  def get_file(account, repository, path) do
+    owner = account.github_account_login
+
+    try do
+      file = Tentacat.Contents.find(owner, repository, path, client(account))
+      IO.puts "******************************"
+      IO.inspect(file)
+      IO.puts "--"
+      IO.inspect(file["content"])
+      {:ok, content} = Base.decode64(file["content"], ignore: :whitespace)
+      IO.inspect content
+      IO.puts "******************************"
+      {:ok, content}
+    rescue error ->
+      {:error , error}
+    end
+  end
+
   def delete_file(account, repository, path, sha) do
     owner = account.github_account_login
     body  = %{sha: sha, message: "Remove DNSimple custom domain configuration"}
