@@ -51,15 +51,10 @@ defmodule GithubPagesConnector.Gateways.Github do
     owner = account.github_account_login
 
     try do
-      file = Tentacat.Contents.find(owner, repository, path, client(account))
-      IO.puts "******************************"
-      IO.inspect(file)
-      IO.puts "--"
-      IO.inspect(file["content"])
-      {:ok, content} = Base.decode64(file["content"], ignore: :whitespace)
-      IO.inspect content
-      IO.puts "******************************"
-      {:ok, content}
+      case Tentacat.Contents.find(owner, repository, path, client(account)) do
+        {404, _} -> {:error, :notfound}
+        file     -> Base.decode64(file["content"], ignore: :whitespace)
+      end
     rescue error ->
       {:error , error}
     end
