@@ -46,15 +46,22 @@ defmodule GithubPagesConnector.Services.Connections do
     Map.put(connection, :dnsimple_record_id, nil)
   end
 
+
+  @cname_file_path "CNAME"
+
+  def get_cname_file(account = %Account{}, repository) do
+    @github.get_file(account, repository, @cname_file_path)
+  end
+
   defp add_cname_file(connection, account) do
-    file_path    = "CNAME"
+    file_path    = @cname_file_path
     file_content = connection.dnsimple_domain
     {:ok, file}  = @github.create_file(account, connection.github_repository, file_path, file_content)
     Map.put(connection, :github_file_sha, file["content"]["sha"])
   end
 
-  def remove_cname_file(connection, account) do
-    file_path = "CNAME"
+  defp remove_cname_file(connection, account) do
+    file_path = @cname_file_path
     file_sha  = connection.github_file_sha
     :ok = @github.delete_file(account, connection.github_repository, file_path, file_sha)
     Map.put(connection, :github_file_sha, nil)
