@@ -25,8 +25,8 @@ defmodule GithubPagesConnector.Router do
     get "/github/authorize",   GithubOauthController,   :new
     get "/github/callback",    GithubOauthController,   :create
 
-    get "/connection/preview", ConnectionController, :preview
-    resources "/connection",   ConnectionController, except: [:edit, :update]
+    post "/connection/preview", ConnectionController, :preview
+    resources "/connection",    ConnectionController, except: [:edit, :update]
 
   end
 
