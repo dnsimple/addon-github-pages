@@ -26,6 +26,23 @@ defmodule GithubPagesConnector.ConnectionController do
     render(conn, "new.html", repositories: repositories, domains: domains)
   end
 
+  def preview(conn, params) do
+    account    = conn.assigns[:current_account]
+    domain     = params["domain"]
+    repository = params["repository"]
+
+    case @connections.get_cname_file(account, repository) do
+      {:ok, content} ->
+        render(conn, "preview.html", domain: domain, repository: repository, content: content, cname_file_exists: true)
+      {:error, :notfound} ->
+        render(conn, "preview.html", domain: domain, repository: repository, content: "", cname_file_exists: false)
+      {:error, error} ->
+        conn
+        |> put_flash(:error, "Something went wrong: #{error.message}")
+        |> redirect(to: connection_path(conn, :index))
+    end
+  end
+
   def create(conn, params) do
     account    = conn.assigns[:current_account]
     domain     = params["domain"]
@@ -54,15 +71,6 @@ defmodule GithubPagesConnector.ConnectionController do
         |> put_flash(:error, "Something went wrong: #{error.message}")
         |> redirect(to: connection_path(conn, :index))
     end
-  end
-
-
-  def preview(conn, params) do
-    account    = conn.assigns[:current_account]
-    repository = params["repository"]
-    {:ok, content} = GithubPagesConnector.Gateways.Github.get_file(account, repository, "CNAMEX")
-
-    render(conn, "preview.html", content: content)
   end
 
 end
