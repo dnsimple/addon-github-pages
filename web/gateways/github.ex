@@ -52,8 +52,11 @@ defmodule GithubPagesConnector.Gateways.Github do
 
     try do
       case Tentacat.Contents.find(owner, repository, path, client(account)) do
-        {404, _} -> {:error, :notfound}
-        file     -> Base.decode64(file["content"], ignore: :whitespace)
+        {404, _} ->
+          {:error, :notfound}
+        file ->
+          content = Base.decode64!(file["content"], ignore: :whitespace)
+          {:ok, %{content: content, sha: file["sha"]}}
       end
     rescue error ->
       {:error , error}
