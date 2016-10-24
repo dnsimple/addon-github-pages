@@ -32,7 +32,7 @@ defmodule GithubPagesConnector.ConnectionController do
     repository = params["repository"]
 
     case @connections.get_cname_file(account, repository) do
-      {:ok, content} ->
+      {:ok, %{content: content}} ->
         render(conn, "preview.html", domain: domain, repository: repository, content: content, cname_file_exists: true)
       {:error, :notfound} ->
         render(conn, "preview.html", domain: domain, repository: repository, content: "", cname_file_exists: false)
