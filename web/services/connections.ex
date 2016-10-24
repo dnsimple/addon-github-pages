@@ -54,16 +54,18 @@ defmodule GithubPagesConnector.Services.Connections do
   end
 
   defp add_cname_file(connection, account) do
-    file_path    = @cname_file_path
-    file_content = connection.dnsimple_domain
-    {:ok, file}  = @github.create_file(account, connection.github_repository, file_path, file_content)
+    file_path      = @cname_file_path
+    file_content   = connection.dnsimple_domain
+    commit_message = "Configure custom domain with DNSimple"
+    {:ok, file}  = @github.create_file(account, connection.github_repository, file_path, file_content, commit_message)
     Map.put(connection, :github_file_sha, file["content"]["sha"])
   end
 
   defp remove_cname_file(connection, account) do
-    file_path = @cname_file_path
-    file_sha  = connection.github_file_sha
-    :ok = @github.delete_file(account, connection.github_repository, file_path, file_sha)
+    file_path      = @cname_file_path
+    file_sha       = connection.github_file_sha
+    commit_message = "Remove DNSimple custom domain configuration"
+    :ok = @github.delete_file(account, connection.github_repository, file_path, file_sha, commit_message)
     Map.put(connection, :github_file_sha, nil)
   end
 

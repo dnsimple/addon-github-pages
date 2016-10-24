@@ -35,9 +35,9 @@ defmodule GithubPagesConnector.Gateways.Github do
     end
   end
 
-  def create_file(account, repository, path, content) do
+  def create_file(account, repository, path, content, commit_message) do
     owner = account.github_account_login
-    body  = %{content: Base.encode64(content), message: "Configure custom domain with DNSimple"}
+    body  = %{content: Base.encode64(content), message: commit_message}
 
     try do
       {201, file} = Tentacat.Contents.create(owner, repository, path, body, client(account))
@@ -63,9 +63,9 @@ defmodule GithubPagesConnector.Gateways.Github do
     end
   end
 
-  def delete_file(account, repository, path, sha) do
+  def delete_file(account, repository, path, sha, commit_message) do
     owner = account.github_account_login
-    body  = %{sha: sha, message: "Remove DNSimple custom domain configuration"}
+    body  = %{sha: sha, message: commit_message}
 
     try do
       Tentacat.Contents.remove(owner, repository, path, body, client(account))
