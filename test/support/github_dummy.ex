@@ -12,12 +12,20 @@ defmodule GithubPagesConnector.GithubDummy do
     {:ok , [%{"name" => "user.github.io"}, %{"name" => "org.github.io"}, %{"name" => "project"}]}
   end
 
-  def create_file(_account, repository, path, _content) do
-    {:ok, %{"repository" => repository, "path" => path, "content" => %{"sha" => "sha"}}}
+  def get_file(_account, _repository, _path) do
+    {:ok, %{content: "content", sha: "sha"}}
   end
 
-  def delete_file(_account, _repository, _path, _sha) do
-    :ok
+  def create_file(_account, repository, path, _content, _commit_message) do
+    {:ok, _commit = %{"repository" => repository, "path" => path, "content" => %{"sha" => "sha"}}}
+  end
+
+  def update_file(_account, repository, path, _new_content, _current_sha, _commit_message) do
+    {:ok, _commit = %{"repository" => repository, "path" => path, "content" => %{"sha" => "sha"}}}
+  end
+
+  def delete_file(_account, _repository, _path, _current_sha, _commit_message) do
+    {:ok, _commit = %{}}
   end
 
 end

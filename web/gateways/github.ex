@@ -35,18 +35,6 @@ defmodule GithubPagesConnector.Gateways.Github do
     end
   end
 
-  def create_file(account, repository, path, content, commit_message) do
-    owner = account.github_account_login
-    body  = %{content: Base.encode64(content), message: commit_message}
-
-    try do
-      {201, file} = Tentacat.Contents.create(owner, repository, path, body, client(account))
-      {:ok, file}
-    rescue error ->
-      {:error , error}
-    end
-  end
-
   def get_file(account, repository, path) do
     owner = account.github_account_login
 
@@ -63,13 +51,37 @@ defmodule GithubPagesConnector.Gateways.Github do
     end
   end
 
-  def delete_file(account, repository, path, sha, commit_message) do
+  def create_file(account, repository, path, content, commit_message) do
     owner = account.github_account_login
-    body  = %{sha: sha, message: commit_message}
+    body  = %{content: Base.encode64(content), message: commit_message}
 
     try do
-      Tentacat.Contents.remove(owner, repository, path, body, client(account))
-      :ok
+      {201, commit} = Tentacat.Contents.create(owner, repository, path, body, client(account))
+      {:ok, commit}
+    rescue error ->
+      {:error , error}
+    end
+  end
+
+  def update_file(account, repository, path, new_content, current_sha, commit_message) do
+    owner = account.github_account_login
+    body  = %{content: Base.encode64(new_content), message: commit_message, sha: current_sha}
+
+    try do
+      commit = Tentacat.Contents.update(owner, repository, path, body, client(account))
+      {:ok, commit}
+    rescue error ->
+      {:error , error}
+    end
+  end
+
+  def delete_file(account, repository, path, sha, commit_message) do
+    owner = account.github_account_login
+    body  = %{message: commit_message, sha: sha}
+
+    try do
+      commit = Tentacat.Contents.remove(owner, repository, path, body, client(account))
+      {:ok, commit}
     rescue error ->
       {:error , error}
     end
