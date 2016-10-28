@@ -1,6 +1,6 @@
 <div class="jumbotron">
   <h2>New connection</h2>
-  <%= form_for @conn, connection_path(@conn, :create), [as: :connection], fn _f -> %>
+  <%= form_for @conn, connection_path(@conn, :preview), [as: :connection], fn _f -> %>
 
     <div class="form-group">
       <label for="repository">Repository</label>
@@ -23,6 +23,6 @@
 
     <br/>
 
-    <%= submit "Connect to GitHub Pages" %>
+    <%= submit "Start creating connection" %>
   <% end %>
 </div>

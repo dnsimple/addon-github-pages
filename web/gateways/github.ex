@@ -35,25 +35,53 @@ defmodule GithubPagesConnector.Gateways.Github do
     end
   end
 
-  def create_file(account, repository, path, content) do
+  def get_file(account, repository, path) do
     owner = account.github_account_login
-    body  = %{content: Base.encode64(content), message: "Configure custom domain with DNSimple"}
 
     try do
-      {201, file} = Tentacat.Contents.create(owner, repository, path, body, client(account))
-      {:ok, file}
+      case Tentacat.Contents.find(owner, repository, path, client(account)) do
+        {404, _} ->
+          {:error, :notfound}
+        file ->
+          content = Base.decode64!(file["content"], ignore: :whitespace)
+          {:ok, %{content: content, sha: file["sha"]}}
+      end
     rescue error ->
       {:error , error}
     end
   end
 
-  def delete_file(account, repository, path, sha) do
+  def create_file(account, repository, path, content, commit_message) do
     owner = account.github_account_login
-    body  = %{sha: sha, message: "Remove DNSimple custom domain configuration"}
+    body  = %{content: Base.encode64(content), message: commit_message}
 
     try do
-      Tentacat.Contents.remove(owner, repository, path, body, client(account))
-      :ok
+      {201, commit} = Tentacat.Contents.create(owner, repository, path, body, client(account))
+      {:ok, commit}
+    rescue error ->
+      {:error , error}
+    end
+  end
+
+  def update_file(account, repository, path, new_content, current_sha, commit_message) do
+    owner = account.github_account_login
+    body  = %{content: Base.encode64(new_content), message: commit_message, sha: current_sha}
+
+    try do
+      commit = Tentacat.Contents.update(owner, repository, path, body, client(account))
+      {:ok, commit}
+    rescue error ->
+      {:error , error}
+    end
+  end
+
+  def delete_file(account, repository, path, sha, commit_message) do
+    owner = account.github_account_login
+    body  = %{message: commit_message, sha: sha}
+
+    try do
+      commit = Tentacat.Contents.remove(owner, repository, path, body, client(account))
+      {:ok, commit}
     rescue error ->
       {:error , error}
     end

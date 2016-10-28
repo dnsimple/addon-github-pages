@@ -1,0 +1,25 @@
+<h3>Connecting <code><%= @domain %></code> to <code><%= @repository %></code></h3>
+
+<br />
+
+<%= if @cname_file_exists do %>
+  <p>A file has been found in <code><%= @repository %>/CNAME</code>:</p>
+  <pre>
+    <%= @content %>
+  </pre>
+  <p>The file is going to be overwritten with the following:</p>
+  <pre>
+    <%= @domain %>
+  </pre>
+<% else %>
+  <p>A new file is going to be created in <code><%= @repository %>/CNAME</code> with the following content:</p>
+  <pre>
+    <%= @domain %>
+  </pre>
+<% end %>
+
+<%= form_for @conn, connection_path(@conn, :create), [as: :connection], fn _f -> %>
+  <input type="hidden" name="domain" value="<%= @domain %>" />
+  <input type="hidden" name="repository" value="<%= @repository %>"/>
+  <%= submit "Create connection" %>
+<% end %>
