@@ -49,7 +49,7 @@ defmodule GithubPagesConnector.Gateways.Dnsimple do
 
   def get_applied_services(account = %Account{dnsimple_account_id: account_id}, domain_name) do
     case Dnsimple.Services.applied_services(client(account), account_id, domain_name) do
-      {:ok, response} -> response.data
+      {:ok, response} -> {:ok, response.data}
       {:error, error} -> raise RuntimeError, message: error.message
     end
   end

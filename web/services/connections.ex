@@ -95,8 +95,8 @@ defmodule GithubPagesConnector.Services.Connections do
   end
 
   defp get_github_pages_applied_service(connection, account) do
-    @dnsimple.get_applied_services(account, connection.dnsimple_domain)
-    |> Enum.find(&(&1.name == "GitHub Pages"))
+    {:ok, applied_services} = @dnsimple.get_applied_services(account, connection.dnsimple_domain)
+    Enum.find(applied_services, &(&1.name == "GitHub Pages"))
   end
 
 end

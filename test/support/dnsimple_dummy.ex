@@ -19,4 +19,13 @@ defmodule GithubPagesConnector.DnsimpleDummy do
   def delete_record(_account, _domain_name, _record_id) do
     :ok
   end
+
+  def get_applied_services(_account, _domain_name) do
+    {:ok, []}
+  end
+
+  def disable_service(_account, _domain_name, _applied_service_id) do
+    :ok
+  end
+
 end
