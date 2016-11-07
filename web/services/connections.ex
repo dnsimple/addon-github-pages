@@ -23,6 +23,7 @@ defmodule GithubPagesConnector.Services.Connections do
     connection_data = Keyword.merge(connection_data, account_id: account.id)
 
     struct(Connection, connection_data)
+    |> disable_one_click_service(account)
     |> add_alias_record(account)
     |> configure_cname_file(account)
     |> @repo.put
@@ -83,6 +84,19 @@ defmodule GithubPagesConnector.Services.Connections do
     commit_message = "Remove DNSimple custom domain configuration"
     {:ok, _commit} = @github.delete_file(account, connection.github_repository, file_path, file_sha, commit_message)
     Map.put(connection, :github_file_sha, nil)
+  end
+
+
+  defp disable_one_click_service(connection, account) do
+    if github_pages_service = get_github_pages_applied_service(connection, account) do
+      :ok = @dnsimple.disable_service(account, connection.dnsimple_domain, github_pages_service.id)
+    end
+    connection
+  end
+
+  defp get_github_pages_applied_service(connection, account) do
+    @dnsimple.get_applied_services(account, connection.dnsimple_domain)
+    |> Enum.find(&(&1.name == "GitHub Pages"))
   end
 
 end

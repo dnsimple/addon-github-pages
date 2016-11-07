@@ -47,6 +47,19 @@ defmodule GithubPagesConnector.Gateways.Dnsimple do
     end
   end
 
+  def get_applied_services(account = %Account{dnsimple_account_id: account_id}, domain_name) do
+    case Dnsimple.Services.applied_services(client(account), account_id, domain_name) do
+      {:ok, response} -> response.data
+      {:error, error} -> raise RuntimeError, message: error.message
+    end
+  end
+
+  def disable_service(account = %Account{dnsimple_account_id: account_id}, domain_name, applied_service_id) do
+    case Dnsimple.Services.unapply_service(client(account), account_id, domain_name, applied_service_id) do
+      {:ok, _response} -> :ok
+      {:error, error} -> raise RuntimeError, message: error.message
+    end
+  end
 
   defp get_account_email(access_token) do
     case Dnsimple.Identity.whoami(client(access_token)) do
