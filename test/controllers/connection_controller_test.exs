@@ -33,10 +33,10 @@ defmodule GithubPagesConnector.ConnectionControllerTest do
 
   describe ".new" do
     test "displays view to create a new connection", %{conn: conn} do
-      @dnsimple.stub(:list_all_domains, [
+      @dnsimple.stub(:list_all_domains, {:ok, [
         %Dnsimple.Domain{name: "domain1.com"},
         %Dnsimple.Domain{name: "domain2.com"}
-      ])
+      ]})
 
       conn = get(conn, connection_path(conn, :new))
 
@@ -91,7 +91,7 @@ defmodule GithubPagesConnector.ConnectionControllerTest do
     end
 
     test "removes the GitHub Pages 1-click-service on DNSimple if applied", %{conn: conn, account: account} do
-      @dnsimple.stub(:get_applied_services, [service = %Dnsimple.Service{id: 123, name: "GitHub Pages"}])
+      @dnsimple.stub(:get_applied_services, {:ok, [service = %Dnsimple.Service{id: 123, name: "GitHub Pages"}]})
 
       post(conn, connection_path(conn, :create), repository: "repo1", domain: "domain1.com")
 
