@@ -3,7 +3,7 @@ defmodule DummyAgent do
   defmacro __using__(_opts) do
     quote do
       def start_link do
-        Agent.start_link(fn -> Map.new end, name: __MODULE__)
+        Agent.start_link(fn -> %{} end, name: __MODULE__)
       end
 
       def stub(function, return_value) do
@@ -15,7 +15,7 @@ defmodule DummyAgent do
       end
 
       def reset do
-        Agent.update(__MODULE__, fn(_) -> Map.new end)
+        Agent.update(__MODULE__, fn(_) -> %{} end)
       end
 
 
@@ -24,7 +24,9 @@ defmodule DummyAgent do
       end
 
       defp record_call(function, args) do
-        Agent.update(__MODULE__, &Map.update(&1, :calls, [], fn(calls) -> calls ++ [{function, args}] end))
+        Agent.update(__MODULE__, &Map.update(&1, :calls, [{function, args}], fn(calls) ->
+          calls ++ [{function, args}]
+        end))
       end
     end
   end
