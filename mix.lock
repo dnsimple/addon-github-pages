@@ -4,7 +4,7 @@
   "cowlib": {:hex, :cowlib, "1.0.2", "9d769a1d062c9c3ac753096f868ca121e2730b9a377de23dec0f7e08b1df84ee", [:make], []},
   "db_connection": {:hex, :db_connection, "1.0.0-rc.5", "1d9ab6e01387bdf2de7a16c56866971f7c2f75aea7c69cae2a0346e4b537ae0d", [:mix], [{:connection, "~> 1.0.2", [hex: :connection, optional: false]}, {:poolboy, "~> 1.5", [hex: :poolboy, optional: true]}, {:sbroker, "~> 1.0.0-beta.3", [hex: :sbroker, optional: true]}]},
   "decimal": {:hex, :decimal, "1.1.2", "79a769d4657b2d537b51ef3c02d29ab7141d2b486b516c109642d453ee08e00c", [:mix], []},
-  "dnsimple": {:git, "https://github.com/dnsimple/dnsimple-elixir.git", "43ee50be49c6b5c8c3ae9c9431749a11ccaf0381", []},
+  "dnsimple": {:git, "https://github.com/dnsimple/dnsimple-elixir.git", "a9175c1efc8ebe74ca0f31584b187ccb82bd9371", []},
   "ecto": {:hex, :ecto, "2.1.0-rc.0", "c25bef5ef7c039d5a25e32dd27ef0fa21ac4f38352631f9bc03df96c2ba84070", [:mix], [{:db_connection, "~> 1.0-rc.4", [hex: :db_connection, optional: true]}, {:decimal, "~> 1.1.2 or ~> 1.2", [hex: :decimal, optional: false]}, {:mariaex, "~> 0.7.7", [hex: :mariaex, optional: true]}, {:poison, "~> 2.2", [hex: :poison, optional: true]}, {:poolboy, "~> 1.5", [hex: :poolboy, optional: false]}, {:postgrex, "~> 0.12.0", [hex: :postgrex, optional: true]}, {:sbroker, "~> 1.0-beta", [hex: :sbroker, optional: true]}]},
   "exjsx": {:hex, :exjsx, "3.2.0", "7136cc739ace295fc74c378f33699e5145bead4fdc1b4799822d0287489136fb", [:mix], [{:jsx, "~> 2.6.2", [hex: :jsx, optional: false]}]},
   "fs": {:hex, :fs, "0.9.2", "ed17036c26c3f70ac49781ed9220a50c36775c6ca2cf8182d123b6566e49ec59", [:rebar], []},
