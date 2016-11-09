@@ -25,7 +25,7 @@ config :github_pages_connector,
   dnsimple_client_secret: "client_secret"
 
 config :github_pages_connector,
-  github: GithubPagesConnector.GithubDummy,
+  github: GithubPagesConnector.GithubDummyAgent,
   github_client_id: "client_id",
   github_client_secret: "client_secret",
   github_redirect_uri: "http://localhost:4000/github/callback"
