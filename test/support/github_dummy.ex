@@ -19,16 +19,17 @@ defmodule GithubPagesConnector.GithubDummyAgent do
 
   def create_file(account, repository, path, content, commit_message) do
     record_call(:create_file, [account, repository, path, content, commit_message])
-    {:ok, get_stubbed_value(:create_record, _commit = %{"repository" => repository, "path" => path, "content" => %{"sha" => "sha"}})}
+    {:ok, get_stubbed_value(:create_file, _commit = %{"repository" => repository, "path" => path, "content" => %{"sha" => "sha"}})}
   end
 
-  def update_file(_account, repository, path, _new_content, _current_sha, _commit_message) do
-    {:ok, _commit = %{"repository" => repository, "path" => path, "content" => %{"sha" => "sha"}}}
+  def update_file(account, repository, path, new_content, current_sha, commit_message) do
+    record_call(:update_file, [account, repository, path, new_content, current_sha, commit_message])
+    {:ok, get_stubbed_value(:update_file, _commit = %{"repository" => repository, "path" => path, "content" => %{"sha" => "sha"}})}
   end
 
   def delete_file(account, repository, path, current_sha, commit_message) do
     record_call(:delete_file, [account, repository, path, current_sha, commit_message])
-    {:ok, get_stubbed_value(:create_record, _commit = %{})}
+    {:ok, get_stubbed_value(:delete_file, _commit = %{})}
   end
 
 end

@@ -82,8 +82,13 @@ defmodule GithubPagesConnector.ConnectionControllerTest do
       assert {:create_file, [account, "repo1", "CNAME", "domain1.com", "Configure custom domain with DNSimple"]} in @github.calls
     end
 
-    @tag :skip
-    test "updates the CNAME file in the GitHub repo if a CNAME file existed"
+    test "updates the CNAME file in the GitHub repo if a CNAME file existed", %{conn: conn, account: account} do
+      @github.stub(:get_file, {:ok, %{sha: "existing-sha"}})
+
+      post(conn, connection_path(conn, :create), repository: "repo1", domain: "domain1.com")
+
+      assert {:update_file, [account, "repo1", "CNAME", "domain1.com", "existing-sha", "Configure custom domain with DNSimple"]} in @github.calls
+    end
 
     test "removes the GitHub Pages 1-click-service on DNSimple if applied", %{conn: conn, account: account} do
       @dnsimple.stub(:get_applied_services, [service = %Dnsimple.Service{id: 123, name: "GitHub Pages"}])
