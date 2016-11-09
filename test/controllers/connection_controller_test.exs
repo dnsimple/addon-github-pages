@@ -50,6 +50,20 @@ defmodule GithubPagesConnector.ConnectionControllerTest do
     end
   end
 
+  describe ".preview" do
+    @tag :skip
+    test "displays the preview of the connection", %{conn: conn} do
+    end
+
+    @tag :skip
+    test "displays the existing CNAME file content if it exists", %{conn: conn} do
+    end
+
+    @tag :skip
+    test "includes the domain and repository in the form", %{conn: conn} do
+    end
+  end
+
   describe ".create" do
     test "redirects to the connection list", %{conn: conn} do
       conn = post(conn, connection_path(conn, :create), repository: "repo1", domain: "domain1.com")
