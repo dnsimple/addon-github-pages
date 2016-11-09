@@ -25,8 +25,9 @@ defmodule GithubPagesConnector.GithubDummyAgent do
     {:ok, _commit = %{"repository" => repository, "path" => path, "content" => %{"sha" => "sha"}}}
   end
 
-  def delete_file(_account, _repository, _path, _current_sha, _commit_message) do
-    {:ok, _commit = %{}}
+  def delete_file(account, repository, path, current_sha, commit_message) do
+    record_call(:delete_file, [account, repository, path, current_sha, commit_message])
+    {:ok, get_stubbed_value(:create_record, _commit = %{})}
   end
 
 end

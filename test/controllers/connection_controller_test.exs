@@ -3,9 +3,11 @@ defmodule GithubPagesConnector.ConnectionControllerTest do
 
   @accounts GithubPagesConnector.Services.Accounts
   @connections GithubPagesConnector.Services.Connections
+  @github GithubPagesConnector.GithubDummyAgent
   @dnsimple GithubPagesConnector.DnsimpleDummyAgent
 
   setup do
+    @github.reset
     @dnsimple.reset
 
     {:ok, account} = @accounts.signup_account(dnsimple_account_id: "dnsimple_account_id")
@@ -111,8 +113,11 @@ defmodule GithubPagesConnector.ConnectionControllerTest do
       assert {:delete_record, [account, connection.dnsimple_domain, connection.dnsimple_record_id]} in @dnsimple.calls
     end
 
-    @tag :skip
-    test "remvoes the CNAME file in the GitHub repo"
+    test "removes the CNAME file from the GitHub repo", %{conn: conn, account: account, connection: connection} do
+      delete(conn, connection_path(conn, :delete, connection))
+
+      assert {:delete_file, [account, connection.github_repository, "CNAME", connection.github_file_sha, "Remove DNSimple custom domain configuration"]} in @github.calls
+    end
   end
 
 end
