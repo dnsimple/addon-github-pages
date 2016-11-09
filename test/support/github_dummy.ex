@@ -14,11 +14,12 @@ defmodule GithubPagesConnector.GithubDummyAgent do
   end
 
   def get_file(_account, _repository, _path) do
-    {:ok, %{content: "content", sha: "sha"}}
+    get_stubbed_value(:get_file, {:ok, %{content: "content", sha: "sha"}})
   end
 
-  def create_file(_account, repository, path, _content, _commit_message) do
-    {:ok, _commit = %{"repository" => repository, "path" => path, "content" => %{"sha" => "sha"}}}
+  def create_file(account, repository, path, content, commit_message) do
+    record_call(:create_file, [account, repository, path, content, commit_message])
+    {:ok, get_stubbed_value(:create_record, _commit = %{"repository" => repository, "path" => path, "content" => %{"sha" => "sha"}})}
   end
 
   def update_file(_account, repository, path, _new_content, _current_sha, _commit_message) do
