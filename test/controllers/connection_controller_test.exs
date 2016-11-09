@@ -30,6 +30,11 @@ defmodule GithubPagesConnector.ConnectionControllerTest do
 
   describe ".new" do
     test "displays view to create a new connection", %{conn: conn} do
+      @dnsimple.stub(:list_all_domains, [
+        %Dnsimple.Domain{name: "domain1.com"},
+        %Dnsimple.Domain{name: "domain2.com"}
+      ])
+
       conn = get(conn, connection_path(conn, :new))
 
       response = html_response(conn, 200)
