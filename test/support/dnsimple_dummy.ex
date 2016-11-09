@@ -65,7 +65,8 @@ defmodule GithubPagesConnector.DnsimpleDummyAgent do
     {:ok, %Dnsimple.ZoneRecord{id: 1, type: "ALIAS", content: record_data.content}}
   end
 
-  def delete_record(_account, _domain_name, _record_id) do
+  def delete_record(account, domain_name, record_id) do
+    record_call(:delete_record, [account, domain_name, record_id])
     :ok
   end
 
