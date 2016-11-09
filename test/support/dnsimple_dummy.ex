@@ -1,4 +1,4 @@
-defmodule GithubPagesConnector.DnsimpleDummyAgent do
+defmodule GithubPagesConnector.DnsimpleDummy do
   use DummyAgent
 
   def oauth_authorize_url(state: _state) do

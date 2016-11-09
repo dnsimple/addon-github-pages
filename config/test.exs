@@ -19,13 +19,13 @@ config :github_pages_connector, GithubPagesConnector.Repo,
   pool: Ecto.Adapters.SQL.Sandbox
 
 config :github_pages_connector,
-  dnsimple: GithubPagesConnector.DnsimpleDummyAgent,
+  dnsimple: GithubPagesConnector.DnsimpleDummy,
   dnsimple_base_url: "https://api.t.dnsimple.com",
   dnsimple_client_id: "client_id",
   dnsimple_client_secret: "client_secret"
 
 config :github_pages_connector,
-  github: GithubPagesConnector.GithubDummyAgent,
+  github: GithubPagesConnector.GithubDummy,
   github_client_id: "client_id",
   github_client_secret: "client_secret",
   github_redirect_uri: "http://localhost:4000/github/callback"

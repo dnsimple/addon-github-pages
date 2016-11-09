@@ -3,8 +3,8 @@ defmodule GithubPagesConnector.ConnectionControllerTest do
 
   @accounts GithubPagesConnector.Services.Accounts
   @connections GithubPagesConnector.Services.Connections
-  @github GithubPagesConnector.GithubDummyAgent
-  @dnsimple GithubPagesConnector.DnsimpleDummyAgent
+  @github GithubPagesConnector.GithubDummy
+  @dnsimple GithubPagesConnector.DnsimpleDummy
 
   setup do
     @github.reset
