@@ -47,10 +47,10 @@ defmodule GithubPagesConnector.DnsimpleDummyAgent do
     Agent.update(__MODULE__, fn(_) -> Map.new end)
   end
 
+
   def list_all_domains(_account) do
     {:ok, [%Dnsimple.Domain{name: "domain1.com"}, %Dnsimple.Domain{name: "domain2.com"}]}
   end
-
 
   def oauth_authorize_url(state: _state) do
     "https://test.dnsimple.com/auth/authorize?client_id=client_id&state=state"
@@ -60,7 +60,8 @@ defmodule GithubPagesConnector.DnsimpleDummyAgent do
     {:ok, "dnsimple_account_id", "dnsimple_account_email", "dnsimple_access_token"}
   end
 
-  def create_record(_account, _domain_name, record_data) do
+  def create_record(account, domain_name, record_data) do
+    record_call(:create_record, [account, domain_name, record_data])
     {:ok, %Dnsimple.ZoneRecord{id: 1, type: "ALIAS", content: record_data.content}}
   end
 

@@ -58,13 +58,19 @@ defmodule GithubPagesConnector.ConnectionControllerTest do
       assert connection.github_repository == "repo1"
     end
 
-    test "adds necessary records on DNSimple and records a reference", %{conn: conn, account: account} do
+    test "adds necessary records on DNSimple and records the reference", %{conn: conn, account: account} do
       post(conn, connection_path(conn, :create), repository: "repo1", domain: "domain1.com")
 
       [connection] = @connections.list_connections(account)
       refute connection.dnsimple_record_id == nil
+      assert {:create_record, [account, "domain1.com", %{name: "", type: "ALIAS", content: "repo1"}]} in @dnsimple.calls
     end
 
+    @tag :skip
+    test "creates the CNAME file in the GitHub repo"
+
+    @tag :skip
+    test "updates the CNAME file in the GitHub repo if a CNAME file existed"
 
     test "removes the GitHub Pages 1-click-service on DNSimple if applied", %{conn: conn, account: account} do
       @dnsimple.stub(:get_applied_services, [service = %Dnsimple.Service{id: 123, name: "GitHub Pages"}])
