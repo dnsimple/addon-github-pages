@@ -3,8 +3,10 @@ defmodule GithubPagesConnector.ConnectionControllerTest do
 
   @accounts GithubPagesConnector.Services.Accounts
   @connections GithubPagesConnector.Services.Connections
+  @dnsimple GithubPagesConnector.DnsimpleDummyAgent
 
   setup do
+    @dnsimple.reset
     {:ok, account} = @accounts.signup_account(dnsimple_account_id: "dnsimple_account_id")
     conn           = assign(build_conn, :current_account_id, account.dnsimple_account_id)
     {:ok, conn: conn, account: account}
@@ -41,6 +43,12 @@ defmodule GithubPagesConnector.ConnectionControllerTest do
   end
 
   describe ".create" do
+    test "redirects to the connection list", %{conn: conn} do
+      conn = post(conn, connection_path(conn, :create), repository: "repo1", domain: "domain1.com")
+
+      assert redirected_to(conn) == connection_path(conn, :index)
+    end
+
     test "adds a new connection", %{conn: conn, account: account} do
       post(conn, connection_path(conn, :create), repository: "repo1", domain: "domain1.com")
 
@@ -57,10 +65,13 @@ defmodule GithubPagesConnector.ConnectionControllerTest do
       refute connection.dnsimple_record_id == nil
     end
 
-    test "redirects to the connection list", %{conn: conn} do
-      conn = post(conn, connection_path(conn, :create), repository: "repo1", domain: "domain1.com")
 
-      assert redirected_to(conn) == connection_path(conn, :index)
+    test "removes the GitHub Pages 1-click-service on DNSimple if applied", %{conn: conn, account: account} do
+      @dnsimple.stub(:get_applied_services, [service = %Dnsimple.Service{id: 123, name: "GitHub Pages"}])
+
+      post(conn, connection_path(conn, :create), repository: "repo1", domain: "domain1.com")
+
+      assert {:disable_service, [account, "domain1.com", service.id]} in @dnsimple.calls
     end
   end
 

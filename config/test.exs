@@ -19,7 +19,7 @@ config :github_pages_connector, GithubPagesConnector.Repo,
   pool: Ecto.Adapters.SQL.Sandbox
 
 config :github_pages_connector,
-  dnsimple: GithubPagesConnector.DnsimpleDummy,
+  dnsimple: GithubPagesConnector.DnsimpleDummyAgent,
   dnsimple_base_url: "https://api.t.dnsimple.com",
   dnsimple_client_id: "client_id",
   dnsimple_client_secret: "client_secret"
