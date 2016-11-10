@@ -104,6 +104,7 @@ defmodule GithubPagesConnector.ConnectionControllerTest do
       [connection] = @connections.list_connections(account)
       refute connection.dnsimple_alias_id == nil
       assert {:create_record, [account, "domain1.com", %{name: "", type: "ALIAS", content: "repo1"}]} in @dnsimple.calls
+      assert {:create_record, [account, "domain1.com", %{name: "www", type: "CNAME", content: "domain1.com"}]} in @dnsimple.calls
     end
 
     test "creates the CNAME file in the GitHub repo", %{conn: conn, account: account} do
