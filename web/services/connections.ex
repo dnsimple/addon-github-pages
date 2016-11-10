@@ -60,9 +60,6 @@ defmodule GithubPagesConnector.Services.Connections do
     Map.put(connection, :dnsimple_cname_id, nil)
   end
 
-
-
-
   @cname_file_path "CNAME"
 
   def get_cname_file(account, repository) do
