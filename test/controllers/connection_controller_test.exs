@@ -151,10 +151,6 @@ defmodule GithubPagesConnector.ConnectionControllerTest do
     end
 
     test "removes the created records in DNSimple", %{conn: conn, account: account, connection: connection} do
-      # Making sure that both records have different ids without making the
-      # stubbing more complicated for a single test case
-      GithubPagesConnector.ConnectionEctoRepo.put(connection = Map.merge(connection, %{dnsimple_alias_id: 1, dnsimple_cname_id: 2}))
-
       delete(conn, connection_path(conn, :delete, connection))
 
       assert {:delete_record, [account, connection.dnsimple_domain, connection.dnsimple_alias_id]} in @dnsimple.calls
