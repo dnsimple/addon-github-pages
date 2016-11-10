@@ -1,5 +1,7 @@
 # GithubPagesConnector
 
+![Travis CI build status](https://travis-ci.com/dnsimple/addon-connector-ghpages.svg?token=5NV5cGB8u8K3By288Vto&branch=master)
+
 To start your Phoenix app:
 
   * Install dependencies with `mix deps.get`
