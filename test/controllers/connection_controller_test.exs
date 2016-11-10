@@ -134,7 +134,7 @@ defmodule GithubPagesConnector.ConnectionControllerTest do
 
   describe ".delete" do
     setup %{conn: conn, account: account} do
-      {:ok, connection} = @connections.new_connection(account, [])
+      {:ok, connection} = @connections.new_connection(account, [dnsimple_domain: "domain1.com", github_repository: "repo1"])
       {:ok, conn: conn, account: account, connection: connection}
     end
 
@@ -150,10 +150,15 @@ defmodule GithubPagesConnector.ConnectionControllerTest do
       assert @connections.list_connections(account) == []
     end
 
-    test "removes the created ALIAS record in DNSimple", %{conn: conn, account: account, connection: connection} do
+    test "removes the created records in DNSimple", %{conn: conn, account: account, connection: connection} do
+      # Making sure that both records have different ids without making the
+      # stubbing more complicated for a single test case
+      GithubPagesConnector.ConnectionEctoRepo.put(connection = Map.merge(connection, %{dnsimple_alias_id: 1, dnsimple_cname_id: 2}))
+
       delete(conn, connection_path(conn, :delete, connection))
 
       assert {:delete_record, [account, connection.dnsimple_domain, connection.dnsimple_alias_id]} in @dnsimple.calls
+      assert {:delete_record, [account, connection.dnsimple_domain, connection.dnsimple_cname_id]} in @dnsimple.calls
     end
 
     test "removes the CNAME file from the GitHub repo", %{conn: conn, account: account, connection: connection} do

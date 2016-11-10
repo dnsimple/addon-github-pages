@@ -33,6 +33,7 @@ defmodule GithubPagesConnector.Services.Connections do
   def remove_connection(account, connection_id) do
     @repo.get(connection_id)
     |> remove_alias_record(account)
+    |> remove_cname_record(account)
     |> remove_cname_file(account)
     |> @repo.remove
   end
@@ -53,6 +54,13 @@ defmodule GithubPagesConnector.Services.Connections do
     :ok = @dnsimple.delete_record(account, connection.dnsimple_domain, connection.dnsimple_alias_id)
     Map.put(connection, :dnsimple_alias_id, nil)
   end
+
+  defp remove_cname_record(connection, account) do
+    :ok = @dnsimple.delete_record(account, connection.dnsimple_domain, connection.dnsimple_cname_id)
+    Map.put(connection, :dnsimple_cname_id, nil)
+  end
+
+
 
 
   @cname_file_path "CNAME"
