@@ -4,7 +4,7 @@ defmodule GithubPagesConnector.ConnectionEctoRepoTest do
   @repo GithubPagesConnector.ConnectionEctoRepo
   @connection %GithubPagesConnector.Connection{
     dnsimple_domain: "dnsimple_domain",
-    dnsimple_record_id: 12345,
+    dnsimple_alias_id: 12345,
     github_repository: "github_repository",
     github_file_sha: "xXxXxX",
   }

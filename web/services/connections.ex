@@ -39,12 +39,12 @@ defmodule GithubPagesConnector.Services.Connections do
   defp add_alias_record(connection, account) do
     record_data   = %{name: "", type: "ALIAS", content: connection.github_repository}
     {:ok, record} = @dnsimple.create_record(account, connection.dnsimple_domain, record_data)
-    Map.put(connection, :dnsimple_record_id, record.id)
+    Map.put(connection, :dnsimple_alias_id, record.id)
   end
 
   defp remove_alias_record(connection, account) do
-    :ok = @dnsimple.delete_record(account, connection.dnsimple_domain, connection.dnsimple_record_id)
-    Map.put(connection, :dnsimple_record_id, nil)
+    :ok = @dnsimple.delete_record(account, connection.dnsimple_domain, connection.dnsimple_alias_id)
+    Map.put(connection, :dnsimple_alias_id, nil)
   end
 
 

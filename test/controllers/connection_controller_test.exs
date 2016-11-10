@@ -102,7 +102,7 @@ defmodule GithubPagesConnector.ConnectionControllerTest do
       post(conn, connection_path(conn, :create), repository: "repo1", domain: "domain1.com")
 
       [connection] = @connections.list_connections(account)
-      refute connection.dnsimple_record_id == nil
+      refute connection.dnsimple_alias_id == nil
       assert {:create_record, [account, "domain1.com", %{name: "", type: "ALIAS", content: "repo1"}]} in @dnsimple.calls
     end
 
@@ -152,7 +152,7 @@ defmodule GithubPagesConnector.ConnectionControllerTest do
     test "removes the created ALIAS record in DNSimple", %{conn: conn, account: account, connection: connection} do
       delete(conn, connection_path(conn, :delete, connection))
 
-      assert {:delete_record, [account, connection.dnsimple_domain, connection.dnsimple_record_id]} in @dnsimple.calls
+      assert {:delete_record, [account, connection.dnsimple_domain, connection.dnsimple_alias_id]} in @dnsimple.calls
     end
 
     test "removes the CNAME file from the GitHub repo", %{conn: conn, account: account, connection: connection} do
