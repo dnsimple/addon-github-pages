@@ -51,16 +51,34 @@ defmodule GithubPagesConnector.ConnectionControllerTest do
   end
 
   describe ".preview" do
-    @tag :skip
     test "displays the preview of the connection", %{conn: conn} do
+      conn = post(conn, connection_path(conn, :preview), repository: "repo1", domain: "domain1.com")
+
+      response = html_response(conn, 200)
+      assert response =~ "Connecting"
+      assert response =~ "Create connection"
     end
 
-    @tag :skip
+    test "displays the new content for the CNAME file", %{conn: conn} do
+      @github.stub(:get_file, {:error, :notfound})
+
+      conn = post(conn, connection_path(conn, :preview), repository: "repo1", domain: "domain1.com")
+
+      response = html_response(conn, 200)
+      assert response =~ "A new file is going to be created"
+      assert response =~ "domain1.com"
+    end
+
+
     test "displays the existing CNAME file content if it exists", %{conn: conn} do
-    end
+      @github.stub(:get_file, {:ok, %{content: "existing content"}})
 
-    @tag :skip
-    test "includes the domain and repository in the form", %{conn: conn} do
+      conn = post(conn, connection_path(conn, :preview), repository: "repo1", domain: "domain1.com")
+
+      response = html_response(conn, 200)
+      assert response =~ "A file has been found"
+      assert response =~ "existing content"
+      assert response =~ "domain1.com"
     end
   end
 
@@ -86,6 +104,7 @@ defmodule GithubPagesConnector.ConnectionControllerTest do
       [connection] = @connections.list_connections(account)
       refute connection.dnsimple_record_id == nil
       assert {:create_record, [account, "domain1.com", %{name: "", type: "ALIAS", content: "repo1"}]} in @dnsimple.calls
+      assert {:create_record, [account, "domain1.com", %{name: "www", type: "CNAME", content: "domain1.com"}]} in @dnsimple.calls
     end
 
     test "creates the CNAME file in the GitHub repo", %{conn: conn, account: account} do
