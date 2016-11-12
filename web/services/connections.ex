@@ -38,6 +38,9 @@ defmodule GithubPagesConnector.Services.Connections do
     |> @repo.remove
   end
 
+  # Record management
+  ##############################################################################
+
   defp add_alias_record(connection, account) do
     record_data   = %{name: "", type: "ALIAS", content: connection.github_repository}
     {:ok, record} = @dnsimple.create_record(account, connection.dnsimple_domain, record_data)
@@ -60,44 +63,42 @@ defmodule GithubPagesConnector.Services.Connections do
     Map.put(connection, :dnsimple_cname_id, nil)
   end
 
+
+  # CNAME file management
+  ##############################################################################
+
   @cname_file_path "CNAME"
 
-  def get_cname_file(account, repository) do
-    @github.get_file(account, repository, @cname_file_path)
-  end
-
   def configure_cname_file(connection, account) do
-    case get_cname_file(account, connection.github_repository) do
+    case get_cname_file(connection.github_repository, account) do
       {:ok, %{sha: sha}}  -> update_cname_file(connection, account, sha)
       {:error, :notfound} -> create_cname_file(connection, account)
       {:error, error}     -> {:error, error}
     end
   end
 
-  defp create_cname_file(connection, account) do
-    file_path      = @cname_file_path
-    file_content   = connection.dnsimple_domain
-    commit_message = "Configure custom domain with DNSimple"
-    {:ok, commit}  = @github.create_file(account, connection.github_repository, file_path, file_content, commit_message)
+  def get_cname_file(repository, account) do
+    @github.get_file(account, repository, @cname_file_path)
+  end
+
+  def create_cname_file(connection, account) do
+    {:ok, commit} = @github.create_file(account, connection.github_repository, @cname_file_path, connection.dnsimple_domain, "Configure custom domain with DNSimple")
     Map.put(connection, :github_file_sha, commit["content"]["sha"])
   end
 
-  defp update_cname_file(connection, account, file_sha) do
-    file_path      = @cname_file_path
-    file_content   = connection.dnsimple_domain
-    commit_message = "Configure custom domain with DNSimple"
-    {:ok, commit}  = @github.update_file(account, connection.github_repository, file_path, file_content, file_sha, commit_message)
+  def update_cname_file(connection, account, existing_file_sha) do
+    {:ok, commit} = @github.update_file(account, connection.github_repository, @cname_file_path, connection.dnsimple_domain, existing_file_sha, "Configure custom domain with DNSimple")
     Map.put(connection, :github_file_sha, commit["content"]["sha"])
   end
 
-  defp remove_cname_file(connection, account) do
-    file_path      = @cname_file_path
-    file_sha       = connection.github_file_sha
-    commit_message = "Remove DNSimple custom domain configuration"
-    {:ok, _commit} = @github.delete_file(account, connection.github_repository, file_path, file_sha, commit_message)
+  def remove_cname_file(connection, account) do
+    {:ok, _commit} = @github.delete_file(account, connection.github_repository, @cname_file_path, connection.github_file_sha, "Remove DNSimple custom domain configuration")
     Map.put(connection, :github_file_sha, nil)
   end
 
+
+  # 1-click-service management
+  #############################################################################
 
   defp disable_one_click_service(connection, account) do
     if github_pages_service = get_github_pages_applied_service(connection, account) do
