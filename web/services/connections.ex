@@ -25,6 +25,7 @@ defmodule GithubPagesConnector.Services.Connections do
     struct(Connection, connection_data)
     |> disable_one_click_service(account)
     |> add_alias_record(account)
+    |> add_cname_record(account)
     |> configure_cname_file(account)
     |> @repo.put
   end
@@ -32,6 +33,7 @@ defmodule GithubPagesConnector.Services.Connections do
   def remove_connection(account, connection_id) do
     @repo.get(connection_id)
     |> remove_alias_record(account)
+    |> remove_cname_record(account)
     |> remove_cname_file(account)
     |> @repo.remove
   end
@@ -39,14 +41,24 @@ defmodule GithubPagesConnector.Services.Connections do
   defp add_alias_record(connection, account) do
     record_data   = %{name: "", type: "ALIAS", content: connection.github_repository}
     {:ok, record} = @dnsimple.create_record(account, connection.dnsimple_domain, record_data)
-    Map.put(connection, :dnsimple_record_id, record.id)
+    Map.put(connection, :dnsimple_alias_id, record.id)
+  end
+
+  defp add_cname_record(connection, account) do
+    record_data   = %{name: "www", type: "CNAME", content: connection.dnsimple_domain}
+    {:ok, record} = @dnsimple.create_record(account, connection.dnsimple_domain, record_data)
+    Map.put(connection, :dnsimple_cname_id, record.id)
   end
 
   defp remove_alias_record(connection, account) do
-    :ok = @dnsimple.delete_record(account, connection.dnsimple_domain, connection.dnsimple_record_id)
-    Map.put(connection, :dnsimple_record_id, nil)
+    :ok = @dnsimple.delete_record(account, connection.dnsimple_domain, connection.dnsimple_alias_id)
+    Map.put(connection, :dnsimple_alias_id, nil)
   end
 
+  defp remove_cname_record(connection, account) do
+    :ok = @dnsimple.delete_record(account, connection.dnsimple_domain, connection.dnsimple_cname_id)
+    Map.put(connection, :dnsimple_cname_id, nil)
+  end
 
   @cname_file_path "CNAME"
 

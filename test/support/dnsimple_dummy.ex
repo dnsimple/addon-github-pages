@@ -16,7 +16,7 @@ defmodule GithubPagesConnector.DnsimpleDummy do
 
   def create_record(account, domain_name, record_data) do
     record_call(:create_record, [account, domain_name, record_data])
-    get_stubbed_value(:create_record, {:ok, %Dnsimple.ZoneRecord{id: 1, type: "ALIAS", content: record_data.content}})
+    get_stubbed_value(:create_record, {:ok, Map.merge(%Dnsimple.ZoneRecord{id: :rand.uniform(100_000)}, record_data)})
   end
 
   def delete_record(account, domain_name, record_id) do
