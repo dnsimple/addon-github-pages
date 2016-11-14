@@ -112,4 +112,82 @@ defmodule GithubPagesConnector.Services.Connections do
     Enum.find(applied_services, &(&1.name == "GitHub Pages"))
   end
 
+
+  #############################################################################
+  #############################################################################
+  #############################################################################
+  #############################################################################
+  #############################################################################
+
+  alias GithubPagesConnector.TransactionalPipeline
+
+  def new_new_connection(account, connection_data) do
+    connection = struct(Connection, Keyword.merge(connection_data, account_id: account.id))
+    pipeline   = [
+      &new_add_alias_record/2,
+      &new_add_cname_record/2,
+      &force_error/2,
+    ]
+
+    case TransactionalPipeline.run(pipeline, [connection, account]) do
+      {:ok, [connection, account]} ->
+        IO.inspect(connection)
+        @repo.put(connection)
+      {:error, error} ->
+        {:error, error}
+    end
+  end
+
+  defp force_error(_connection, _acccount), do: {:error, "forced error"}
+
+
+  # Record management
+  ##############################################################################
+
+  defp new_add_alias_record(connection, account) do
+    record_data = %{name: "", type: "ALIAS", content: connection.github_repository}
+    case @dnsimple.create_record(account, connection.dnsimple_domain, record_data) do
+      {:ok, record} ->
+        connection = Map.put(connection, :dnsimple_alias_id, record.id)
+        revert     = fn -> new_remove_alias_record(connection, account) end
+        {:ok, [connection, account], [revert]}
+      {:error, details} ->
+        {:error, details}
+    end
+  end
+
+  defp new_add_cname_record(connection, account) do
+    record_data = %{name: "www", type: "CNAME", content: connection.dnsimple_domain}
+    case @dnsimple.create_record(account, connection.dnsimple_domain, record_data) do
+      {:ok, record} ->
+        connection = Map.put(connection, :dnsimple_cname_id, record.id)
+        revert     = fn -> new_remove_cname_record(connection, account) end
+        {:ok, [connection, account], [revert]}
+      {:error, details} ->
+        {:error, details}
+    end
+  end
+
+  defp new_remove_alias_record(connection, account) do
+    case @dnsimple.delete_record(account, connection.dnsimple_domain, connection.dnsimple_alias_id) do
+      :ok ->
+        connection = Map.put(connection, :dnsimple_alias_id, nil)
+        revert     = fn -> new_add_alias_record(connection, account) end
+        {:ok, [connection, account], [revert]}
+      {:error, error} ->
+        {:error, error}
+    end
+  end
+
+  defp new_remove_cname_record(connection, account) do
+    case @dnsimple.delete_record(account, connection.dnsimple_domain, connection.dnsimple_cname_id) do
+      :ok ->
+        connection = Map.put(connection, :dnsimple_cname_id, nil)
+        revert     = fn -> new_add_cname_record(connection, account) end
+        {:ok, [connection, account], [revert]}
+      {:error, error} ->
+        {:error, error}
+    end
+  end
+
 end
