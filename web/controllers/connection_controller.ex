@@ -38,7 +38,7 @@ defmodule GithubPagesConnector.ConnectionController do
         render(conn, "preview.html", domain: domain, repository: repository, content: "", cname_file_exists: false)
       {:error, error} ->
         conn
-        |> put_flash(:error, "Something went wrong: #{error.message}")
+        |> put_flash(:error, "Something went wrong: #{error}")
         |> redirect(to: connection_path(conn, :index))
     end
   end
@@ -55,7 +55,7 @@ defmodule GithubPagesConnector.ConnectionController do
         |> redirect(to: connection_path(conn, :index))
       {:error, error} ->
         conn
-        |> put_flash(:error, "Something went wrong: #{error.message}")
+        |> put_flash(:error, "Something went wrong: #{error}")
         |> redirect(to: connection_path(conn, :new))
     end
   end
@@ -68,7 +68,7 @@ defmodule GithubPagesConnector.ConnectionController do
         |> redirect(to: connection_path(conn, :index))
       {:error, error} ->
         conn
-        |> put_flash(:error, "Something went wrong: #{error.message}")
+        |> put_flash(:error, "Something went wrong: #{error}")
         |> redirect(to: connection_path(conn, :index))
     end
   end
