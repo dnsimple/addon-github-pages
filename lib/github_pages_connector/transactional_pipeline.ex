@@ -82,7 +82,7 @@ defmodule GithubPagesConnector.TransactionalPipeline do
   end
 
   defp revert(rollback) do
-    Enum.each(rollback, fn(rollback_fun) -> rollback_fun.() end)
+    Enum.each(rollback, &(&1.()))
   end
 
 end
