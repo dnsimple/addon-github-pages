@@ -27,9 +27,14 @@ defmodule GithubPagesConnector.TransactionalPipelineTest do
 
   defmodule TestAgent do
     def add_random do
-      current_value = get
-      update(get + :rand.uniform(100))
-      {:ok, [], [fn -> update(current_value) end]}
+      random = :rand.uniform(100)
+      update(get + random)
+      {:ok, [], [fn -> update(get - random) end]}
+    end
+
+    def sqrt do
+      update(:math.sqrt(get))
+      {:ok, [], [fn() -> update(get * get) end]}
     end
 
     def error do
@@ -79,12 +84,14 @@ defmodule GithubPagesConnector.TransactionalPipelineTest do
     TestAgent.stop
   end
 
-  @tag :skip
   test "rollback operations are applied in reverse order" do
+    TestAgent.start_link(25)
+    TransactionalPipeline.run([&TestAgent.sqrt/0, &TestAgent.add_random/0, &TestAgent.error/0], [])
+    assert TestAgent.get == 25
+    TestAgent.stop
   end
 
   @tag :skip
-  test "pipelines can be composition of other pipelines" do
-  end
+  test "pipelines can be composition of other pipelines"
 
 end
