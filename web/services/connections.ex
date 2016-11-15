@@ -123,16 +123,18 @@ defmodule GithubPagesConnector.Services.Connections do
 
   def new_new_connection(account, connection_data) do
     connection = struct(Connection, Keyword.merge(connection_data, account_id: account.id))
-    pipeline   = [
+
+    pipeline = [
       &new_add_alias_record/2,
       &new_add_cname_record/2,
+      &new_configure_cname_file/2,
       &force_error/2,
     ]
 
     case TransactionalPipeline.run(pipeline, [connection, account]) do
       {:ok, [connection, account]} ->
         IO.inspect(connection)
-        @repo.put(connection)
+        #@repo.put(connection)
       {:error, error} ->
         {:error, error}
     end
@@ -185,6 +187,61 @@ defmodule GithubPagesConnector.Services.Connections do
         connection = Map.put(connection, :dnsimple_cname_id, nil)
         revert     = fn -> new_add_cname_record(connection, account) end
         {:ok, [connection, account], [revert]}
+      {:error, error} ->
+        {:error, error}
+    end
+  end
+
+  # CNAME file management
+  ##############################################################################
+
+  @cname_file_path "CNAME"
+
+  def new_get_cname_file(repository, account) do
+    @github.get_file(account, repository, @cname_file_path)
+  end
+
+  def new_configure_cname_file(connection, account) do
+    case new_get_cname_file(connection.github_repository, account) do
+      {:ok, %{content: content, sha: sha}} ->
+        new_update_cname_file(connection, account, content, sha)
+      {:error, :notfound} ->
+        new_create_cname_file(connection, account)
+      {:error, error} ->
+        {:error, error}
+    end
+  end
+
+  def new_create_cname_file(connection, account) do
+    case @github.create_file(account, connection.github_repository, @cname_file_path, connection.dnsimple_domain, "Configure custom domain with DNSimple") do
+      {:ok, commit} ->
+        connection = Map.put(connection, :github_file_sha, commit["content"]["sha"])
+        rollback   = fn -> new_remove_cname_file(connection, account) end
+        {:ok, [connection, account], [rollback]}
+      {:error, error} ->
+        {:error, error}
+    end
+  end
+
+  def new_update_cname_file(connection, account, existing_file_content, existing_file_sha) do
+    case @github.update_file(account, connection.github_repository, @cname_file_path, connection.dnsimple_domain, existing_file_sha, "Configure custom domain with DNSimple") do
+      {:ok, commit} ->
+        connection = Map.put(connection, :github_file_sha, commit["content"]["sha"])
+        rollback = fn ->
+          @github.update_file(account, connection.github_repository, @cname_file_path, existing_file_content, connection.github_file_sha, "Configure custom domain with DNSimple")
+        end
+        {:ok, [connection, account], [rollback]}
+      {:error, error} ->
+        {:error, error}
+    end
+  end
+
+  def new_remove_cname_file(connection, account) do
+    case @github.delete_file(account, connection.github_repository, @cname_file_path, connection.github_file_sha, "Remove DNSimple custom domain configuration") do
+      {:ok, _commit} ->
+        Map.put(connection, :github_file_sha, nil)
+        rollback = fn -> new_create_cname_file(connection, account) end
+        {:ok, [connection, account], [rollback]}
       {:error, error} ->
         {:error, error}
     end
