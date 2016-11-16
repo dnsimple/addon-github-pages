@@ -73,7 +73,7 @@ defmodule GithubPagesConnector.TransactionalPipeline do
     end
   end
 
-  defp run_step(function, args) do
+  def run_step(function, args) do
     try do
       apply(function, args)
     catch
@@ -81,7 +81,7 @@ defmodule GithubPagesConnector.TransactionalPipeline do
     end
   end
 
-  defp revert(rollback) do
+  def revert(rollback) do
     Enum.each(rollback, &(&1.()))
   end
 
