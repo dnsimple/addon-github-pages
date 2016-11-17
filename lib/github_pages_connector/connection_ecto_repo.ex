@@ -22,7 +22,10 @@ defmodule GithubPagesConnector.ConnectionEctoRepo do
   end
 
   def remove(connection) do
-    Repo.delete(connection)
+    case Repo.delete(connection) do
+      {:ok, removed_connection} -> {:ok, Map.put(removed_connection, :id, nil)}
+      {:error, details}         -> {:error, details}
+    end
   end
 
 
