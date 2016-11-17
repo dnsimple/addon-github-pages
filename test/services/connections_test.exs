@@ -12,6 +12,46 @@ defmodule GithubPagesConnector.ConnectionsTest do
 
   setup [:reset_dummies, :setup_account]
 
+
+  describe ".save_connection" do
+    setup context do
+      connection = %Connection{dnsimple_domain: "example.com", github_repository: "example.github.io"}
+      Map.put(context, :connection, connection)
+    end
+
+    test "it saves the connection in persistent storage", %{connection: connection, account: account} do
+      {:ok, [saved_connection, _], _} = @connections._save_connection(connection, account)
+
+      refute @connection_repo.get(saved_connection.id) == nil
+    end
+
+    test "returns the correct rollback function", %{connection: connection, account: account} do
+      {:ok, [saved_connection, _], rollback} = @connections._save_connection(connection, account)
+
+      TransactionalPipeline.revert(rollback)
+
+      assert @connection_repo.get(saved_connection.id) == nil
+    end
+  end
+
+  describe ".delete_connection" do
+    setup [:setup_empty_connection]
+
+    test "it deletes the connection from persitent storage", %{connection: connection, account: account} do
+      {:ok, _, _} = @connections._delete_connection(connection, account)
+
+      assert @connection_repo.get(connection.id) == nil
+    end
+
+    test "returns the correct rollback function", %{connection: connection, account: account} do
+      {:ok, _, rollback} = @connections._delete_connection(connection, account)
+
+      TransactionalPipeline.revert(rollback)
+
+      refute @connections.list_connections(account) == []
+    end
+  end
+
   describe ".add_alias_record" do
     setup [:setup_empty_connection]
 
@@ -114,7 +154,7 @@ defmodule GithubPagesConnector.ConnectionsTest do
   end
 
   def setup_empty_connection(context) do
-    {:ok, connection} = @connection_repo.put(%Connection{dnsimple_domain: "example.com", github_repository: "example.github.io"})
+    {:ok, connection} = @connection_repo.put(%Connection{account_id: context[:account].id, dnsimple_domain: "example.com", github_repository: "example.github.io"})
     Map.put(context, :connection, connection)
   end
 

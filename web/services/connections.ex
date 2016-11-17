@@ -143,6 +143,27 @@ defmodule GithubPagesConnector.Services.Connections do
   defp force_error(_connection, _acccount), do: {:error, "forced error"}
 
 
+  # Connection management
+  ##############################################################################
+
+  def _save_connection(connection, account) do
+    case @repo.put(connection) do
+      {:ok, saved_connection} ->
+        {:ok, [saved_connection, account], [fn -> _delete_connection(saved_connection, account) end]}
+      {:error, details} ->
+        {:error, details}
+    end
+  end
+
+  def _delete_connection(connection, account) do
+    case @repo.remove(connection) do
+      {:ok, deleted_connection} ->
+        {:ok, [deleted_connection, account], [fn -> _save_connection(deleted_connection, account) end]}
+      {:error, details} ->
+        {:error, details}
+    end
+  end
+
   # Record management
   ##############################################################################
 
