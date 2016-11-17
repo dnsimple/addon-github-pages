@@ -168,6 +168,29 @@ defmodule GithubPagesConnector.Services.Connections do
     end
   end
 
+  def _add_cname_record(connection, account) do
+    record_data = %{name: "www", type: "CNAME", content: connection.dnsimple_domain}
+    case @dnsimple.create_record(account, connection.dnsimple_domain, record_data) do
+      {:ok, record} ->
+        {:ok, connection} = @repo.put(Map.put(connection, :dnsimple_cname_id, record.id))
+        {:ok, [connection, account], [fn -> _remove_cname_record(connection, account) end]}
+      {:error, details} ->
+        {:error, details}
+    end
+  end
+
+  def _remove_cname_record(connection, account) do
+    case @dnsimple.delete_record(account, connection.dnsimple_domain, connection.dnsimple_cname_id) do
+      :ok ->
+        {:ok, connection} = @repo.put(Map.put(connection, :dnsimple_cname_id, nil))
+        {:ok, [connection, account], [fn -> _add_cname_record(connection, account) end]}
+      {:error, details} ->
+        IO.inspect(details)
+        {:error, details}
+    end
+  end
+
+
   def new_add_alias_record(connection, account) do
     record_data = %{name: "", type: "ALIAS", content: connection.github_repository}
     case @dnsimple.create_record(account, connection.dnsimple_domain, record_data) do
