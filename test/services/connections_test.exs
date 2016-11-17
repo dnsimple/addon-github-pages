@@ -142,6 +142,38 @@ defmodule GithubPagesConnector.ConnectionsTest do
     end
   end
 
+  describe ".remove_cname_record" do
+    setup context do
+      {:ok, connection} = @connection_repo.put(%Connection{dnsimple_domain: "example.com", github_repository: "example.github.io", dnsimple_cname_id: 67890})
+      Map.put(context, :connection, connection)
+    end
+
+    test "removes the cname record", %{connection: connection, account: account} do
+      {:ok, _, _} = @connections._remove_cname_record(connection, account)
+
+      assert {:delete_record, [account, "example.com", connection.dnsimple_cname_id]} in @dnsimple.calls
+    end
+
+    test "clears the record id in the connection", %{connection: connection, account: account} do
+      {:ok, [connection, _], _} = @connections._remove_cname_record(connection, account)
+
+      stored_connection = @connection_repo.get(connection.id)
+      assert connection.dnsimple_cname_id == nil
+      assert stored_connection.dnsimple_cname_id == nil
+    end
+
+    test "returns the correct rollback function", %{connection: connection, account: account} do
+      {:ok, _, rollback} = @connections._remove_cname_record(connection, account)
+
+      TransactionalPipeline.revert(rollback)
+
+      stored_connection = @connection_repo.get(connection.id)
+      refute stored_connection.dnsimple_cname_id == nil
+      refute stored_connection.dnsimple_cname_id == connection.dnsimple_cname_id
+      assert {:create_record, [account, "example.com", %{name: "www", type: "CNAME", content: "example.com"}]} in @dnsimple.calls
+    end
+  end
+
 
   def reset_dummies(context) do
     @dnsimple.reset
