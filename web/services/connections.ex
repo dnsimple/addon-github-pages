@@ -158,11 +158,12 @@ defmodule GithubPagesConnector.Services.Connections do
   def _delete_connection(connection, account) do
     case @repo.remove(connection) do
       {:ok, deleted_connection} ->
-        {:ok, [deleted_connection, account], [fn -> _save_connection(deleted_connection, account) end]}
+        {:ok, [deleted_connection, account], []}
       {:error, details} ->
         {:error, details}
     end
   end
+
 
   # Record management
   ##############################################################################

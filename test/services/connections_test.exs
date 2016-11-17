@@ -13,7 +13,7 @@ defmodule GithubPagesConnector.ConnectionsTest do
   setup [:reset_dummies, :setup_account]
 
 
-  describe ".save_connection" do
+  describe "._save_connection" do
     setup context do
       connection = %Connection{dnsimple_domain: "example.com", github_repository: "example.github.io"}
       Map.put(context, :connection, connection)
@@ -34,7 +34,7 @@ defmodule GithubPagesConnector.ConnectionsTest do
     end
   end
 
-  describe ".delete_connection" do
+  describe "._delete_connection" do
     setup [:setup_empty_connection]
 
     test "it deletes the connection from persitent storage", %{connection: connection, account: account} do
@@ -43,16 +43,14 @@ defmodule GithubPagesConnector.ConnectionsTest do
       assert @connection_repo.get(connection.id) == nil
     end
 
-    test "returns the correct rollback function", %{connection: connection, account: account} do
+    test "returns no rollback function because it's the last function", %{connection: connection, account: account} do
       {:ok, _, rollback} = @connections._delete_connection(connection, account)
 
-      TransactionalPipeline.revert(rollback)
-
-      refute @connections.list_connections(account) == []
+     assert rollback == []
     end
   end
 
-  describe ".add_alias_record" do
+  describe "._add_alias_record" do
     setup [:setup_empty_connection]
 
     test "adds the alias record", %{connection: connection, account: account} do
@@ -81,7 +79,7 @@ defmodule GithubPagesConnector.ConnectionsTest do
     end
   end
 
-  describe ".remove_alias_record" do
+  describe "._remove_alias_record" do
     setup context do
       {:ok, connection} = @connection_repo.put(%Connection{dnsimple_domain: "example.com", github_repository: "example.github.io", dnsimple_alias_id: 12345})
       Map.put(context, :connection, connection)
@@ -113,7 +111,7 @@ defmodule GithubPagesConnector.ConnectionsTest do
     end
   end
 
-  describe ".add_cname_record" do
+  describe "._add_cname_record" do
     setup [:setup_empty_connection]
 
     test "adds the cname record", %{connection: connection, account: account} do
@@ -142,7 +140,7 @@ defmodule GithubPagesConnector.ConnectionsTest do
     end
   end
 
-  describe ".remove_cname_record" do
+  describe "._remove_cname_record" do
     setup context do
       {:ok, connection} = @connection_repo.put(%Connection{dnsimple_domain: "example.com", github_repository: "example.github.io", dnsimple_cname_id: 67890})
       Map.put(context, :connection, connection)
