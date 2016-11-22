@@ -8,6 +8,7 @@ defmodule GithubPagesConnector.ConnectionsTest do
   @connection_repo GithubPagesConnector.ConnectionEctoRepo
   @connections GithubPagesConnector.Services.Connections
   @dnsimple GithubPagesConnector.DnsimpleDummy
+  @github GithubPagesConnector.GithubDummy
 
 
   setup [:reset_dummies, :setup_account]
@@ -172,18 +173,110 @@ defmodule GithubPagesConnector.ConnectionsTest do
     end
   end
 
+  describe "_create_cname_file" do
+    setup [:setup_empty_connection]
 
-  def reset_dummies(context) do
+    test "creates the cname file", %{connection: connection, account: account} do
+      {:ok, _, _} = @connections._create_cname_file(connection, account)
+
+      assert {:create_file, [account, "example.github.io", "CNAME", "example.com", "Configure custom domain with DNSimple"]} in @github.calls
+    end
+
+    test "stores the created file SHA in the connection", %{connection: connection, account: account} do
+      {:ok, [connection, _], _} = @connections._create_cname_file(connection, account)
+
+      stored_connection = @connection_repo.get(connection.id)
+      refute connection.github_file_sha == nil
+      refute stored_connection.github_file_sha == nil
+      assert stored_connection.github_file_sha == connection.github_file_sha
+    end
+
+    test "returns the correct rollback function", %{connection: connection, account: account} do
+      {:ok, [connection, _], rollback} = @connections._create_cname_file(connection, account)
+
+      TransactionalPipeline.revert(rollback)
+
+      stored_connection = @connection_repo.get(connection.id)
+      assert stored_connection.github_file_sha == nil
+      assert {:delete_file, [account, "example.github.io", "CNAME", connection.github_file_sha, "Remove DNSimple custom domain configuration"]} in @github.calls
+    end
+  end
+
+  describe "_remove_cname_file" do
+    setup context do
+      {:ok, connection} = @connection_repo.put(%Connection{dnsimple_domain: "example.com", github_repository: "example.github.io", github_file_sha: "cname_file_sha"})
+      Map.put(context, :connection, connection)
+    end
+
+    test "deletes the cname file", %{connection: connection, account: account} do
+      {:ok, _, _} = @connections._remove_cname_file(connection, account)
+
+      assert {:delete_file, [account, "example.github.io", "CNAME", connection.github_file_sha, "Remove DNSimple custom domain configuration"]} in @github.calls
+    end
+
+    test "clears the file SHA in the connection", %{connection: connection, account: account} do
+      {:ok, [connection, _], _} = @connections._remove_cname_file(connection, account)
+
+      stored_connection = @connection_repo.get(connection.id)
+      assert connection.github_file_sha == nil
+      assert stored_connection.github_file_sha == nil
+    end
+
+    test "returns the correct rollback function", %{connection: connection, account: account} do
+      {:ok, _, rollback} = @connections._remove_cname_file(connection, account)
+
+      TransactionalPipeline.revert(rollback)
+
+      stored_connection = @connection_repo.get(connection.id)
+      refute stored_connection.github_file_sha == nil
+      assert {:create_file, [account, "example.github.io", "CNAME", "example.com", "Configure custom domain with DNSimple"]} in @github.calls
+    end
+  end
+
+  describe "_update_cname_file" do
+    setup context do
+      {:ok, connection} = @connection_repo.put(%Connection{dnsimple_domain: "example.com", github_repository: "example.github.io", github_file_sha: "cname_file_sha"})
+      Map.merge(context, %{connection: connection, sha: "current-sha", content: "current-content"})
+    end
+
+    test "updates the cname file", %{connection: connection, account: account, content: content, sha: sha} do
+      {:ok, _, _} = @connections._update_cname_file(connection, account, connection.dnsimple_domain, content, sha)
+
+      assert {:update_file, [account, "example.github.io", "CNAME", "example.com", sha, "Configure custom domain with DNSimple"]} in @github.calls
+    end
+
+    test "stores the file SHA in the connection", %{connection: connection, account: account, content: content, sha: sha} do
+      {:ok, [connection, _], _} = @connections._update_cname_file(connection, account, connection.dnsimple_domain, content, sha)
+
+      stored_connection = @connection_repo.get(connection.id)
+      refute connection.github_file_sha == nil
+      assert stored_connection.github_file_sha == connection.github_file_sha
+    end
+
+    test "returns the correct rollback function", %{connection: connection, account: account, content: content, sha: sha} do
+      {:ok, [connection, _], rollback} = @connections._update_cname_file(connection, account, connection.dnsimple_domain, content, sha)
+
+      TransactionalPipeline.revert(rollback)
+
+      stored_connection = @connection_repo.get(connection.id)
+      assert stored_connection.github_file_sha == "sha"
+      assert {:update_file, [account, "example.github.io", "CNAME", content, "sha", "Configure custom domain with DNSimple"]} in @github.calls
+    end
+  end
+
+
+  defp reset_dummies(context) do
     @dnsimple.reset
+    @github.reset
     context
   end
 
-  def setup_account(context) do
+  defp setup_account(context) do
     {:ok, account} = @account_repo.put(%GithubPagesConnector.Account{dnsimple_account_id: "dnsimple_account_id"})
     Map.put(context, :account, account)
   end
 
-  def setup_empty_connection(context) do
+  defp setup_empty_connection(context) do
     {:ok, connection} = @connection_repo.put(%Connection{account_id: context[:account].id, dnsimple_domain: "example.com", github_repository: "example.github.io"})
     Map.put(context, :connection, connection)
   end

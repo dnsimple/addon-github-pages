@@ -43,7 +43,9 @@ defmodule GithubPagesConnector.Gateways.Dnsimple do
   def delete_record(account = %Account{dnsimple_account_id: account_id}, domain_name, record_id) do
     case Dnsimple.Zones.delete_zone_record(client(account), account_id, domain_name, record_id) do
       {:ok, _response} -> :ok
-      {:error, error}  -> {:error, error_message(error)}
+      {:error, error}  -> 
+        IO.inspect(error)
+        {:error, error_message(error)}
     end
   end
 
@@ -54,8 +56,15 @@ defmodule GithubPagesConnector.Gateways.Dnsimple do
     end
   end
 
-  def disable_service(account = %Account{dnsimple_account_id: account_id}, domain_name, applied_service_id) do
-    case Dnsimple.Services.unapply_service(client(account), account_id, domain_name, applied_service_id) do
+  def enable_service(account = %Account{dnsimple_account_id: account_id}, domain_name, service_id, github_name) do
+    case Dnsimple.Services.apply_service(client(account), account_id, domain_name, service_id, github_name: github_name) do
+      {:ok, _response} -> :ok
+      {:error, error}  -> {:error, error_message(error)}
+    end
+  end
+
+  def disable_service(account = %Account{dnsimple_account_id: account_id}, domain_name, service_id) do
+    case Dnsimple.Services.unapply_service(client(account), account_id, domain_name, service_id) do
       {:ok, _response} -> :ok
       {:error, error}  -> {:error, error_message(error)}
     end

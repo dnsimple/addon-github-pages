@@ -31,7 +31,7 @@ defmodule GithubPagesConnector.ConnectionController do
     domain     = params["domain"]
     repository = params["repository"]
 
-    case @connections.get_cname_file(account, repository) do
+    case @connections.get_cname_file(repository, account) do
       {:ok, %{content: content}} ->
         render(conn, "preview.html", domain: domain, repository: repository, content: content, cname_file_exists: true)
       {:error, :notfound} ->
@@ -55,7 +55,7 @@ defmodule GithubPagesConnector.ConnectionController do
         |> redirect(to: connection_path(conn, :index))
       {:error, error} ->
         conn
-        |> put_flash(:error, "Something went wrong: #{error}")
+        |> put_flash(:error, "Something went wrong: #{inspect(error)}")
         |> redirect(to: connection_path(conn, :new))
     end
   end
