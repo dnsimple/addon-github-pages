@@ -21,6 +21,11 @@ defmodule GithubPagesConnector.ConnectionEctoRepo do
     end
   end
 
+  def put_attribute(connection, attribute_name, attribute_value) do
+    changeset = Connection.attribute_changeset(connection, attribute_name, attribute_value)
+    |> Repo.update
+  end
+
   def remove(connection) do
     case Repo.delete(connection) do
       {:ok, removed_connection} -> {:ok, Map.put(removed_connection, :id, nil)}
@@ -30,12 +35,12 @@ defmodule GithubPagesConnector.ConnectionEctoRepo do
 
 
   defp insert(connection) do
-    Connection.changeset(connection, connection)
+    Connection.upsert_changeset(connection, connection)
     |> Repo.insert
   end
 
   defp update(connection, updated_connection) do
-    Connection.changeset(connection, updated_connection)
+    Connection.upsert_changeset(connection, updated_connection)
     |> Repo.update
   end
 
