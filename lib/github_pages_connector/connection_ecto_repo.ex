@@ -22,7 +22,7 @@ defmodule GithubPagesConnector.ConnectionEctoRepo do
   end
 
   def put_attribute(connection, attribute_name, attribute_value) do
-    changeset = Connection.attribute_changeset(connection, attribute_name, attribute_value)
+    Connection.attribute_changeset(connection, attribute_name, attribute_value)
     |> Repo.update
   end
 

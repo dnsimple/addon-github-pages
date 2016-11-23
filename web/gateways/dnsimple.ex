@@ -88,7 +88,7 @@ defmodule GithubPagesConnector.Gateways.Dnsimple do
     body    = Poison.decode!(error.http_response.body)
     errors  = body["errors"]["base"]
     if is_list(errors) && !Enum.empty?(errors) do
-      message = "#{message}: #{Enum.join(errors, ". ")}"
+      "#{message}: #{Enum.join(errors, ". ")}"
     else
       message
     end
