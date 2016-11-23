@@ -73,7 +73,6 @@ defmodule GithubPagesConnector.Services.Connections do
     end
   end
 
-
   # Record management
   ##############################################################################
 
