@@ -1,0 +1,20 @@
+.dn-btn {
+  padding: $spacing-small $spacing-medium;
+  border: 0;
+  border-radius: 2px;
+  text-decoration: none !important;
+  cursor: pointer;
+  &:hover {
+    opacity: .5;
+  }
+}
+
+.dn-btn-primary {
+  background: $blue;
+  color: $white
+}
+
+.dn-btn-default {
+  background: $silver;
+  color: $white;
+}
