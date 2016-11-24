@@ -75,7 +75,7 @@
 
 	.awesomplete > ul > li {
 		position: relative;
-		padding: .2em .5em;
+		padding: .7em .5em;
 		cursor: pointer;
 	}
 	
@@ -85,7 +85,7 @@
 	}
 	
 	.awesomplete > ul > li[aria-selected="true"] {
-		background: hsl(205, 40%, 40%);
+		background: #1A5EC6;
 		color: white;
 	}
 	
