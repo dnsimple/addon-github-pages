@@ -9,6 +9,12 @@
   }
 }
 
+.dn-btn-lg {
+  padding: $spacing-medium $spacing-large;
+  border-radius: 4px;
+  font-size: 1.25rem;
+}
+
 .dn-btn-primary {
   background: $blue;
   color: $white
