@@ -19,12 +19,7 @@
       <h3 class="dib ma0 pl1 f3 fw4 v-mid">Domains</h3>
       <%= if Enum.count(@domains) > 10 do %>
         <p class="gray">Showing 10 out of <%= Enum.count(@domains) %> domains. Use the search if your domain does not appear below.</p>
-        <input name="domain" class="awesomplete w-100 input-reset pa2 mb3 ba b--light-silver br1" data-minchars=1 data-autofirst=true placeholder="Search your domains" data-list="#domain-list" />
-        <ul class="dn" id="domain-list">
-        <%= for domain <- domain_names(@domains) do %>
-          <li><%= domain %></li>
-        <% end %>
-        </ul>
+        <input id="js-domain-input" name="domain" class="db w-100 input-reset pa2 mb3 ba b--light-silver br1" placeholder="Search your domains" data-list="#domain-list" />
       <% else %>
         <p class="gray">Showing <%= Enum.count(@domains) %> domains</p>
       <% end %>
