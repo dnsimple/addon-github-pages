@@ -60,6 +60,10 @@ defmodule GithubPagesConnector.ConnectionController do
     end
   end
 
+  def edit(conn, params) do
+    text conn, "Editing connection #{params["id"]}"
+  end
+
   def delete(conn, params) do
     case @connections.remove_connection(conn.assigns[:current_account], params["id"]) do
       {:ok, connection} ->

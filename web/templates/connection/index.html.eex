@@ -9,6 +9,7 @@
     <%= for connection <- @connections do %>
       <li>
         <%= connection.dnsimple_domain %> to <%= connection.github_repository %>
+        <%= link "Edit", to: connection_path(@conn, :edit, connection) %>
         <%= link "Delete", to: connection_path(@conn, :delete, connection), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
       </li>
     <% end %>
