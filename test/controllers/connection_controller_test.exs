@@ -59,8 +59,8 @@ defmodule GithubPagesConnector.ConnectionControllerTest do
       assert response =~ "Create connection"
     end
 
-    test "displays the new content for the CNAME file", %{conn: conn} do
-      @github.stub(:get_file, {:error, :notfound})
+    test "displays the new content for the CNAME file", %{conn: conn, account: account} do
+      @github.stub(:get_file, [account, "repo1", "CNAME"], {:error, :notfound})
 
       conn = post(conn, connection_path(conn, :preview), repository: "repo1", domain: "domain1.com")
 
