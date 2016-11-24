@@ -70,8 +70,8 @@ defmodule GithubPagesConnector.ConnectionControllerTest do
     end
 
 
-    test "displays the existing CNAME file content if it exists", %{conn: conn} do
-      @github.stub(:get_file, {:ok, %{content: "existing content"}})
+    test "displays the existing CNAME file content if it exists", %{conn: conn, account: account} do
+      @github.stub(:get_file, [account, "repo1", "CNAME"], {:ok, %{content: "existing content"}})
 
       conn = post(conn, connection_path(conn, :preview), repository: "repo1", domain: "domain1.com")
 
