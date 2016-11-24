@@ -1,4 +1,4 @@
-<div class="mw6 center">
+<div class="mw7 center">
   <h2>New connection</h2>
   <%= form_for @conn, connection_path(@conn, :preview), [as: :connection], fn _f -> %>
 

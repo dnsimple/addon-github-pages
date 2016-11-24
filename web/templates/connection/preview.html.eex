@@ -1,17 +1,17 @@
-<div class="mw6 center">
+<div class="mw7 center">
   <h2>Connecting</h2>
   <div class="dib bg-white pa3 ba b--light-gray br2">
     <img class="dib w2 v-mid" src="<%= static_path(@conn, "/images/github-icon.svg") %>" alt="" />
     <p class="dib ma0 pl1 f4 fw4 v-mid"><%= @repository %></p>
   </div>
-  <img class="dib w2 v-mid" src="<%= static_path(@conn, "/images/triangle.svg") %>" alt="" />
+  <img class="dib w2 v-mid" src="<%= static_path(@conn, "/images/connection.svg") %>" alt="" />
   <div class="dib bg-white pa3 ba b--light-gray br2">
     <img class="dib w2 v-mid" src="<%= static_path(@conn, "/images/dnsimple-logo.svg") %>" alt="" />
     <p class="dib ma0 pl1 f4 fw4 v-mid"><%= @domain %></p>
   </div>
 
   <%= if @cname_file_exists do %>
-    <div class="pv2 ph3 mv3 bg-light-yellow ba b--yellow br2 lh-copy">
+    <div class="pv2 ph3 mv3 bg-light-yellow br2 lh-copy">
       <h3 class="mt2">Warning</h3>
       <p>A <span class="ph1 br2 bg-white-40 code">/CNAME</span> file has been found in the repository <strong><%= @repository %></strong> with the following content:</p>
       <pre class="pa2 br2 bg-white-40 code">
@@ -23,10 +23,13 @@
       </pre>
     </div>
   <% else %>
-    <p>A new file is going to be created in <code><%= @repository %>/CNAME</code> with the following content:</p>
-    <pre>
-      <%= @domain %>
-    </pre>
+    <div class="pv2 ph3 mv3 bg-light-blue br2 lh-copy">
+      <h3 class="mt3">Info</h3>
+      <p>A <span class="ph1 br2 bg-white-40 code">/CNAME</span> file will be created in the <strong><%= @repository %></strong> with the following content:</p>
+      <pre class="pa2 br2 bg-white-40 code">
+        <%= @domain %>
+      </pre>
+    </div>
   <% end %>
 
   <%= form_for @conn, connection_path(@conn, :create), [as: :connection], fn _f -> %>
