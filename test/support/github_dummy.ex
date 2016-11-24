@@ -9,11 +9,13 @@ defmodule GithubPagesConnector.GithubDummy do
      {:ok, "github_account_id", "github_account_login", "github_access_token"}
   end
 
-  def list_all_repositories(_account) do
-    {:ok , [%{"name" => "user.github.io"}, %{"name" => "org.github.io"}, %{"name" => "project"}]}
+  def list_all_repositories(account) do
+    record_call(:list_all_repositories, [account])
+    get_stubbed_value(:list_all_repositories, {:ok , [%{"name" => "user.github.io"}, %{"name" => "org.github.io"}, %{"name" => "project"}]})
   end
 
-  def get_file(_account, _repository, _path) do
+  def get_file(account, repository, path) do
+    record_call(:get_file, [account, repository, path])
     get_stubbed_value(:get_file, {:ok, %{content: "content", sha: "sha"}})
   end
 
