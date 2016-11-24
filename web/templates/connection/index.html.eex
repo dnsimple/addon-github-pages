@@ -1,9 +1,4 @@
-<nav>
-  <%= link "New connection", to: connection_path(@conn, :new), class: "dn-btn dn-btn-primary" %>
-</nav>
-
 <h2>Your connections</h2>
-
 <%= for connection <- @connections do %>
   <div class="pa3 mb3 bg-white br2 ba b--light-gray">
     <div class="cf">
@@ -20,3 +15,7 @@
     </div>
   </div>
 <% end %>
+
+<nav class="pt3">
+  <%= link "New connection", to: connection_path(@conn, :new), class: "dn-btn dn-btn-lg dn-btn-primary" %>
+</nav>

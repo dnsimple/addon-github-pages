@@ -23,10 +23,10 @@
       </pre>
     </div>
   <% else %>
-    <div class="pv2 ph3 mv3 bg-light-blue br2 lh-copy">
-      <h3 class="mt3">Info</h3>
-      <p>A <span class="ph1 br2 bg-white-40 code">/CNAME</span> file will be created in the <strong><%= @repository %></strong> with the following content:</p>
-      <pre class="pa2 br2 bg-white-40 code">
+    <div class="pv2 ph3 mv3 bg-white br2 ba b--light-gray lh-copy">
+      <h3 class="mt3">Preview</h3>
+      <p>A <span class="ph1 br2 bg-light-gray code">/CNAME</span> file will be created in the <strong><%= @repository %></strong> with the following content:</p>
+      <pre class="pa2 br2 bg-light-gray code">
         <%= @domain %>
       </pre>
     </div>

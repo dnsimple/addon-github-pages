@@ -3,7 +3,9 @@
 
 // DNSimple custom colors
 $blue: #1A5EC6;
+$light-blue: #E5EEFD;
 $near-white: #fafafa;
+$white: #ffffff;
 
 // Tachyons color override
 .blue {
@@ -12,6 +14,14 @@ $near-white: #fafafa;
 
 .bg-blue {
   background-color: $blue;
+}
+
+.light-blue {
+  color: $light-blue;
+}
+
+.bg-light-blue {
+  background-color: $light-blue;
 }
 
 .near-white {
