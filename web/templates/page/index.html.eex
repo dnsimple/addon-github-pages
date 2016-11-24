@@ -1,32 +1,12 @@
-<div class="jumbotron" style="background: #e6f1f5">
+<div class="mw6 center">
   <a href="https://octodex.github.com">
-    <img alt="Father timeout by GitHub" src="https://octodex.github.com/images/father_timeout.jpg" style="width: 50%" text="Father timeout by GitHub" />
+    <img alt="Father timeout by GitHub" src="https://octodex.github.com/images/father_timeout.jpg" text="Father timeout by GitHub" />
   </a>
-  <h2><%= gettext "A connector by %{name}", name: "DNSimple" %></h2>
-  <p class="lead">A domain services provider that you will save you tons of time</p>
-  <%= unless GithubPagesConnector.Plug.CurrentAccount.account_connected?(@conn) do %>
-    <%= link("Setup your domain", to: page_path(@conn, :login), class: "btn btn-default btn-lg btn-success", style: "margin-top: 20px") %>
-  <% end %>
-
-</div>
-
-<div class="row marketing">
-  <div class="col-lg-6">
-    <h4>Resources</h4>
-    <ul>
-      <li>
-        <a href="https://dnsimple.com">DNSimple</a>
-      </li>
-      <li>
-        <a href="https://developer.dnsimple.com">DNSimple API</a>
-      </li>
-      <li>
-        <a href="https://support.dnsimple.com">DNSimple Support</a>
-      </li>
-      <li>
-        <a href="https://blog.dnsimple.com">DNSimple Blog</a>
-      </li>
-    </ul>
+  <div class="tc">
+    <h2><%= gettext "A connector by %{name}", name: "DNSimple" %></h2>
+    <p class="pb3">A domain services provider that you will save you tons of time</p>
+    <%= unless GithubPagesConnector.Plug.CurrentAccount.account_connected?(@conn) do %>
+        <%= link("Setup your domain", to: page_path(@conn, :login), class: "dn-btn dn-btn-primary") %>
+    <% end %>
   </div>
-
 </div>
