@@ -10,28 +10,33 @@ defmodule GithubPagesConnector.DnsimpleDummy do
   end
 
   def list_all_domains(account) do
-    record_call(:list_all_domains, [account])
-    get_stubbed_value(:list_all_domains, {:ok, []})
+    args = [account]
+    record_call(:list_all_domains, args)
+    get_stubbed_value(:list_all_domains, args, {:ok, []})
   end
 
   def create_record(account, domain_name, record_data) do
-    record_call(:create_record, [account, domain_name, record_data])
-    get_stubbed_value(:create_record, {:ok, Map.merge(%Dnsimple.ZoneRecord{id: :rand.uniform(100_000)}, record_data)})
+    args = [account, domain_name, record_data]
+    record_call(:create_record, args)
+    get_stubbed_value(:create_record, args, {:ok, Map.merge(%Dnsimple.ZoneRecord{id: :rand.uniform(100_000)}, record_data)})
   end
 
   def delete_record(account, domain_name, record_id) do
-    record_call(:delete_record, [account, domain_name, record_id])
-    get_stubbed_value(:delete_record, :ok)
+    args = [account, domain_name, record_id]
+    record_call(:delete_record, args)
+    get_stubbed_value(:delete_record, args, :ok)
   end
 
   def get_applied_services(account, domain_name) do
-    record_call(:get_applied_services, [account, domain_name])
-    get_stubbed_value(:get_applied_services, {:ok, []})
+    args = [account, domain_name]
+    record_call(:get_applied_services, args)
+    get_stubbed_value(:get_applied_services, args, {:ok, []})
   end
 
   def disable_service(account, domain_name, applied_service_id) do
-    record_call(:disable_service, [account, domain_name, applied_service_id])
-    get_stubbed_value(:disable_service, :ok)
+    args = [account, domain_name, applied_service_id]
+    record_call(:disable_service, args)
+    get_stubbed_value(:disable_service, args, :ok)
   end
 
 end
