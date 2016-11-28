@@ -21,7 +21,7 @@ defmodule GithubPagesConnector.ConnectionControllerTest do
 
       conn = get(conn, connection_path(conn, :index))
 
-      assert html_response(conn, 200) =~ "Existing connections"
+      assert html_response(conn, 200) =~ "Your connections"
     end
 
     test "redirects to new if signed in account has no connection", %{conn: conn} do
@@ -65,7 +65,7 @@ defmodule GithubPagesConnector.ConnectionControllerTest do
       conn = post(conn, connection_path(conn, :preview), repository: "repo1", domain: "domain1.com")
 
       response = html_response(conn, 200)
-      assert response =~ "A new file is going to be created"
+      assert response =~ "file will be created"
       assert response =~ "domain1.com"
     end
 
@@ -76,7 +76,7 @@ defmodule GithubPagesConnector.ConnectionControllerTest do
       conn = post(conn, connection_path(conn, :preview), repository: "repo1", domain: "domain1.com")
 
       response = html_response(conn, 200)
-      assert response =~ "A file has been found"
+      assert response =~ "file has been found in the repository"
       assert response =~ "existing content"
       assert response =~ "domain1.com"
     end

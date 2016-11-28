@@ -12,30 +12,37 @@
   </head>
 
   <body>
-    <div class="container">
-      <header class="header">
-        <h2 style="display: inline-block; width: 59%">GitHub Pages Connector</h2>
+    <header class="dn-navbar container mb4">
+      <div class="dn-navbar-branding">
+        <a class="dib v-mid link black" href="<%= page_path(@conn, :index) %>">
+          GitHub Pages Connector
+        </a>
+      </div>
+      <nav class="dn-navbar-nav">
+        <%= if GithubPagesConnector.Plug.CurrentAccount.account_connected?(@conn) do %>
+          <%= link("Connections", to: connection_path(@conn, :index), class: "link blue dim pr3") %>
+          <%= link("Logout", to: page_path(@conn, :logout), class: "link blue dim") %>
+        <% else %>
+          <%= link("Login", to: page_path(@conn, :login)) %>
+        <% end %>
+      </nav>
+    </header>
+    <div class="container min-vh-100">
+      <%= if get_flash(@conn, :info) do %>
+        <p class="dn-alert dn-alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
+      <% end %>
 
-        <nav role="navigation" style="display: inline-block; width: 40%; height: 50px">
-          <ul class="nav nav-pills pull-right" style="top: 20px">
-            <%= if GithubPagesConnector.Plug.CurrentAccount.account_connected?(@conn) do %>
-              <li><%= link("Connections", to: connection_path(@conn, :index)) %></li>
-              <li><%= link("Logout", to: page_path(@conn, :logout)) %></li>
-            <% else %>
-              <li><%= link("Login", to: page_path(@conn, :login)) %></li>
-            <% end %>
-          </ul>
-        </nav>
-      </header>
-
-      <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
-      <p class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></p>
+      <%= if get_flash(@conn, :error) do %>
+        <p class="dn-alert dn-alert-danger" role="alert"><%= get_flash(@conn, :error) %></p>
+      <% end %>
 
       <main role="main">
         <%= render @view_module, @view_template, assigns %>
       </main>
-
-    </div> <!-- /container -->
+    </div>
+    <footer class="dn-footer container">
+      <span class="dib v-mid">GitHub Pages Connector</span>
+    </footer>
     <script src="<%= static_path(@conn, "/js/app.js") %>"></script>
   </body>
 </html>

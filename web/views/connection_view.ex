@@ -10,6 +10,7 @@ defmodule GithubPagesConnector.ConnectionView do
 
   def domain_names(domains) do
     domains
+    |> Enum.take(10)
     |> Enum.map(&(Map.get(&1, :name)))
     |> Enum.sort
   end
