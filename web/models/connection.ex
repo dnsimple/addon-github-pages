@@ -21,8 +21,12 @@ defmodule GithubPagesConnector.Connection do
     :github_file_sha,
   ]
 
-  def changeset(connection, connection_with_changes) do
+  def upsert_changeset(connection, connection_with_changes) do
     cast(connection, changes(connection_with_changes), @attributes)
+  end
+
+  def attribute_changeset(connection, attribute_name, attribute_value) do
+    cast(connection, %{attribute_name => attribute_value}, [attribute_name])
   end
 
   defp changes(connection) do

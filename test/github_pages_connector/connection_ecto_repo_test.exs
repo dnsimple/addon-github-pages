@@ -52,20 +52,34 @@ defmodule GithubPagesConnector.ConnectionEctoRepoTest do
     end
   end
 
+  describe "put_attribute" do
+    test "updates the attribute" do
+      {:ok, connection} = @repo.put(@connection)
+      {:ok, connection} = @repo.put_attribute(connection, :dnsimple_domain, "other_domain")
+
+      connection = @repo.get(connection.id)
+      assert connection.dnsimple_domain == "other_domain"
+      assert connection.dnsimple_alias_id == @connection.dnsimple_alias_id
+      assert connection.github_repository == @connection.github_repository
+      assert connection.github_file_sha == @connection.github_file_sha
+    end
+  end
+
   describe ".remove" do
     test "removes the connection" do
       {:ok, connection} = @repo.put(@connection)
 
-      {:ok, connection} = @repo.remove(connection)
+      {:ok, _} = @repo.remove(connection)
 
-      connection = @repo.get(connection.id)
-      assert connection == nil
+      assert @repo.get(connection.id) == nil
     end
 
     test "returns the removed connection" do
       {:ok, connection} = @repo.put(@connection)
 
       {:ok, connection} = @repo.remove(connection)
+
+      assert connection.id == nil
       assert connection.__struct__ == GithubPagesConnector.Connection
     end
   end

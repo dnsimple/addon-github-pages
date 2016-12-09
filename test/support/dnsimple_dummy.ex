@@ -33,6 +33,11 @@ defmodule GithubPagesConnector.DnsimpleDummy do
     get_stubbed_value(:get_applied_services, args, {:ok, []})
   end
 
+  def enable_service(account, domain_name, service_id, github_name) do
+    record_call(:enable_service, [account, domain_name, service_id, github_name])
+    get_stubbed_value(:enable_service, :ok)
+  end
+
   def disable_service(account, domain_name, applied_service_id) do
     args = [account, domain_name, applied_service_id]
     record_call(:disable_service, args)
