@@ -57,7 +57,7 @@ defmodule GithubPagesConnector.TransactionalPipeline do
   ```
 
   """
-
+  @spec run(List.t, List.t) :: {:ok, List.t} | {:error, String.t}
   def run(functions, args) do
     do_run(functions, args, [])
   end
