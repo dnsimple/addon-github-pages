@@ -36,7 +36,7 @@ defmodule GithubPagesConnector.Services.Connections do
     end
   end
 
-  def remove_connection(account, connection_id) do
+  def disconnect(account, connection_id) do
     connection = @repo.get(connection_id)
     pipeline   = [
       &_remove_alias_record/2,

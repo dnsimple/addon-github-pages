@@ -61,7 +61,7 @@ defmodule GithubPagesConnector.ConnectionController do
   end
 
   def delete(conn, params) do
-    case @connections.remove_connection(conn.assigns[:current_account], params["id"]) do
+    case @connections.disconnect(conn.assigns[:current_account], params["id"]) do
       {:ok, connection} ->
         conn
         |> put_flash(:info, "Connection for #{connection.dnsimple_domain} to #{connection.github_repository} removed")
