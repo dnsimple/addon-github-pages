@@ -17,7 +17,7 @@ defmodule GithubPagesConnector.ConnectionControllerTest do
 
   describe ".index" do
     test "lists the existing connections for signed in account", %{conn: conn, account: account} do
-      @connections.new_connection(account, [])
+      @connections.connect(account, [])
 
       conn = get(conn, connection_path(conn, :index))
 
@@ -135,7 +135,7 @@ defmodule GithubPagesConnector.ConnectionControllerTest do
 
   describe ".delete" do
     setup %{conn: conn, account: account} do
-      {:ok, connection} = @connections.new_connection(account, [dnsimple_domain: "domain1.com", github_repository: "repo1"])
+      {:ok, connection} = @connections.connect(account, [dnsimple_domain: "domain1.com", github_repository: "repo1"])
       {:ok, conn: conn, account: account, connection: connection}
     end
 

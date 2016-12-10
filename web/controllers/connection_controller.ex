@@ -48,7 +48,7 @@ defmodule GithubPagesConnector.ConnectionController do
     domain     = params["domain"]
     repository = params["repository"]
 
-    case @connections.new_connection(account, dnsimple_domain: domain, github_repository: repository) do
+    case @connections.connect(account, dnsimple_domain: domain, github_repository: repository) do
       {:ok, _connection} ->
         conn
         |> put_flash(:info, "#{domain} now points to GitHub pages #{repository}")

@@ -21,7 +21,7 @@ defmodule GithubPagesConnector.Services.Connections do
   def list_connections(account = %Account{}), do: list_connections(account.id)
   def list_connections(account_id), do: @repo.list_connections(account_id)
 
-  def new_connection(account, connection_data) do
+  def connect(account, connection_data) do
     connection = struct(Connection, Keyword.merge(connection_data, account_id: account.id))
     pipeline   = [
       &_save_connection/2,
