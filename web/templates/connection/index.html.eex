@@ -4,11 +4,11 @@
     <div class="pa3 mb3 bg-white br2 ba b--light-gray">
       <div class="cf">
         <div class="fl w-80">
-          <img class="dib w2 v-mid" src="<%= static_path(@conn, "/images/github-icon.svg") %>" alt="" />
-          <p class="dib ma0 pl1 f4 fw4 v-mid"><%= connection.github_repository %></p>
-          <img class="dib w2 v-mid ph2" src="<%= static_path(@conn, "/images/connection.svg") %>" alt="" />
           <img class="dib w2 v-mid" src="https://make-it-nice.dnsimple.com/images/dnsimple-icon.svg" alt="" />
           <p class="dib ma0 pl1 f4 fw4 v-mid"><%= connection.dnsimple_domain %></p>
+          <img class="dib w2 v-mid ph2" src="<%= static_path(@conn, "/images/connection.svg") %>" alt="" />
+          <img class="dib w2 v-mid" src="<%= static_path(@conn, "/images/github-icon.svg") %>" alt="" />
+          <p class="dib ma0 pl1 f4 fw4 v-mid"><%= connection.github_repository %></p>
         </div>
         <div class="fl w-20 tr">
           <%= link "Delete", to: connection_path(@conn, :delete, connection), method: :delete, data: [confirm: "Are you sure?"], class: "db link dim red pt2" %>

@@ -3,18 +3,6 @@
   <%= form_for @conn, connection_path(@conn, :preview), [as: :connection], fn _f -> %>
 
     <div class="pa4 mb4 bg-white ba b--light-gray br2">
-      <img class="dib w2 v-mid" src="<%= static_path(@conn, "/images/github-icon.svg") %>" alt="" />
-      <h3 class="dib ma0 pl1 f3 fw4 v-mid">Repositories</h3>
-      <p class="gray">Showing <%= Enum.count(@repositories) %> repositories</p>
-      <%= for repository <- repository_names(@repositories) do %>
-        <div class="pv2">
-          <input type="radio" name="repository" id="<%= repository %>" value="<%= repository %>"/>
-          <label for="<%= repository %>" class="pl1 pointer"><%= repository %></label>
-        </div>
-      <% end %>
-    </div>
-
-    <div class="pa4 mb4 bg-white ba b--light-gray br2">
       <img class="dib w2 v-mid" src="https://make-it-nice.dnsimple.com/images/dnsimple-icon.svg" alt="" />
       <h3 class="dib ma0 pl1 f3 fw4 v-mid">Domains</h3>
       <%= if Enum.count(@domains) > 10 do %>
@@ -28,6 +16,18 @@
         <div class="pv2">
           <input type="radio" name="domain" id="<%= domain %>" value="<%= domain %>"/>
           <label for="<%= domain %>" class="pl1 pointer"><%= domain %></label>
+        </div>
+      <% end %>
+    </div>
+
+    <div class="pa4 mb4 bg-white ba b--light-gray br2">
+      <img class="dib w2 v-mid" src="<%= static_path(@conn, "/images/github-icon.svg") %>" alt="" />
+      <h3 class="dib ma0 pl1 f3 fw4 v-mid">Repositories</h3>
+      <p class="gray">Showing <%= Enum.count(@repositories) %> repositories</p>
+      <%= for repository <- repository_names(@repositories) do %>
+        <div class="pv2">
+          <input type="radio" name="repository" id="<%= repository %>" value="<%= repository %>"/>
+          <label for="<%= repository %>" class="pl1 pointer"><%= repository %></label>
         </div>
       <% end %>
     </div>
