@@ -11,8 +11,8 @@
     <link rel="stylesheet" href="https://make-it-nice.dnsimple.com/css/dnsimple-tachyons-1.0.0.min.css">
   </head>
 
-  <body>
-    <header class="dn-navbar container mb4">
+  <body class="dn-body">
+    <header class="dn-navbar pa3 mb4">
       <div class="dn-navbar-branding">
         <a class="dib v-mid link black" href="<%= page_path(@conn, :index) %>">
           GitHub Pages Connector
@@ -27,7 +27,7 @@
         <% end %>
       </nav>
     </header>
-    <div class="container min-vh-100">
+    <div class="dn-container min-vh-100">
       <%= if get_flash(@conn, :info) do %>
         <p class="dn-alert dn-alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
       <% end %>
@@ -40,7 +40,7 @@
         <%= render @view_module, @view_template, assigns %>
       </main>
     </div>
-    <footer class="dn-footer container">
+    <footer class="dn-footer pa3 container">
       <span class="dib v-mid">GitHub Pages Connector</span>
     </footer>
     <script src="<%= static_path(@conn, "/js/app.js") %>"></script>
