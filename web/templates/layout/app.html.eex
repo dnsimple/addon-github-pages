@@ -4,10 +4,10 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
+    <meta name="description" content="Easily connect your domains to GitHub Pages using DNSimple">
+    <meta name="author" content="DNSimple">
 
-    <title>Hello GithubPagesConnector!</title>
+    <title>GitHub Pages Addon - DNSimple</title>
     <link rel="stylesheet" href="https://make-it-nice.dnsimple.com/css/dnsimple-tachyons-1.0.0.min.css">
   </head>
 
@@ -15,7 +15,7 @@
     <header class="dn-navbar pa3 mb4">
       <div class="dn-navbar-branding">
         <a class="dib v-mid link black" href="<%= page_path(@conn, :index) %>">
-          GitHub Pages Connector
+          GitHub Pages Addon
         </a>
       </div>
       <nav class="dn-navbar-nav">
@@ -41,7 +41,7 @@
       </main>
     </div>
     <footer class="dn-footer pa3 container">
-      <span class="dib v-mid">GitHub Pages Connector</span>
+      <span class="dib v-mid">GitHub Pages Addon</span>
     </footer>
     <script src="<%= static_path(@conn, "/js/app.js") %>"></script>
   </body>
