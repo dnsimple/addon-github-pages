@@ -31,6 +31,12 @@ defmodule GithubPagesConnector.Plug.CurrentAccountTest do
 
       assert Phoenix.ConnTest.redirected_to(conn) == GithubPagesConnector.Router.Helpers.dnsimple_oauth_path(conn, :new)
     end
+
+    test "doesn't redirect if authentication is optional", %{conn: conn} do
+      conn = CurrentAccount.call(conn, require_authentication: false)
+
+      assert conn.status != 302
+    end
   end
 
   describe ".current_account" do

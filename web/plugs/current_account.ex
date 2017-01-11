@@ -6,15 +6,18 @@ defmodule GithubPagesConnector.Plug.CurrentAccount do
 
   def init(opts), do: opts
 
-  def call(conn, _opts) do
+  def call(conn, opts) do
     case current_account(conn) do
-      nil ->
-        conn
-        |> Phoenix.Controller.redirect(to: GithubPagesConnector.Router.Helpers.dnsimple_oauth_path(conn, :new))
-        |> halt
-      account ->
-        assign(conn, :current_account, account)
+      nil     -> handle_unauthenticated(conn, opts)
+      account -> assign(conn, :current_account, account)
     end
+  end
+
+  defp handle_unauthenticated(conn, require_authentication: false), do: assign(conn, :current_account, nil)
+  defp handle_unauthenticated(conn, _opts) do
+    conn
+      |> Phoenix.Controller.redirect(to: GithubPagesConnector.Router.Helpers.dnsimple_oauth_path(conn, :new))
+      |> halt
   end
 
   def current_account(conn) do
