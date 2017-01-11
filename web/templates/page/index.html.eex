@@ -4,7 +4,7 @@
   </a>
   <div class="tc">
     <h2><%= gettext "A connector by %{name}", name: "DNSimple" %></h2>
-    <p class="pb3">A domain services provider that you will save you tons of time</p>
+    <p class="pb3">Connect your domain to GitHub Pages in two clicks!</p>
     <%= unless GithubPagesConnector.Plug.CurrentAccount.account_connected?(@conn) do %>
         <%= link("Setup your domain", to: page_path(@conn, :login), class: "dn-btn dn-btn-primary") %>
     <% end %>
