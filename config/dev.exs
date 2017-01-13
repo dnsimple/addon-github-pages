@@ -46,4 +46,13 @@ config :github_pages_connector,
   dnsimple_base_url: "https://api.sandbox.dnsimple.com",
   github_redirect_uri: "http://localhost:4000/github/callback"
 
-import_config "dev.secret.exs"
+# Although you need a dev.secret.exs with the proper credentials
+# we do not enforce one for the test run.
+if File.exists?("config/dev.secret.exs") do
+  import_config "dev.secret.exs"
+else
+  IO.warn """
+  You don't have a config/dev.secret.exs file.
+  Please create one using config/dev.secret.exs-example as the blueprint.
+  """
+end
