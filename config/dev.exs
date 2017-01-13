@@ -46,4 +46,4 @@ config :github_pages_connector,
   dnsimple_base_url: "https://api.sandbox.dnsimple.com",
   github_redirect_uri: "http://localhost:4000/github/callback"
 
-import_config "dev.secret.exs"
+import_config "dev.secret.exs", ignore_if_notexists: true
