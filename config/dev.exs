@@ -43,9 +43,7 @@ config :github_pages_connector, GithubPagesConnector.Repo,
   pool_size: 10
 
 config :github_pages_connector,
-  github_client_id: "5b340a410acd78698c9f",
-  github_client_secret: "97560a3eaa365633c529a4fc2ec027d3d7175ec6",
-  github_redirect_uri: "http://localhost:4000/github/callback",
   dnsimple_base_url: "https://api.sandbox.dnsimple.com",
-  dnsimple_client_id: "14633962cac66aed",
-  dnsimple_client_secret: "vMFp5bDYJ1ngEzLg6rHD9pwrTmo7sCDD"
+  github_redirect_uri: "http://localhost:4000/github/callback"
+
+import_config "dev.secret.exs"
